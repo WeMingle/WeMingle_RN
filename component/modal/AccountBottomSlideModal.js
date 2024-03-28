@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Checkbox, RadioButton } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const AccountBottomSlideModal = ({ modalVisible, setModalVisible, setPostData, SignUpEmail }) => {
+const AccountBottomSlideModal = ({ modalVisible, setModalVisible, setPostData, handleSignUp }) => {
   const navigation = useNavigation();
   const [checked, setChecked] = useState(false);
 
@@ -81,7 +81,7 @@ const AccountBottomSlideModal = ({ modalVisible, setModalVisible, setPostData, S
             </RowBox>
             <CommonTouchableOpacity
               onPress={async () => {
-                await SignUpEmail();
+                await handleSignUp();
                 setModalVisible(false);
                 navigation.navigate('SignUpComplete');
               }}

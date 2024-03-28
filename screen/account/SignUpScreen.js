@@ -10,24 +10,26 @@ import { Colors } from '../../assets/color/Colors';
 import { useNavigation } from '@react-navigation/native';
 import AccountBottomSlideModal from '../../component/modal/AccountBottomSlideModal';
 import AccountHeader from '../../component/header/AccountHeader';
-import { SignUp } from '../../api/Account';
+
+import { useDispatch } from 'react-redux';
+import { SignUpEmail } from '../../redux/slice/TokenSlice';
 
 const SignUpScreen = () => {
   const navigation = useNavigation();
-
+  const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
 
-  const [postData, setPostData] = useState({ memberId: '', password: '', signupPlatform: '', phoneType: '', firebaseToken: '', allowNotification: false });
+  const [postData, setPostData] = useState({ memberId: 'test', password: '', signupPlatform: 'NONE', phoneType: 'AOS', firebaseToken: 'test', allowNotification: false });
   const [regCheck, setRegCheck] = useState(false);
   const [passwordCheck, setPasswordCheck] = useState(false);
 
-  const SignUpEmail = async () => {
-    await SignUp(postData);
+  const handleSignUp = async () => {
+    dispatch(SignUpEmail(postData))
   };
 
   return (
     <BaseSafeView>
-      <AccountBottomSlideModal modalVisible={modalVisible} setModalVisible={setModalVisible} postData={postData} setPostData={setPostData} SignUpEmail={SignUpEmail} />
+      <AccountBottomSlideModal modalVisible={modalVisible} setModalVisible={setModalVisible} postData={postData} setPostData={setPostData} handleSignUp={handleSignUp} />
       <Container>
         <AccountHeader headerTitle={'회원 가입'} />
 

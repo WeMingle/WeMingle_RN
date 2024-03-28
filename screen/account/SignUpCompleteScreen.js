@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, View } from 'react-native';
 // import * as S from './style/SignUpComplteSceen.style.js'
 import Back_Icon from '../../assets/Back_Icon.png';
@@ -8,19 +8,28 @@ import Profile_Icon2 from '../../assets/profile.png';
 import { Colors } from '../../assets/color/Colors';
 import AccountHeader from '../../component/header/AccountHeader';
 import { AccountButton, BaseSafeView, CommonInput, CommonText, CommonTouchableOpacity, Container, RowBox } from '../CommonStyled.style';
-import { AddProfile, CheckNickName } from '../../api/Account';
+import { AddProfile, CheckNickName, getPresignedUrl } from '../../api/Account';
+import { useDispatch, useSelector } from 'react-redux';
 
 const SignUpCompleteScreen = () => {
   const navigation = useNavigation();
+  const token = useSelector(state => state.token)
+  const dispatch = useDispatch();
 
   const [nickName, setNickName] = useState('');
   const [isChecked, setIsChecked] = useState(false);
+  const [uploadLink, setUploadLink] = useState('');
 
   const onEndEditing = async () => {
     const result = await CheckNickName(nickName);
-    console.log(result)
     if (result) setIsChecked(true);
   };
+
+  const getUploadLink = () => {
+    const result = getPresignedUrl();
+    if (result) setUploadLink(result);
+  }
+  // console.log(uploadLink)
 
   return (
     <BaseSafeView>
@@ -34,7 +43,11 @@ const SignUpCompleteScreen = () => {
           회원가입을 위한 마지막 단계입니다.
         </CommonText>
         <CommonText fontSize={12}>프로필을 설정해주세요</CommonText>
-        <CommonTouchableOpacity width={80} height={80} bgColor={Colors.c_gray200} style={{ borderRadius: 80, alignSelf: 'center', marginTop: 38 }}>
+        <CommonTouchableOpacity
+          onPress={() => {
+            getUploadLink()
+          }}
+          width={80} height={80} bgColor={Colors.c_gray200} style={{ borderRadius: 80, alignSelf: 'center', marginTop: 38 }}>
           <Image source={Profile_Icon} style={{ width: '100%', height: '100%' }} />
           <Image source={Profile_Icon2} style={{ position: 'absolute', width: 80, height: 80, bottom: 0 }} />
           <CommonText style={{ position: 'absolute', bottom: 6, alignSelf: 'center' }} color={'#fff'} fontSize={10}>

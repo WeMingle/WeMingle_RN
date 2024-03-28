@@ -11,6 +11,6 @@ export const Store = configureStore({
   reducer: RootReducer,
 
   // logger: 로그
-  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(logger),
+  // middleware: getDefaultMiddleware => getDefaultMiddleware().concat(logger),
 });
 
