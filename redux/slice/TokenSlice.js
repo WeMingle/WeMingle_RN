@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createAsyncThunk, createSlice, } from '@reduxjs/toolkit';
-import { axiosPrivate } from '../../api/Common';
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {axiosPrivate} from '../../api/Common';
 
 const initialState = {
   accessToken: null,
@@ -12,23 +12,25 @@ export const SignUpEmail = createAsyncThunk(
   'token/getToken',
   async (object, thunkAPI) => {
     try {
-      return await axiosPrivate.post('/member/signup', object).then(async (response) => {
-        if (response.status !== 200) {
-          return
-        }
-        const token = {
-          accessToken: response.data?.responseData.accessToken,
-          refreshToken: response.data?.responseData.refreshToken
-        }
-        await AsyncStorage.setItem('token', JSON.stringify(token));
+      return await axiosPrivate
+        .post('/member/signup', object)
+        .then(async response => {
+          if (response.status !== 200) {
+            return;
+          }
+          const token = {
+            accessToken: response.data?.responseData.accessToken,
+            refreshToken: response.data?.responseData.refreshToken,
+          };
+          await AsyncStorage.setItem('token', JSON.stringify(token));
 
-        return token;
-      })
+          return token;
+        });
     } catch (error) {
-      return thunkAPI.rejectWithValue(error)
+      return thunkAPI.rejectWithValue(error);
     }
-  }
-)
+  },
+);
 
 export const TokenSlice = createSlice({
   name: 'token',
@@ -42,15 +44,14 @@ export const TokenSlice = createSlice({
   },
   // redux toolkit createAsyncThunk 사용 시 필요
   // builder.addCase()에서 fulfilled(성공), pendding(대기), rejected(실패)
-  extraReducers: (builder) => {
-    builder.addCase(SignUpEmail., (state, action) => {
-      console.log('state.payload', action)
-      state.accessToken = action.payload.accessToken
-      state.refreshToken = action.payload.refreshToken
-    })
-  }
+  extraReducers: builder => {
+    builder.addCase(SignUpEmail.fulfilled, (state, action) => {
+      state.accessToken = action.payload.accessToken;
+      state.refreshToken = action.payload.refreshToken;
+    });
+  },
 });
 
-export const { setToken } = TokenSlice.actions;
+export const {setToken} = TokenSlice.actions;
 
 export default TokenSlice.reducer;
