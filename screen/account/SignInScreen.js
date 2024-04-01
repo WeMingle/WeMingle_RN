@@ -11,9 +11,35 @@ import { useNavigation } from '@react-navigation/native';
 import { Checkbox, RadioButton } from 'react-native-paper';
 import AccountBottomSlideModal from '../../component/modal/AccountBottomSlideModal';
 import AccountHeader from '../../component/header/AccountHeader';
+import { signInEmail } from '../../redux/slice/TokenSlice';
+import { useDispatch } from 'react-redux';
+import { handleSnsLogin } from '../../component/Common';
 
 const SignInScreen = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const [postData, setPostData] = useState({ memberId: 'wemingle@gmail.com', password: 'password123!', signupPlatform: 'NONE' })
+
+  const handleSignIn = async () => {
+    const result = await dispatch(signInEmail(postData));
+
+    if (result?.meta?.requestStatus) {
+      navigation.navigate('Onboarding')
+    } else {
+      return;
+    }
+
+  }
+
+  const handleSignUpWithSNS = async (signupPlatform) => {
+    handleSnsLogin(signupPlatform, (result) => {
+      setPostData(prev => {
+        return { signupPlatform: signupPlatform, memberId: result.email, password: result.email }
+      })
+      return handleSignIn();
+    })
+  }
+
 
   return (
     <BaseSafeView>
@@ -22,12 +48,26 @@ const SignInScreen = () => {
         <CommonText marginT={28} fontSize={14}>
           아이디
         </CommonText>
-        <CommonInput />
+        <CommonInput value={postData.memberId}
+          onChangeText={v =>
+            setPostData(prev => {
+              return { ...prev, memberId: v };
+            })
+          }
+        />
 
         <CommonText marginT={28} fontSize={14}>
           비밀번호
         </CommonText>
-        <CommonInput />
+        <CommonInput
+          secureTextEntry
+          value={postData.password}
+          onChangeText={v => {
+            setPostData(prev => {
+              return { ...prev, password: v };
+            });
+          }}
+        />
 
         <RowBox alignC marginT={46}>
           <FlexAutoView style={{ height: 2, backgroundColor: Colors.c_gray300 }}></FlexAutoView>
@@ -39,7 +79,7 @@ const SignInScreen = () => {
 
         <CenterBox>
           <RowBox justify={'space-around'} alignC marginT={20} width={'75%'}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => handleSignUpWithSNS('KAKAO')}>
               <Image source={Kakao_Icon} style={{ width: 44, height: 44 }} />
             </TouchableOpacity>
             <TouchableOpacity>
@@ -60,7 +100,7 @@ const SignInScreen = () => {
           </CommonText>
         </CenterBox>
 
-        <AccountButton onPress={() => navigation.navigate('Onboarding')} style={{ bottom: 20, position: 'absolute', alignSelf: 'center' }} bgColor={'#D7DCE5'} marginT={20}>
+        <AccountButton onPress={() => handleSignIn()} style={{ bottom: 20, position: 'absolute', alignSelf: 'center' }} bgColor={postData.memberId && postData.password ? '#212121' : '#D7DCE5'} marginT={20} disabled={postData.memberId && postData.password ? false : true}>
           <CommonText color={'#fff'}>로그인</CommonText>
         </AccountButton>
       </Container>

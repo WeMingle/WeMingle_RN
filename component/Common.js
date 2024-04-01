@@ -1,6 +1,7 @@
-import {PermissionsAndroid} from 'react-native';
-import {Platform} from 'react-native';
-import {PERMISSIONS, request, RESULTS} from 'react-native-permissions';
+import { PermissionsAndroid } from 'react-native';
+import { Platform } from 'react-native';
+import { PERMISSIONS, request, RESULTS } from 'react-native-permissions';
+import { getProfile as getKakaoProfile, login, } from '@react-native-seoul/kakao-login';
 
 export const getImageLibraryPermission = async () => {
   if (Platform.OS == 'android') {
@@ -80,3 +81,21 @@ export const hasAndroidPermission = async () => {
   }
   return await getRequestPermissionPromise();
 };
+
+export const handleSnsLogin = async (signupPlatform, callback) => {
+  if (signupPlatform == 'KAKAO') {
+    await login()
+      .then((result) => {
+        getKakaoProfile(result.accessToken)
+          .then((result) => {
+            callback(result)
+          })
+      })
+      .catch((err) => {
+      })
+  } else if (signupPlatform == 'naver') {
+
+  } else if (signupPlatform == 'google') {
+
+  }
+}

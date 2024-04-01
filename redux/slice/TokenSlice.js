@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {axiosPrivate} from '../../api/Common';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { axiosPrivate } from '../../api/Common';
+import { create } from 'react-test-renderer';
 
 const initialState = {
   accessToken: null,
@@ -9,7 +10,7 @@ const initialState = {
 
 // thunk api 요청 및 디스패치를 비동기식으로 처리하기 위한 함수
 export const SignUpEmail = createAsyncThunk(
-  'token/getToken',
+  'token/signUp',
   async (object, thunkAPI) => {
     try {
       return await axiosPrivate
@@ -32,6 +33,30 @@ export const SignUpEmail = createAsyncThunk(
   },
 );
 
+export const signInEmail = createAsyncThunk(
+  'token/signIn',
+  async (object, thunkAPI) => {
+    try {
+      return await axiosPrivate
+        .post('/member/signin', object)
+        .then(async response => {
+          if (response.status !== 200) {
+            return;
+          }
+          const token = {
+            accessToken: response.data?.responseData.accessToken,
+            refreshToken: response.data?.responseData.refreshToken,
+          };
+          await AsyncStorage.setItem('token', JSON.stringify(token));
+
+          return token;
+        });
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+)
+
 export const TokenSlice = createSlice({
   name: 'token',
   initialState,
@@ -49,9 +74,13 @@ export const TokenSlice = createSlice({
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
     });
+    builder.addCase(signInEmail.fulfilled, (state, action) => {
+      state.accessToken = action.payload.accessToken;
+      state.refreshToken = action.payload.refreshToken;
+    });
   },
 });
 
-export const {setToken} = TokenSlice.actions;
+export const { setToken } = TokenSlice.actions;
 
 export default TokenSlice.reducer;

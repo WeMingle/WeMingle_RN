@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {Image, View} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Image, View } from 'react-native';
 // import * as S from './style/SignUpComplteSceen.style.js'
 import Back_Icon from '../../assets/Back_Icon.png';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Profile_Icon from '../../assets/basic_profile.png';
 import Profile_Icon2 from '../../assets/profile.png';
-import {Colors} from '../../assets/color/Colors';
+import { Colors } from '../../assets/color/Colors';
 import AccountHeader from '../../component/header/AccountHeader';
 import {
   AccountButton,
@@ -16,10 +16,10 @@ import {
   Container,
   RowBox,
 } from '../CommonStyled.style';
-import {AddProfile, checkNickName, getPresignedUrl} from '../../api/Account';
-import {useDispatch, useSelector} from 'react-redux';
+import { AddProfile, checkNickName, getPresignedUrl } from '../../api/Account';
+import { useDispatch, useSelector } from 'react-redux';
 import ImageCropPicker from 'react-native-image-crop-picker';
-import {getImageLibraryPermission} from '../../component/Common';
+import { getImageLibraryPermission } from '../../component/Common';
 
 const SignUpCompleteScreen = () => {
   const navigation = useNavigation();
@@ -82,17 +82,17 @@ const SignUpCompleteScreen = () => {
           width={80}
           height={80}
           bgColor={Colors.c_gray200}
-          style={{borderRadius: 80, alignSelf: 'center', marginTop: 38}}>
+          style={{ borderRadius: 80, alignSelf: 'center', marginTop: 38 }}>
           <Image
-            source={selectImage ? {uri: selectImage.path} : Profile_Icon}
-            style={{width: '100%', height: '100%', borderRadius: 80}}
+            source={selectImage ? { uri: selectImage.path } : Profile_Icon}
+            style={{ width: '100%', height: '100%', borderRadius: 80 }}
           />
           <Image
             source={Profile_Icon2}
-            style={{position: 'absolute', width: 80, height: 80, bottom: 0}}
+            style={{ position: 'absolute', width: 80, height: 80, bottom: 0 }}
           />
           <CommonText
-            style={{position: 'absolute', bottom: 6, alignSelf: 'center'}}
+            style={{ position: 'absolute', bottom: 6, alignSelf: 'center' }}
             color={'#fff'}
             fontSize={10}>
             변경
@@ -121,7 +121,7 @@ const SignUpCompleteScreen = () => {
         )}
 
         <AccountButton
-          style={{bottom: 20, position: 'absolute', alignSelf: 'center'}}
+          style={{ bottom: 20, position: 'absolute', alignSelf: 'center' }}
           onPress={async () => {
             const result = await AddProfile({
               nickName: nickName,
