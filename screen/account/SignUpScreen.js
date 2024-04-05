@@ -14,8 +14,7 @@ import {
   AccountButton,
   BaseSafeView,
   CenterBox,
-  CommonInput,
-  commonInput,
+  CommonInputBox,
   CommonInputView,
   CommonText,
   CommonTouchableOpacity,
@@ -132,7 +131,7 @@ const SignUpScreen = () => {
         <CommonText marginT={28} fontSize={14}>
           비밀번호
         </CommonText>
-        <CommonInput
+        <CommonInputBox
           secureTextEntry
           value={postData.password}
           maxLength={20}
@@ -164,7 +163,7 @@ const SignUpScreen = () => {
         <CommonText marginT={28} fontSize={14} color={'#96A0B5'}>
           비밀번호 확인
         </CommonText>
-        <CommonInput
+        <CommonInputBox
           bgColor={regCheck ? '#fff' : Colors.c_gray200}
           editable={regCheck}
           secureTextEntry

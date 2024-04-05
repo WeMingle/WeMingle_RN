@@ -1,7 +1,7 @@
 import axios from 'axios';
-import {BASE_URL, axiosPrivate, makeApiToken} from './Common';
+import { BASE_URL, axiosPrivate, makeApiToken } from './Common';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {setToken} from '../redux/slice/TokenSlice';
+import { setToken } from '../redux/slice/TokenSlice';
 
 // 회원가입, 토큰 발행
 // thunk 사용으로 인해 사용X
@@ -25,6 +25,17 @@ export const SignUp = async payload => {
       }
     });
 };
+
+// 이메일 로그인
+export const signIn = async payload => {
+  await axiosPrivate
+    .post(`/member/signin`, payload)
+    .then(async response => {
+      if (response.status === 200) {
+
+      }
+    })
+}
 
 // 프로필 추가
 export const AddProfile = async payload => {

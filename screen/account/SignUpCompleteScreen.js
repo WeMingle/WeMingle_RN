@@ -10,7 +10,7 @@ import AccountHeader from '../../component/header/AccountHeader';
 import {
   AccountButton,
   BaseSafeView,
-  CommonInput,
+  CommonInputBox,
   CommonText,
   CommonTouchableOpacity,
   Container,
@@ -102,7 +102,7 @@ const SignUpCompleteScreen = () => {
         <CommonText marginT={28} fontSize={14}>
           닉네임
         </CommonText>
-        <CommonInput
+        <CommonInputBox
           value={nickName}
           onChangeText={v => {
             setIsChecked(false);

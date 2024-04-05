@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Image, Text, View, TouchableOpacity, StatusBar, Modal, Dimensions } from 'react-native';
-import { AccountButton, BaseSafeView, CenterBox, CommonInput, commonInput, CommonText, CommonTouchableOpacity, Container, FlexAutoView, ModalContainer, RowBox, StartButton } from '../CommonStyled.style';
+import { AccountButton, BaseSafeView, CenterBox, CommonInputBox, CommonText, CommonTouchableOpacity, Container, FlexAutoView, ModalContainer, RowBox, StartButton } from '../CommonStyled.style';
 import Back_Icon from '../../assets/Back_Icon.png';
 import Apple_Icon from '../../assets/apple.png';
 import Google_Icon from '../../assets/google.png';
@@ -21,9 +21,11 @@ const SignInScreen = () => {
   const [postData, setPostData] = useState({ memberId: 'wemingle@gmail.com', password: 'password123!', signupPlatform: 'NONE' })
 
   const handleSignIn = async () => {
+    return navigation.navigate('Onboarding')
+
     const result = await dispatch(signInEmail(postData));
 
-    if (result?.meta?.requestStatus) {
+    if (result?.meta?.requestStatus === 'fulfilled') {
       navigation.navigate('Onboarding')
     } else {
       return;
@@ -48,7 +50,7 @@ const SignInScreen = () => {
         <CommonText marginT={28} fontSize={14}>
           아이디
         </CommonText>
-        <CommonInput value={postData.memberId}
+        <CommonInputBox value={postData.memberId}
           onChangeText={v =>
             setPostData(prev => {
               return { ...prev, memberId: v };
@@ -59,7 +61,7 @@ const SignInScreen = () => {
         <CommonText marginT={28} fontSize={14}>
           비밀번호
         </CommonText>
-        <CommonInput
+        <CommonInputBox
           secureTextEntry
           value={postData.password}
           onChangeText={v => {

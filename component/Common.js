@@ -1,7 +1,8 @@
-import { PermissionsAndroid } from 'react-native';
+import { Dimensions, PermissionsAndroid } from 'react-native';
 import { Platform } from 'react-native';
 import { PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 import { getProfile as getKakaoProfile, login, } from '@react-native-seoul/kakao-login';
+import { responsiveFontSize } from 'react-native-responsive-dimensions';
 
 export const getImageLibraryPermission = async () => {
   if (Platform.OS == 'android') {
@@ -99,3 +100,11 @@ export const handleSnsLogin = async (signupPlatform, callback) => {
 
   }
 }
+
+export const FontSizeCalculator = (size) => {
+  const returnFontSize =
+    Dimensions.get('window').width > 500
+      ? responsiveFontSize(size * 0.1)
+      : responsiveFontSize(size * 0.128);
+  return returnFontSize;
+};

@@ -12,6 +12,10 @@ import CertificationSchoolScreen from './account/CertificationSchoolScreen';
 import { useDispatch } from 'react-redux';
 import { setToken } from '../redux/slice/TokenSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import MyPageScreen from './myPage/MyPageScreen';
+import MyInfoScreen from './myPage/MyInfoScreen';
+import MyProfileScreen from './myPage/MyProfileScreen';
+import MatchingListScreen from './myPage/MatchingListScreen';
 
 const RootScreen = () => {
   const Stack = createStackNavigator();
@@ -31,7 +35,7 @@ const RootScreen = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={'Splash'}>
+      <Stack.Navigator initialRouteName={'MyPage'}>
         {RouterSetting.map((v, index) => {
           const ranNum = Math.random().toString(36).substr(2, 10);
           return (
@@ -76,6 +80,22 @@ const RouterSetting = [
     name: 'CertificationSchool',
     component: CertificationSchoolScreen,
   },
+  {
+    name: 'MyPage',
+    component: MyPageScreen
+  },
+  {
+    name: 'MyInfo',
+    component: MyInfoScreen
+  },
+  {
+    name: 'MyProfile',
+    component: MyProfileScreen
+  },
+  {
+    name: 'MatchingList',
+    component: MatchingListScreen
+  }
 ];
 
 export default RootScreen;

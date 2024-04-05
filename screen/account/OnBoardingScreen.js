@@ -1,19 +1,19 @@
-import React, {useState} from 'react';
-import {Dimensions, FlatList} from 'react-native';
+import React, { useState } from 'react';
+import { Dimensions, FlatList } from 'react-native';
 import {
   AccountButton,
   BaseSafeView,
   CommonText,
   CommonTouchableOpacity,
   Container,
+  boxWidth,
 } from '../CommonStyled.style';
-import {Colors} from '../../assets/color/Colors';
-import {useNavigation} from '@react-navigation/native';
+import { Colors } from '../../assets/color/Colors';
+import { useNavigation } from '@react-navigation/native';
 
 const OnboardingScreen = () => {
   const navigation = useNavigation();
 
-  const boxWidth = Dimensions.get('screen').width / 3 - 20;
 
   const [selectItems, setSelectItems] = useState([]);
   return (
@@ -34,21 +34,21 @@ const OnboardingScreen = () => {
 
         <FlatList
           data={[
-            {name: '러닝', img: ''},
-            {name: '축구', img: ''},
-            {name: '농구', img: ''},
-            {name: '스쿼시', img: ''},
-            {name: '볼링', img: ''},
-            {name: '테니스', img: ''},
-            {name: '클라이밍', img: ''},
-            {name: '자전거', img: ''},
-            {name: '보드', img: ''},
-            {name: '배드민턴', img: ''},
-            {name: '야구', img: ''},
-            {name: '기타', img: ''},
+            { name: '러닝', img: '' },
+            { name: '축구', img: '' },
+            { name: '농구', img: '' },
+            { name: '스쿼시', img: '' },
+            { name: '볼링', img: '' },
+            { name: '테니스', img: '' },
+            { name: '클라이밍', img: '' },
+            { name: '자전거', img: '' },
+            { name: '보드', img: '' },
+            { name: '배드민턴', img: '' },
+            { name: '야구', img: '' },
+            { name: '기타', img: '' },
           ]}
           numColumns={3}
-          style={{marginTop: 20}}
+          style={{ marginTop: 20 }}
           renderItem={items => {
             return (
               <CommonTouchableOpacity
@@ -83,7 +83,7 @@ const OnboardingScreen = () => {
                 <CommonText
                   fontSize={12}
                   color={'#fff'}
-                  style={{marginBottom: 5}}>
+                  style={{ marginBottom: 5 }}>
                   {items.item?.name}
                 </CommonText>
               </CommonTouchableOpacity>
@@ -93,7 +93,7 @@ const OnboardingScreen = () => {
 
         <AccountButton
           onPress={() => navigation.navigate('CertificationSchool')}
-          style={{bottom: 20, position: 'absolute', alignSelf: 'center'}}
+          style={{ bottom: 20, position: 'absolute', alignSelf: 'center' }}
           bgColor={selectItems.length > 0 ? '#000' : '#D7DCE5'}
           marginT={20}>
           <CommonText color={'#fff'}>선택완료</CommonText>
