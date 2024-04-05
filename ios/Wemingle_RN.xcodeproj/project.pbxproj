@@ -16,7 +16,7 @@
 		7699B88040F8A987B510C191 /* libPods-Wemingle_RN-Wemingle_RNTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-Wemingle_RN-Wemingle_RNTests.a */; };
 		7768B3626BB9466590DB5F4D /* Pretendard-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5018121063534FA4BAA0E72C /* Pretendard-Regular.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		89952B7E2BBFF4DF00325977 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 89952B7D2BBFF4DE00325977 /* GoogleService-Info.plist */; };
+		89952B802BBFFB9900325977 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 89952B7F2BBFFB9800325977 /* GoogleService-Info.plist */; };
 		9B23E9F1B8754C898F072F08 /* Pretendard-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BBFA006068D84A229896B867 /* Pretendard-Medium.ttf */; };
 /* End PBXBuildFile section */
 
@@ -48,6 +48,7 @@
 		5DCACB8F33CDC322A6C60F78 /* libPods-Wemingle_RN.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Wemingle_RN.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Wemingle_RN/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89952B7D2BBFF4DE00325977 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		89952B7F2BBFFB9800325977 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Wemingle_RN/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-Wemingle_RN-Wemingle_RNTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wemingle_RN-Wemingle_RNTests.release.xcconfig"; path = "Target Support Files/Pods-Wemingle_RN-Wemingle_RNTests/Pods-Wemingle_RN-Wemingle_RNTests.release.xcconfig"; sourceTree = "<group>"; };
 		98593946BF5B450885422DDE /* Pretendard-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Pretendard-SemiBold.ttf"; path = "../assets/fonts/Pretendard-SemiBold.ttf"; sourceTree = "<group>"; };
 		BBFA006068D84A229896B867 /* Pretendard-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Pretendard-Medium.ttf"; path = "../assets/fonts/Pretendard-Medium.ttf"; sourceTree = "<group>"; };
@@ -95,6 +96,7 @@
 			isa = PBXGroup;
 			children = (
 				89952B7D2BBFF4DE00325977 /* GoogleService-Info.plist */,
+				89952B7F2BBFFB9800325977 /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -268,6 +270,7 @@
 				7768B3626BB9466590DB5F4D /* Pretendard-Regular.ttf in Resources */,
 				167F51F824D540DDB4F487F6 /* Pretendard-SemiBold.ttf in Resources */,
 				89952B7E2BBFF4DF00325977 /* GoogleService-Info.plist in Resources */,
+				89952B802BBFFB9900325977 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -618,10 +621,7 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -689,10 +689,7 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
