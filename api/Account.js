@@ -39,15 +39,36 @@ export const signIn = async payload => {
 
 // 프로필 추가
 export const AddProfile = async payload => {
-  await axios
-    .put(payload.url, payload.image)
-    .then(response => {
-      return true;
-    })
-    .catch(e => {
-      console.log(e);
-      return false;
+  const getBlob = async fileUri => {
+    const resp = await fetch(fileUri);
+    const imageBody = await resp.blob();
+    return imageBody;
+  };
+
+  const uploadImageNew = async (uploadUrl, data) => {
+    const imageBody = await getBlob(data);
+
+    return fetch(uploadUrl, {
+      method: 'PUT',
+      body: imageBody,
     });
+  };
+
+  uploadImageNew(payload.url, payload.image);
+  return;
+
+  // const image = await getBlob(payload.image);
+  // await axios
+  //   .put(payload.url, image, {
+  //     'Content-Type': 'image/jpeg',
+  //   })
+  //   .then(response => {
+  //     return true;
+  //   })
+  //   .catch(e => {
+  //     console.log(e);
+  //     return false;
+  //   });
 
   const result = await axiosPrivate
     .post('member/profile', payload.nickName)
