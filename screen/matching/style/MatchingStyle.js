@@ -27,7 +27,11 @@ export const MatchingFloatingButton = styled.TouchableOpacity`
   height: 45px;
   background-color: #212121;
   position: absolute;
+<<<<<<< Updated upstream
   bottom: 100px;
+=======
+  bottom: 80px;
+>>>>>>> Stashed changes
   right: 20px;
   align-items: center;
   justify-content: center;
@@ -151,8 +155,8 @@ export const CalendarBox = () => {
 }
 
 export const MatchingListBox = ({ marginT }) => {
-  return <View style={{ marginTop: marginT, backgroundColor: '#fff', marginBottom: 65 }}>
-    <RowBox justify={'space-between'} padding={20} >
+  return <View style={{ marginTop: marginT, backgroundColor: '#fff', }}>
+    <RowBox justify={'space-between'} padding={20} borderB borderT>
       <CommonText fontSize={12} color={Colors.c_gray400}>
         27개의 구인글
       </CommonText>

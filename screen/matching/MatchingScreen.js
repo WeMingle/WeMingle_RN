@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { TouchableWithoutFeedback, View } from 'react-native';
 
+<<<<<<< Updated upstream
 import { BaseSafeView, BottomTabView, CommonImage, CommonText, RowBox, ScrollContainer } from '../CommonStyled.style';
+=======
+import { BaseSafeView, CommonImage, CommonText, RowBox, ScrollContainer } from '../CommonStyled.style';
+>>>>>>> Stashed changes
 import { CalendarBox, FilterBox, MatchingFloatingButton, MatchingListBox, MatchingTab, } from './style/MatchingStyle';
 
 import MatchingSortOptionModal from '../../component/modal/MatchingSortOptionModal';
@@ -13,6 +17,7 @@ import Alert_Icon from '../../assets/alert.png'
 import Chat_Icon from '../../assets/chat.png'
 import { Colors } from '../../assets/color/Colors';
 import { useNavigation } from '@react-navigation/native';
+import { BottomTabView } from '../../component/BottomTab';
 
 const MatchingScreen = () => {
   const navigation = useNavigation();
@@ -60,11 +65,10 @@ const MatchingScreen = () => {
 
     </ScrollContainer>
     <MatchingFloatingButton onPress={() => {
-      navigation.navigate('MatchingWrite')
+      navigation.navigate('MatchingDateSelect')
     }}>
       <CommonImage source={Write_Icon} width={20} height={20} />
     </MatchingFloatingButton>
-    <BottomTabView />
   </BaseSafeView>
 }
 

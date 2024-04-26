@@ -1,15 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { Image, Text, View, TouchableOpacity, StatusBar, Modal, Dimensions } from 'react-native';
-import { AccountButton, BaseSafeView, CenterBox, CommonInputBox, CommonText, CommonTouchableOpacity, Container, FlexAutoView, ModalContainer, RowBox, StartButton } from '../CommonStyled.style';
-import Back_Icon from '../../assets/Back_Icon.png';
+import React, { useState } from 'react';
+import { Image, TouchableOpacity } from 'react-native';
+import { AccountButton, BaseSafeView, CenterBox, CommonInputBox, CommonText, Container, FlexAutoView, RowBox } from '../CommonStyled.style';
 import Apple_Icon from '../../assets/apple.png';
 import Google_Icon from '../../assets/google.png';
 import Kakao_Icon from '../../assets/kakaotalk.png';
 import Naver_Icon from '../../assets/naver.png';
 import { Colors } from '../../assets/color/Colors';
 import { useNavigation } from '@react-navigation/native';
-import { Checkbox, RadioButton } from 'react-native-paper';
-import AccountBottomSlideModal from '../../component/modal/AccountBottomSlideModal';
 import AccountHeader from '../../component/header/AccountHeader';
 import { signInEmail } from '../../redux/slice/TokenSlice';
 import { useDispatch } from 'react-redux';

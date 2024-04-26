@@ -79,7 +79,7 @@ const SignUpScreen = () => {
       <Container>
         <AccountHeader headerTitle={'회원 가입'} />
 
-        <RowBox>
+        <RowBox marginT={10}>
           <View
             style={{
               height: 4,
@@ -87,7 +87,7 @@ const SignUpScreen = () => {
               backgroundColor: '#0E6FFF',
               borderTopLeftRadius: 5,
               borderBottomLeftRadius: 5,
-            }}></View>
+            }} />
           <View
             style={{
               height: 4,
@@ -95,7 +95,7 @@ const SignUpScreen = () => {
               backgroundColor: '#D4E5FF',
               borderTopRightRadius: 5,
               borderBottomRightRadius: 5,
-            }}></View>
+            }} />
         </RowBox>
         <CommonText marginT={15} fontSize={12}>
           아이디와 비밀번호 설정만으로

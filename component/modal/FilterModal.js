@@ -5,6 +5,7 @@ import {
   CommonImage,
   CommonText,
   CommonTouchableOpacity,
+  ConfirmButton,
   Container,
   ModalContainer,
   RowBox,
@@ -144,13 +145,16 @@ const FilterModal = ({
                 </CommonText>
               </BorderBoxButton>
             </RowBox>
-            <BorderBoxButton onPress={() =>
-              setModalVisible(false)
-            } bgColor={'#212121'} height={48} style={{ width: '100%', position: 'absolute', bottom: 20, left: 20 }}>
+            <ConfirmButton
+              bottom={20}
+              position={'absolute'}
+              onPress={() =>
+                setModalVisible(false)
+              } >
               <CommonText color={'#fff'} bold fontSize={16}>
                 적용
               </CommonText>
-            </BorderBoxButton>
+            </ConfirmButton>
           </ModalContainer>
         </Container>
       </Modal >
