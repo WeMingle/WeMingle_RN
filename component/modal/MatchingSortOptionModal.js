@@ -1,5 +1,5 @@
 import React, { } from 'react';
-import { Modal, View } from 'react-native';
+import { Modal, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import {
   CommonText,
   Container,
@@ -10,7 +10,14 @@ import {
 const MatchingSortOptionModal = ({
   modalVisible,
   setModalVisible,
+  setSortOption
 }) => {
+
+  const selectOption = (option) => {
+    setSortOption(option)
+    setModalVisible(false)
+  }
+
   return (
     <>
       <Modal
@@ -20,18 +27,33 @@ const MatchingSortOptionModal = ({
         onRequestClose={() => {
           setModalVisible(prev => !prev);
         }}>
-        <Container style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <ModalContainer modalSize={'small'}>
-            <View style={{
-              justifyContent: 'space-around',
-              flex: 1
-            }}>
-              <CommonText fontSize={16}>최신순</CommonText>
-              <CommonText fontSize={16}>조회순</CommonText>
-              <CommonText fontSize={16}>마감임박순</CommonText>
-            </View>
-          </ModalContainer>
-        </Container>
+        <TouchableWithoutFeedback
+          onPress={() => setModalVisible(false)}
+        >
+          <Container
+            style={{ backgroundColor: 'rgba(0,0,0,0.5)' }} >
+            <TouchableWithoutFeedback onPress={() => { }}>
+              <ModalContainer modalSize={'small'}>
+                <View style={{
+                  justifyContent: 'space-around',
+                  flex: 1
+                }}>
+                  <TouchableOpacity hitSlop={{ bottom: 50, top: 50 }} onPress={() => selectOption('NEW')}>
+                    <CommonText fontSize={16}>최신순</CommonText>
+
+                  </TouchableOpacity>
+                  {/* <CommonText fontSize={16}>조회순</CommonText>
+                  <TouchableOpacity>
+                  </TouchableOpacity> */}
+
+                  <TouchableOpacity hitSlop={{ bottom: 50, top: 50 }} onPress={() => selectOption('DEADLINE')}>
+                    <CommonText fontSize={16}>마감임박순</CommonText>
+                  </TouchableOpacity>
+                </View>
+              </ModalContainer>
+            </TouchableWithoutFeedback>
+          </Container>
+        </TouchableWithoutFeedback>
       </Modal >
     </>
   );

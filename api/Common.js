@@ -1,6 +1,4 @@
 import axios from 'axios';
-import { useSelector } from 'react-redux';
-import { useAppSelector, useGetToken } from '../component/hook/useAction';
 import { Store } from '../redux/Store';
 
 export const BASE_URL = 'http://49.172.40.78:8080';
@@ -18,7 +16,7 @@ export const axiosPrivate = axios.create({
 axiosPrivate.interceptors.request.use(config => {
   const token = Store.getState()?.token.accessToken;
   config.headers.Authorization =
-    `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0aHJ1c3VtMTIzQGdtYWlsLmNvbSIsImlhdCI6MTcxMDYxMjEwMSwiZXhwIjo0ODIxMDEyMTAxLCJzdWIiOiJXZU1pbmdsZSIsImlkIjoid2VtaW5nbGVAZ21haWwuY29tIiwicm9sZSI6IlJPTEVfVVNFUiJ9.GdgA62s5hi2kVTnW9qk0EMxsu6Ivj98u1GGqX7Q3e1c`;
+    `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0aHJ1c3VtMTIzQGdtYWlsLmNvbSIsImlhdCI6MTcxMTk4MzA4NiwiZXhwIjo0ODIyMzgzMDg2LCJzdWIiOiJXZU1pbmdsZSIsImlkIjoibWVtYmVySWQwIiwicm9sZSI6IlJPTEVfQURNSU4ifQ.OkVWQpb-w4r5GtIYXufXU9kLs4KSnG26olvVuqydlcw`;
 
   return config;
 });

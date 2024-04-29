@@ -1,4 +1,4 @@
-import { TouchableWithoutFeedback, View } from 'react-native';
+import { TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import styled, { css } from 'styled-components/native';
 import { Colors } from '../../../assets/color/Colors';
 import { BorderBox, BorderBoxButton, CommonImage, CommonText, Container, MatchingItem, RowBox } from '../../CommonStyled.style';
@@ -10,7 +10,7 @@ import Arrow_Left from '../../../assets/arrow_left.png';
 import Arrow_Right_Calendar from '../../../assets/arrow_right_calendar.png'
 import Filter_Icon from '../../../assets/filter_icon.png';
 import Arrow_down from '../../../assets/arrow_down.png';
-
+import { useState, React, memo } from 'react';
 
 export const MathcingTabButton = styled.TouchableOpacity`
   width: 50%;
@@ -27,11 +27,7 @@ export const MatchingFloatingButton = styled.TouchableOpacity`
   height: 45px;
   background-color: #212121;
   position: absolute;
-<<<<<<< Updated upstream
-  bottom: 100px;
-=======
   bottom: 80px;
->>>>>>> Stashed changes
   right: 20px;
   align-items: center;
   justify-content: center;
@@ -75,93 +71,104 @@ export const FilterBox = ({ setFilterModalOpen }) => {
 }
 
 
-export const CalendarBox = () => {
+export const CalendarBox = memo(
+  ({ selectedDate, setSelectedDate }) => {
+    LocaleConfig.locales['kr'] = {
+      monthNames: [
+        '1월',
+        '2월',
+        '3월',
+        '4월',
+        '5월',
+        '6월',
+        '7월',
+        '8월',
+        '9월',
+        '10월',
+        '11월',
+        '12월'
+      ],
+      monthNames: [
+        '1월',
+        '2월',
+        '3월',
+        '4월',
+        '5월',
+        '6월',
+        '7월',
+        '8월',
+        '9월',
+        '10월',
+        '11월',
+        '12월'
+      ],
+      monthNamesShort: ['1월',
+        '2월',
+        '3월',
+        '4월',
+        '5월',
+        '6월',
+        '7월',
+        '8월',
+        '9월',
+        '10월',
+        '11월',
+        '12월'],
+      dayNames: ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
+      dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+      today: "오늘"
+    };
+    LocaleConfig.defaultLocale = 'kr';
 
-  LocaleConfig.locales['kr'] = {
-    monthNames: [
-      '1월',
-      '2월',
-      '3월',
-      '4월',
-      '5월',
-      '6월',
-      '7월',
-      '8월',
-      '9월',
-      '10월',
-      '11월',
-      '12월'
-    ],
-    monthNames: [
-      '1월',
-      '2월',
-      '3월',
-      '4월',
-      '5월',
-      '6월',
-      '7월',
-      '8월',
-      '9월',
-      '10월',
-      '11월',
-      '12월'
-    ],
-    monthNamesShort: ['1월',
-      '2월',
-      '3월',
-      '4월',
-      '5월',
-      '6월',
-      '7월',
-      '8월',
-      '9월',
-      '10월',
-      '11월',
-      '12월'],
-    dayNames: ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
-    dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
-    today: "오늘"
-  };
-  LocaleConfig.defaultLocale = 'kr';
+    return <Container style={{ paddingBottom: 50 }}>
+      <Calendar
+        LocaleConfig
+        theme={{
+          textDayFontFamily: 'Pretendard-Medium',
+          textDayHeaderFontFamily: 'Pretendard-Medium',
+          todayTextColor: Colors.informative,
 
-  return <Container style={{ paddingBottom: 50 }}>
-    <Calendar
-      LocaleConfig
-      theme={{
-        textDayFontFamily: 'Pretendard-Medium',
-        textDayHeaderFontFamily: 'Pretendard-Medium',
-      }}
-      renderHeader={(date) => {
-        const dateStr = date.toISOString();
-        const endIndex = dateStr.indexOf("T");
-        const title = moment(dateStr.slice(0, endIndex)).format("YYYY. MM.");
-        return <>
-          <RowBox alignC height={30}>
-            <CommonText marginL={25} marginR={25} fontSize={16} bold>
-              {title}
-            </CommonText>
+        }}
+        disableAllTouchEventsForDisabledDays={true}
+        minDate={moment().format('YYYY-MM-DD')}
+        onDayPress={day => {
+          setSelectedDate(day.dateString)
+        }}
+        renderHeader={(date) => {
+          const dateStr = date.toISOString();
+          const endIndex = dateStr.indexOf("T");
+          const title = moment(dateStr.slice(0, endIndex)).format("YYYY. MM.");
+          return <>
+            <RowBox alignC height={30}>
+              <CommonText marginL={25} marginR={25} fontSize={16} bold>
+                {title}
+              </CommonText>
+            </RowBox>
+          </>
+        }}
+        renderArrow={(direction) => <>
+          <RowBox height={30} alignC>
+            {direction === 'left' ?
+              <CommonImage source={Arrow_Left} width={7} height={14} /> :
+              <CommonImage source={Arrow_Right_Calendar} width={7} height={14} />}
           </RowBox>
-        </>
-      }}
-      renderArrow={(direction) => <>
-        <RowBox height={30} alignC>
-          {direction === 'left' ?
-            <CommonImage source={Arrow_Left} width={7} height={14} /> :
-            <CommonImage source={Arrow_Right_Calendar} width={7} height={14} />}
-        </RowBox>
-      </>}
-    />
-  </Container>
-}
+        </>}
+      />
+    </Container>
+  }
+)
 
-export const MatchingListBox = ({ marginT }) => {
+export const MatchingListBox = ({ marginT, setModalVisible, sortOption }) => {
   return <View style={{ marginTop: marginT, backgroundColor: '#fff', }}>
     <RowBox justify={'space-between'} padding={20} borderB borderT>
       <CommonText fontSize={12} color={Colors.c_gray400}>
         27개의 구인글
       </CommonText>
       <RowBox alignC >
-        <CommonText fontSize={12} marginR={15}>마감 임박순</CommonText>
+        <TouchableOpacity onPress={() => setModalVisible()}>
+          <CommonText fontSize={12} marginR={15}>{sortOption === 'NEW' ? '최신순' : '마감임박순'}</CommonText>
+
+        </TouchableOpacity>
         <CommonImage source={Arrow_down} width={10} height={20} />
       </RowBox>
     </RowBox>

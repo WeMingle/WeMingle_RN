@@ -1,11 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TouchableWithoutFeedback, View } from 'react-native';
 
-<<<<<<< Updated upstream
-import { BaseSafeView, BottomTabView, CommonImage, CommonText, RowBox, ScrollContainer } from '../CommonStyled.style';
-=======
 import { BaseSafeView, CommonImage, CommonText, RowBox, ScrollContainer } from '../CommonStyled.style';
->>>>>>> Stashed changes
 import { CalendarBox, FilterBox, MatchingFloatingButton, MatchingListBox, MatchingTab, } from './style/MatchingStyle';
 
 import MatchingSortOptionModal from '../../component/modal/MatchingSortOptionModal';
@@ -17,15 +13,33 @@ import Alert_Icon from '../../assets/alert.png'
 import Chat_Icon from '../../assets/chat.png'
 import { Colors } from '../../assets/color/Colors';
 import { useNavigation } from '@react-navigation/native';
-import { BottomTabView } from '../../component/BottomTab';
+
+import moment from 'moment';
+import { getMatchingList } from '../../redux/slice/MatchingSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const MatchingScreen = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch()
 
   // useState
   const [selectedTab, setSelectedTab] = useState('calendar');
   const [filterModalOpen, setFilterModalOpen] = useState(false);
   const [sortOptionOpen, setSortOptionOpen] = useState(false);
+
+  const [sortOption, setSortOption] = useState('NEW') //NEW, DEADLINE
+  const [recruitmentType, setRecuruitmentType] = useState('APPROVAL_BASED') //FIRST_SERVED_BASED, APPROVAL_BASED
+  const [selectedDate, setSelectedDate] = useState(moment().format('YYYY-MM-DD'))
+
+  const matchingList = useSelector(state => state.matching)
+
+  console.log('matchingList', matchingList)
+  useEffect(() => {
+
+    dispatch(getMatchingList({
+      sortOption: sortOption, dateFilter: '2024-03-29', recruitmentType: recruitmentType, sportsType: 'OTHER'
+    }))
+  }, [sortOption, selectedDate, recruitmentType,])
 
   return <BaseSafeView>
     <FilterModal
@@ -34,7 +48,9 @@ const MatchingScreen = () => {
     />
     <MatchingSortOptionModal
       modalVisible={sortOptionOpen}
-      setModalVisible={setSortOptionOpen} />
+      setModalVisible={setSortOptionOpen}
+      setSortOption={setSortOption}
+    />
 
     <ScrollContainer padding={0} bgColor={Colors.c_gray50}>
       <View style={{ backgroundColor: '#212121' }}>
@@ -50,16 +66,16 @@ const MatchingScreen = () => {
       <FilterBox filterModalOpen={filterModalOpen} setFilterModalOpen={setFilterModalOpen} />
 
       {selectedTab === 'calendar' ? <>
-        <CalendarBox />
-        <MatchingListBox marginT={10} />
+        <CalendarBox selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
+        <MatchingListBox marginT={10} modalVisible={sortOptionOpen} sortOption={sortOption} setModalVisible={() => setSortOptionOpen(true)} />
       </> : <>
-        <TouchableWithoutFeedback onPress={() => setSortOptionOpen(true)}>
+        <TouchableWithoutFeedback >
           <RowBox alingC padding={20} bgColor={'#fff'}>
             <CommonText fontSize={16} bold>전체</CommonText>
             <CommonImage source={Arrow_down} width={24} height={20} />
           </RowBox>
         </TouchableWithoutFeedback>
-        <MatchingListBox />
+        <MatchingListBox sortOption={sortOption} setModalVisible={() => setSortOptionOpen(true)} />
       </>
       }
 

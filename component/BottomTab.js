@@ -14,7 +14,6 @@ export const BottomTabView = () => {
   const navigation = useNavigation();
 
   const currentTab = useSelector(state => state.currentTab).currentTab;
-  console.log(currentTab)
   const dispatch = useDispatch();
   const changeTab = (name, nextPage) => {
     dispatch(setCurrentTab({ currentTab: name }));
