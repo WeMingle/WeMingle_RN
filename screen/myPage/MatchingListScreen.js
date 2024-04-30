@@ -2,23 +2,14 @@
 import React, { useState, } from 'react';
 import {
   BaseSafeView,
-  BorderBox,
-  CommonImage,
   CommonText,
-  CommonTouchableOpacity,
   Container,
-  MatchingBorderBox,
   RowBox,
-  ScrollContainer,
 } from '../CommonStyled.style';
 import { Colors } from '../../assets/color/Colors';
 import { useNavigation } from '@react-navigation/native';
-import { DropdownMenu, HistoryTab, MatchingListTab, MatchingTab } from './style/MyPageStyle.style';
+import { HistoryTab, MatchingListTab, MatchingTab } from './style/MyPageStyle.style';
 import { CommonHeaderBlack } from '../../component/header/CommonHeader';
-import { Checkbox } from 'react-native-paper';
-import calendar from '../../assets/calendar_month.png'
-import person from '../../assets/person.png'
-import { FlatList, View } from 'react-native';
 
 const MatchingListScreen = () => {
   const navigation = useNavigation();

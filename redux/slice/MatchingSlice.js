@@ -12,12 +12,15 @@ export const test = () => {
 
 export const getMatchingList = createAsyncThunk(
   'get/matching',
-  async (Object, thunkAPI) => {
+  async (payload, thunkAPI) => {
     try {
-      const { sortOption, dateFilter, recruitmentType, sportsType } = Object
-      console.log(`/post/match/calendar?sortOption=${sortOption}&dateFilter=${dateFilter}&recruitmentType=${recruitmentType}&sportsType=${sportsType}`)
+      const { sortOption, dateFilter, recruitmentType, sportsType, filterValues } = payload
+      let url = `/post/match/calendar?sortOption=${sortOption}&dateFilter=${dateFilter}&recruitmentType=${recruitmentType}&sportsType=${sportsType}`
+      Object.keys(filterValues).map((v) => {
+        filterValues[v] && (url += `&${v}=${filterValues[v]}`)
+      })
       return await axiosPrivate
-        .get(`/post/match/calendar?sortOption=${sortOption}&dateFilter=${dateFilter}&recruitmentType=${recruitmentType}&sportsType=${sportsType}`)
+        .get(``)
         .then(async response => {
           if (response.status === 200) {
             const result = {

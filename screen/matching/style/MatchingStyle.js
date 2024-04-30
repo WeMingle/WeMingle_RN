@@ -10,7 +10,7 @@ import Arrow_Left from '../../../assets/arrow_left.png';
 import Arrow_Right_Calendar from '../../../assets/arrow_right_calendar.png'
 import Filter_Icon from '../../../assets/filter_icon.png';
 import Arrow_down from '../../../assets/arrow_down.png';
-import { useState, React, memo } from 'react';
+import { useState, React, memo, useEffect } from 'react';
 
 export const MathcingTabButton = styled.TouchableOpacity`
   width: 50%;
@@ -119,6 +119,36 @@ export const CalendarBox = memo(
       today: "오늘"
     };
     LocaleConfig.defaultLocale = 'kr';
+    const [markedDates, setMarkedDates] = useState({});
+
+    useEffect(() => {
+      if (!Array.isArray(selectedDate)) {
+        setMarkedDates(prev => {
+          return {
+            [selectedDate]: {
+              selected: true,
+              selectedColor: Colors.blue400,
+            }
+          }
+        })
+        return;
+      }
+      selectedDate && {
+        [selectedDate]: { selected: true, selectedColor: Colors.blue400 },
+      }
+      const dates = {}
+      selectedDate.map((v, i) => {
+        dates[v] = {
+          selected: true,
+          selectedColor: Colors.blue400,
+        };
+
+      })
+      setMarkedDates(prev => {
+        return { dates }
+      })
+    }, [selectedDate])
+
 
     return <Container style={{ paddingBottom: 50 }}>
       <Calendar
@@ -153,6 +183,8 @@ export const CalendarBox = memo(
               <CommonImage source={Arrow_Right_Calendar} width={7} height={14} />}
           </RowBox>
         </>}
+        markedDates={markedDates.dates}
+
       />
     </Container>
   }

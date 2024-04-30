@@ -12,7 +12,7 @@ import {
   StartButton,
 } from '../../screen/CommonStyled.style';
 import { Colors } from '../../assets/color/Colors';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { Checkbox, RadioButton } from 'react-native-paper';
 
 import Renew_Button from '../../assets/renew_button.png'
@@ -22,8 +22,72 @@ import { BorderlessButton } from 'react-native-gesture-handler';
 const FilterModal = ({
   modalVisible,
   setModalVisible,
+  filterValues,
+  setFilterValues
 }) => {
 
+  const [tempFilterValues, setTempFilterValues] = useState({})
+
+  useEffect(() => {
+    if (!modalVisible) return;
+    setTempFilterValues({
+      ability: filterValues.ability, // 운동 실력
+      gender: filterValues.gender, // 성별
+      areaList: filterValues.areaList, // 지역
+      excludeExpired: filterValues.excludeExpired, // 마감 제외
+      recruitmentType: filterValues.recruitmentType, // 구인 형태
+      recruiterType: filterValues.recruiterType//INDIVIDUAL, TEAM
+    })
+  }, [modalVisible])
+
+  const BorderButton = ({ text, marginL, isSelected, onPress }) => {
+    return <BorderBoxButton onPress={onPress} bgColor={isSelected ? '#212121' : '#fff'} alignC justify={'center'} marginL={marginL}>
+      <CommonText color={!isSelected ? '#212121' : '#fff'} bold fontSize={14}>
+        {text}
+      </CommonText>
+    </BorderBoxButton>
+  }
+
+  const BoxButton = ({ text, isSelected, onPress, isLeft }) => {
+    const leftStyle = { borderTopLeftRadius: 5, borderBottomLeftRadius: 5, }
+    return <TouchableOpacity onPress={onPress}
+      style={[isLeft ? leftStyle : { borderTopRightRadius: 5, borderBottomRightRadius: 5, }, { height: 35, width: 85, backgroundColor: isSelected ? '#212121' : '#fff', alignItems: 'center', justifyContent: 'center' }, !isSelected && { borderWidth: 1, borderColor: Colors.c_gray300 }]}
+    >
+      <CommonText color={isSelected ? '#fff' : '#212121'} bold fontSize={12}>
+        {text}
+      </CommonText>
+    </TouchableOpacity>
+  }
+
+  const _onPress = (key, value) => {
+    if (tempFilterValues[key] === value) {
+      setTempFilterValues(prev => {
+        return { ...prev, [key]: null }
+      })
+      return;
+    }
+    setTempFilterValues(prev => {
+      return { ...prev, [key]: value }
+    })
+  }
+
+  const _onPressLocation = (value) => {
+    let newValue = tempFilterValues.areaList ? tempFilterValues.areaList?.split(',') : []
+    const findIndex = newValue?.indexOf(value)
+    if (findIndex >= 0) {
+      newValue.splice(findIndex, 1)
+      newValue = newValue.join(',')
+      setTempFilterValues(prev => {
+        return { ...prev, areaList: newValue }
+      })
+    } else {
+      newValue.push(value)
+      newValue = newValue.join(',')
+      setTempFilterValues(prev => {
+        return { ...prev, areaList: newValue }
+      })
+    }
+  }
 
   return (
     <>
@@ -44,7 +108,9 @@ const FilterModal = ({
             </RowBox>
             <View style={{ width: '100%', height: 1, backgroundColor: Colors.c_gray300, marginTop: 20, marginBottom: 30 }} />
             <RowBox alignC>
-              <Checkbox color={'#212121'} status={'checked'} />
+              <Checkbox color={'#212121'} status={tempFilterValues?.excludeExpired ? 'checked' : 'unchecked'} onPress={() => setTempFilterValues(prev => {
+                return { ...prev, excludeExpired: !prev.excludeExpired }
+              })} />
               <CommonText fontSize={14}>
                 마감 제외
               </CommonText>
@@ -54,17 +120,8 @@ const FilterModal = ({
                 구인 형태
               </CommonText>
               <RowBox>
-                <BorderBoxButton bgColor={'#212121'} width={50} alignC justify={'center'}>
-                  <CommonText color={'#fff'} bold fontSize={14}>
-                    개인
-                  </CommonText>
-                </BorderBoxButton>
-
-                <BorderBoxButton width={50} alignC justify={'center'} marginL={10}>
-                  <CommonText bold fontSize={14}>
-                    그룹
-                  </CommonText>
-                </BorderBoxButton>
+                <BorderButton text={'개인'} isSelected={tempFilterValues.recruiterType === 'INDIVIDUAL'} onPress={() => _onPress('recruiterType', 'INDIVIDUAL')} />
+                <BorderButton text={'그룹'} isSelected={tempFilterValues.recruiterType === 'TEAM'} onPress={() => _onPress('recruiterType', 'TEAM')} marginL={10} />
               </RowBox>
             </RowBox>
 
@@ -73,21 +130,9 @@ const FilterModal = ({
                 운동 실력
               </CommonText>
               <RowBox>
-                <BorderBoxButton bgColor={'#212121'} alignC justify={'center'}>
-                  <CommonText color={'#fff'} bold fontSize={14}>
-                    Lv 1-3
-                  </CommonText>
-                </BorderBoxButton>
-                <BorderBoxButton alignC justify={'center'} marginL={10}>
-                  <CommonText bold fontSize={14}>
-                    Lv 4-6
-                  </CommonText>
-                </BorderBoxButton>
-                <BorderBoxButton alignC justify={'center'} marginL={10}>
-                  <CommonText bold fontSize={14}>
-                    Lv 6-10
-                  </CommonText>
-                </BorderBoxButton>
+                <BorderButton text={'Lv 1-3'} isSelected={tempFilterValues.ability === 'LOW'} onPress={() => _onPress('ability', 'LOW')} />
+                <BorderButton text={'Lv 4-6'} isSelected={tempFilterValues.ability === 'MEDIUM'} marginL={10} onPress={() => _onPress('ability', 'MEDIUM')} />
+                <BorderButton text={'Lv 6-10'} isSelected={tempFilterValues.ability === 'HIGH'} marginL={10} onPress={() => _onPress('ability', 'HIGH')} />
               </RowBox>
             </RowBox>
 
@@ -96,16 +141,8 @@ const FilterModal = ({
                 성별
               </CommonText>
               <RowBox>
-                <BorderBoxButton bgColor={'#212121'} alignC justify={'center'}>
-                  <CommonText color={'#fff'} bold fontSize={14}>
-                    남성
-                  </CommonText>
-                </BorderBoxButton>
-                <BorderBoxButton alignC justify={'center'} marginL={10}>
-                  <CommonText bold fontSize={14}>
-                    여성
-                  </CommonText>
-                </BorderBoxButton>
+                <BorderButton text={'남성'} isSelected={tempFilterValues.gender === 'MALE'} onPress={() => _onPress('gender', 'MALE')} />
+                <BorderButton text={'여성'} isSelected={tempFilterValues.gender === 'FEMALE'} marginL={10} onPress={() => _onPress('gender', 'FEMALE')} />
               </RowBox>
             </RowBox>
 
@@ -114,16 +151,8 @@ const FilterModal = ({
                 매칭 방식
               </CommonText>
               <RowBox>
-                <TouchableOpacity style={{ borderTopLeftRadius: 5, borderBottomLeftRadius: 5, height: 35, width: 85, backgroundColor: '#212121', alignItems: 'center', justifyContent: 'center' }}>
-                  <CommonText color={'#fff'} bold fontSize={12}>
-                    승인제
-                  </CommonText>
-                </TouchableOpacity>
-                <TouchableOpacity style={{ borderTopRightRadius: 5, borderBottomRightRadius: 5, height: 35, width: 85, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: Colors.c_gray300 }}>
-                  <CommonText color={'#212121'} bold fontSize={12}>
-                    자동승인(선착)
-                  </CommonText>
-                </TouchableOpacity>
+                <BoxButton text={'승인제'} isSelected={tempFilterValues.recruitmentType === 'APPROVAL_BASED'} onPress={() => _onPress('recruitmentType', 'APPROVAL_BASED')} isLeft={true} />
+                <BoxButton text={'자동승인(선착)'} isSelected={tempFilterValues.recruitmentType === 'FIRST_SERVED_BASED'} onPress={() => _onPress('recruitmentType', 'FIRST_SERVED_BASED')} />
               </RowBox>
             </RowBox>
 
@@ -134,22 +163,25 @@ const FilterModal = ({
               <CommonImage source={Arrow_Down} width={24} height={24} />
             </RowBox>
             <RowBox marginTop={20}>
-              <BorderBoxButton bgColor={'#212121'} alignC justify={'center'}>
-                <CommonText color={'#fff'} bold fontSize={14}>
-                  서울
-                </CommonText>
-              </BorderBoxButton>
-              <BorderBoxButton bgColor={'#fff'} alignC justify={'center'} marginL={10}>
-                <CommonText color={'#212121'} bold fontSize={14}>
-                  경기
-                </CommonText>
-              </BorderBoxButton>
+              <BorderButton text={'서울'} onPress={() => _onPressLocation('서울')} isSelected={tempFilterValues.areaList?.indexOf('서울') >= 0} />
+
+              <BorderButton text={'경기'} onPress={() => _onPressLocation('경기')} isSelected={tempFilterValues.areaList?.indexOf('경기') >= 0} marginL={10} />
+
             </RowBox>
             <ConfirmButton
               bottom={20}
               position={'absolute'}
-              onPress={() =>
+              onPress={() => {
+                setFilterValues({
+                  ability: tempFilterValues.ability, // 운동 실력
+                  gender: tempFilterValues.gender, // 성별
+                  areaList: tempFilterValues.areaList, // 지역
+                  excludeExpired: tempFilterValues.excludeExpired, // 마감 제외
+                  recruitmentType: tempFilterValues.recruitmentType, // 구인 형태
+                  recruiterType: tempFilterValues.recruiterType//INDIVIDUAL, TEAM
+                })
                 setModalVisible(false)
+              }
               } >
               <CommonText color={'#fff'} bold fontSize={16}>
                 적용

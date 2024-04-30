@@ -1,17 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
+import DatePicker from 'react-native-date-picker'
 
 import { BaseSafeView, BorderBoxButton, CommonImage, CommonInputBox, CommonText, ConfirmButton, RowBox, ScrollContainer } from '../CommonStyled.style';
 
-
 import Calendar_Icon from '../../assets/uil_calender.png'
 import Arrow_down from '../../assets/arrow_right.png';
+import Intersect from '../../assets/Intersect.png'
+import Arrow_Right from '../../assets/right_arrow.png'
 import { Colors } from '../../assets/color/Colors';
+
 import { useNavigation } from '@react-navigation/native';
 import { CommonHeaderBlack } from '../../component/header/CommonHeader';
+import moment from 'moment';
+import { showToastMessage } from '../../component/Toast';
 
 const MatchingWriteScreen = () => {
   const navigation = useNavigation();
+
+  const [selectedDate, setSelectedDate] = useState(moment().format('YYYY-MM-DD'))
+  const [expiredDate, setExpiredDate] = useState(new Date());
+
+  useEffect(() => {
+    showToastMessage('매칭 조건은 업로드 후 수정이 불가하니 신중하게 작성해주세요!')
+  }, [])
 
   const MatchingColumn = ({ title, rightComponent, marginT }) => {
     return <RowBox alignC padding={20} marginT={marginT} justify={'space-between'} bgColor={'#fff'} height={60}>
@@ -88,6 +100,12 @@ const MatchingWriteScreen = () => {
         title={'내 인원'}
         rightComponent={() => {
           return <RowBox>
+            <BorderBoxButton marginR={10}>
+              <RowBox alignC >
+                <CommonImage source={Arrow_Right} width={9} height={7} />
+                <CommonImage source={Intersect} width={14} height={12} />
+              </RowBox>
+            </BorderBoxButton>
             <TouchableOpacity style={{ borderTopWidth: 1, borderLeftWidth: 1, borderBottomWidth: 1, borderColor: Colors.c_gray300, borderTopLeftRadius: 5, borderBottomLeftRadius: 5, height: 35, width: 35, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center' }}>
               <CommonText color={'#212121'} bold fontSize={12}>
                 -
@@ -127,6 +145,8 @@ const MatchingWriteScreen = () => {
       <MatchingColumn
         title={'매칭 마감일'}
       />
+      <DatePicker style={{ alignSelf: 'center' }} date={expiredDate} onDateChange={setExpiredDate} mode='date' locale='ko-KR' theme='light' androidVariant={'iosClone'} dividerColor='#fff' />
+
       <MatchingColumn
         title={'매칭 방식'}
         rightComponent={() => {

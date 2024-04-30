@@ -1711,6 +1711,13 @@
     prompts "^2.4.2"
     semver "^7.5.2"
 
+"@react-native-community/datetimepicker@^8.0.0":
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-8.0.0.tgz#2d0ee2c122495f556d42563a69ffaa8b63e66db9"
+  integrity sha512-hFiGlG5ovhspLYIZlvRs7sMg2NtKjHaG2CJQbECQH1M31760cR7BjYujS/MCM2d44ihhn4ZKLspAyXVN+Gh08g==
+  dependencies:
+    invariant "^2.2.4"
+
 "@react-native-firebase/app@^19.1.1":
   version "19.1.1"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-19.1.1.tgz#374bd6d37476782fda7dda3b91fac21cfab0c606"
@@ -5931,6 +5938,11 @@ react-native-calendars@^1.1304.1:
   optionalDependencies:
     moment "^2.29.4"
 
+react-native-date-picker@^5.0.2:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-date-picker/-/react-native-date-picker-5.0.2.tgz#7a9cc42c086fe1ebfe39d2f431f523d924239ae6"
+  integrity sha512-ZibwqA+6W+uOLzeblsKnMQT2zZpnOw/tKFotgyrLZuTPTcwMvnnlzi5QhSjB203PhyFEElbcFrIuHJQpb/Zahw==
+
 react-native-gesture-handler@^2.15.0:
   version "2.15.0"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-2.15.0.tgz#f8e6c0451a7bdf065edb7b9be605480db402baa0"
@@ -5997,6 +6009,11 @@ react-native-swipe-gestures@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/react-native-swipe-gestures/-/react-native-swipe-gestures-1.0.5.tgz#a172cb0f3e7478ccd681fd36b8bfbcdd098bde7c"
   integrity sha512-Ns7Bn9H/Tyw278+5SQx9oAblDZ7JixyzeOczcBK8dipQk2pD7Djkcfnf1nB/8RErAmMLL9iXgW0QHqiII8AhKw==
+
+react-native-toast-message@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-toast-message/-/react-native-toast-message-2.2.0.tgz#c53a4746b15616858a7d61c4386b92cbe9fbf911"
+  integrity sha512-AFti8VzUk6JvyGAlLm9/BknTNDXrrhqnUk7ak/pM7uCTxDPveAu2ekszU0on6vnUPFnG04H/QfYE2IlETqeaWw==
 
 react-native-vector-icons@^10.0.3:
   version "10.0.3"

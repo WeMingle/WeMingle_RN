@@ -52,6 +52,7 @@ export const RowBox = styled.View`
   ${props => props.borderT && `
   border-top-width:1px;
   border-top-color: ${Colors.borderColor}`};
+  margin-right: ${props => props.marginR && props.marginR}px;
 `;
 
 // flex-direction : coulmn, 가운데 정렬
@@ -239,6 +240,7 @@ export const BorderBoxButton = styled.TouchableOpacity`
   justify-content: center;
   flex-direction: ${props => props.row ? 'row' : 'coulmn'};
   background-color: ${props => props.bgColor ? props.bgColor : '#fff'};
+  margin-right: ${props => props.marginR && props.marginR}px;
 `
 
 export const profileBox = styled(CenterBox)`

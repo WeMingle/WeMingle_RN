@@ -22,29 +22,47 @@ const MatchingScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch()
 
+  const matchingList = useSelector(state => state.matching)
+
   // useState
   const [selectedTab, setSelectedTab] = useState('calendar');
   const [filterModalOpen, setFilterModalOpen] = useState(false);
   const [sortOptionOpen, setSortOptionOpen] = useState(false);
 
   const [sortOption, setSortOption] = useState('NEW') //NEW, DEADLINE
-  const [recruitmentType, setRecuruitmentType] = useState('APPROVAL_BASED') //FIRST_SERVED_BASED, APPROVAL_BASED
   const [selectedDate, setSelectedDate] = useState(moment().format('YYYY-MM-DD'))
 
-  const matchingList = useSelector(state => state.matching)
+  // const [recruitmentType, setRecuruitmentType] = useState('APPROVAL_BASED') //FIRST_SERVED_BASED, APPROVAL_BASED
+  // const [ability, setAbility] = useState(null); //LOW, MEDIUM, HIGH
+  // const [gender, setGender] = useState(null); //  (MALE, FEMALE)
+  // const [areaList, setAreaList] = useState(null);
+  // const [excludeExpired, setExcludeExpired] = useState(null); //true,false
+  // const [sportsType, setSportsType] = useState(null); // RUNNING, SOCCER, BASKETBALL, BASEBALL, TENNIS, BOWLING, SQUASH, CLIMBING, CYCLING, BADMINTON, SKATEBOARDING, OTHER
 
-  console.log('matchingList', matchingList)
+  const [filterValues, setFilterValues] = useState({
+    ability: null, // 운동 실력
+    gender: null, // 성별
+    areaList: null, // 지역
+    excludeExpired: true, // 마감 제외
+    recruitmentType: 'APPROVAL_BASED', // 구인 형태
+    recruiterType: 'INDIVIDUAL' //INDIVIDUAL, TEAM
+  })
+
+  // const [isModify, setIsModify] = useState('')
+
   useEffect(() => {
-
+    return
     dispatch(getMatchingList({
-      sortOption: sortOption, dateFilter: '2024-03-29', recruitmentType: recruitmentType, sportsType: 'OTHER'
+      sortOption: sortOption, dateFilter: selectedDate, sportsType: 'OTHER', filterValues: filterValues
     }))
-  }, [sortOption, selectedDate, recruitmentType,])
+  }, [sortOption, selectedDate, filterValues])
 
   return <BaseSafeView>
     <FilterModal
       modalVisible={filterModalOpen}
       setModalVisible={setFilterModalOpen}
+      filterValues={filterValues}
+      setFilterValues={setFilterValues}
     />
     <MatchingSortOptionModal
       modalVisible={sortOptionOpen}
