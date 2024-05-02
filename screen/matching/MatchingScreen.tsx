@@ -87,7 +87,7 @@ const MatchingScreen = () => {
         modalVisible={filterModalOpen}
         setModalVisible={setFilterModalOpen}
         filterValues={filterValues}
-        setFilterValues={setFilterValues}
+        setFilterValues={value => setFilterValues(value)}
       />
       <MatchingSortOptionModal
         modalVisible={sortOptionOpen}
