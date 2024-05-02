@@ -60,8 +60,7 @@ const SignUpCompleteScreen = () => {
     <BaseSafeView>
       <Container>
         <AccountHeader headerTitle={'회원 가입'} />
-
-        <RowBox>
+        <RowBox marginT={10}>
           <View
             style={{
               height: 4,
@@ -79,8 +78,8 @@ const SignUpCompleteScreen = () => {
           onPress={() => {
             getUploadLink();
           }}
-          width={80}
-          height={80}
+          width={79}
+          height={79}
           bgColor={Colors.c_gray200}
           style={{borderRadius: 80, alignSelf: 'center', marginTop: 38}}>
           <Image
@@ -88,6 +87,7 @@ const SignUpCompleteScreen = () => {
             style={{width: '100%', height: '100%', borderRadius: 80}}
           />
           <Image
+            resizeMode='cover'
             source={Profile_Icon2}
             style={{position: 'absolute', width: 80, height: 80, bottom: 0}}
           />

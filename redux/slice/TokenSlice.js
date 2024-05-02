@@ -1,7 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { axiosPrivate } from '../../api/Common';
-import { create } from 'react-test-renderer';
 
 const initialState = {
   accessToken: null,

@@ -9,8 +9,8 @@ const SplashScreen = () => {
   const navigation = useNavigation();
 
   return (
-    <BaseSafeView bgColor="#000">
-      <Container justify={'space-around'}>
+    <BaseSafeView >
+      <Container bgColor="#212121" justify={'space-around'}>
         <CenterBox ma>
           <CommonText color={'#fff'}>대학생끼리 스포츠를 즐기고 싶을 때</CommonText>
           <Image source={Logo} style={{ width: 150, height: 150, marginTop: 15 }} />

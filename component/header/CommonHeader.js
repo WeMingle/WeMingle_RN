@@ -47,3 +47,15 @@ export const CommonHeaderBlack = ({ headerTitle }) => {
     </RowBox>
   );
 }
+
+export const DefaultHeader = ({ headerTitle }) => {
+  return <>
+    <RowBox alignC justify={'space-between'} padding={20}>
+      <CommonText fontSize={18} color={'#fff'}>{headerTitle}</CommonText>
+      <RowBox>
+        <CommonImage source={Alert_Icon} width={24} height={24} />
+        <CommonImage source={Chat_Icon} width={24} height={24} style={{ marginLeft: 12 }} />
+      </RowBox>
+    </RowBox>
+  </>
+}
