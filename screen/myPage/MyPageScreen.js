@@ -86,7 +86,7 @@ const MyPageScreen = () => {
         </View>
         <Container bgColor={'#fff'} style={{ width: '100%', height: '100%', borderTopLeftRadius: 20, borderTopRightRadius: 20 }}>
           <RowBox justify={'space-between'}>
-            <CommonText fontSize={18}>내 그룹</CommonText>
+            <CommonText fontSize={14}>내 그룹</CommonText>
             <CommonImage source={Arrow_Right} width={24} height={24} />
           </RowBox>
 
@@ -123,9 +123,11 @@ const MyPageScreen = () => {
           />
           <View>
             <View style={{ width: '100%', height: 1, backgroundColor: Colors.c_gray200, }} />
-            <CommonText fontSize={14} marginT={20}>
-              스크랩
-            </CommonText>
+            <TouchableOpacity>
+              <CommonText fontSize={14} marginT={20}>
+                스크랩
+              </CommonText>
+            </TouchableOpacity>
             <CommonText fontSize={14} marginT={20}>
               작성한 매칭 일지
             </CommonText>

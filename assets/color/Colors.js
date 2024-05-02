@@ -11,5 +11,6 @@ export const Colors = {
   c_gray400: '#AFBAC8',
   c_gray500: '#96A0B5',
   c_gray700: '#6B768B',
+  c_gray920: '##292E41',
   danger: '#FF5D5D',
 };
