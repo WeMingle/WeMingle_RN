@@ -1,6 +1,10 @@
-import React, { useEffect } from 'react';
-import { NavigationContainer, useIsFocused, useNavigation } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import React, {useEffect} from 'react';
+import {
+  NavigationContainer,
+  useIsFocused,
+  useNavigation,
+} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 
 // Account - 이현태
 import SplashScreen from './SplashScreen';
@@ -9,8 +13,8 @@ import SignUpScreen from './account/SignUpScreen';
 import SignUpCompleteScreen from './account/SignUpCompleteScreen';
 import OnboardingScreen from './account/OnBoardingScreen';
 import CertificationSchoolScreen from './account/CertificationSchoolScreen';
-import { useDispatch } from 'react-redux';
-import { setToken } from '../redux/slice/TokenSlice';
+import {useDispatch} from 'react-redux';
+import {setToken} from '../redux/slice/TokenSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MyPageScreen from './myPage/MyPageScreen';
 import MyInfoScreen from './myPage/MyInfoScreen';
@@ -18,9 +22,12 @@ import MyProfileScreen from './myPage/MyProfileScreen';
 import MatchingListScreen from './myPage/MatchingListScreen';
 import MatchingScreen from './matching/MatchingScreen';
 import MatchingWriteScreen from './matching/MatchingWriteScreen';
-import { BackHandler, View } from 'react-native';
-import { BottomTabView } from '../component/BottomTab';
+import {BackHandler, View} from 'react-native';
+import {BottomTabView} from '../component/BottomTab';
 import MatchingDateSelectScreen from './matching/MatchingDateSelectScreen';
+import {showToastMessage} from '../component/Toast';
+
+let count = 0; //  종료카운트
 
 const RootScreen = () => {
   const Stack = createStackNavigator();
@@ -29,18 +36,18 @@ const RootScreen = () => {
   const getToken = async () => {
     await AsyncStorage.getItem('token').then(response => {
       if (response) {
-        dispatch(setToken(response))
+        dispatch(setToken(response));
       }
-    })
-  }
+    });
+  };
 
   useEffect(() => {
-    getToken()
-  }, [])
+    getToken();
+  }, []);
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={'Matching'}>
+      <Stack.Navigator initialRouteName={'MyPage'}>
         {RouterSetting.map((v, index) => {
           const ranNum = Math.random().toString(36).substr(2, 10);
           return (
@@ -55,33 +62,31 @@ const RootScreen = () => {
             />
           );
         })}
-        {
-          TabRouterSetting.map((v, index) => {
-            const ranNum = Math.random().toString(36).substr(2, 10);
-            return (
-              <Stack.Screen
-                key={`${v.name}_${index}_${ranNum}`}
-                name={v.name}
-                component={withScrollView(v.component, true)}
-                options={{
-                  headerShown: false,
-                  gestureDirection: 'horizontal',
-                }}
-              />
-            );
-          })
-        }
+        {TabRouterSetting.map((v, index) => {
+          const ranNum = Math.random().toString(36).substr(2, 10);
+          return (
+            <Stack.Screen
+              key={`${v.name}_${index}_${ranNum}`}
+              name={v.name}
+              component={withScrollView(v.component, true)}
+              options={{
+                headerShown: false,
+                gestureDirection: 'horizontal',
+              }}
+            />
+          );
+        })}
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
 
-const withScrollView = (WrappedComponent, isTab = false) => {
-  return props => {
+const withScrollView = (WrappedComponent: React.FC, isTab = false) => {
+  return (props: any) => {
     const isFocus = useIsFocused();
     const navigation = useNavigation();
 
-    const onBackPress = async () => {
+    const onBackPress = () => {
       if (count < 1) {
         count++;
         //ToastAndroid.show('한번더 뒤로가기를 누르면 앱이 종료됩니다.', ToastAndroid.SHORT);
@@ -107,11 +112,9 @@ const withScrollView = (WrappedComponent, isTab = false) => {
 
     return (
       <>
-        <View style={{ flex: 1 }}>
-          <WrappedComponent {...props} >
-          </WrappedComponent>
-          <BottomTabView />
-
+        <View style={{flex: 1}}>
+          <WrappedComponent {...props}></WrappedComponent>
+          {isTab && <BottomTabView />}
         </View>
       </>
     );
@@ -148,33 +151,32 @@ const RouterSetting = [
 const TabRouterSetting = [
   {
     name: 'MyPage',
-    component: MyPageScreen
+    component: MyPageScreen,
   },
   {
     name: 'MyInfo',
-    component: MyInfoScreen
+    component: MyInfoScreen,
   },
   {
     name: 'MyProfile',
-    component: MyProfileScreen
+    component: MyProfileScreen,
   },
   {
     name: 'MatchingList',
-    component: MatchingListScreen
+    component: MatchingListScreen,
   },
   {
     name: 'Matching',
-    component: MatchingScreen
+    component: MatchingScreen,
   },
   {
     name: 'MatchingWrite',
-    component: MatchingWriteScreen
+    component: MatchingWriteScreen,
   },
   {
     name: 'MatchingDateSelect',
     component: MatchingDateSelectScreen,
-  }
-
-]
+  },
+];
 
 export default RootScreen;

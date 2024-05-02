@@ -2,7 +2,11 @@ import React, {useEffect, useState} from 'react';
 import {Image, View} from 'react-native';
 // import * as S from './style/SignUpComplteSceen.style.js'
 import Back_Icon from '../../assets/Back_Icon.png';
-import {useNavigation} from '@react-navigation/native';
+import {
+  NavigationProp,
+  ParamListBase,
+  useNavigation,
+} from '@react-navigation/native';
 import Profile_Icon from '../../assets/basic_profile.png';
 import Profile_Icon2 from '../../assets/profile.png';
 import {Colors} from '../../assets/color/Colors';
@@ -20,16 +24,17 @@ import {AddProfile, checkNickName, getPresignedUrl} from '../../api/Account';
 import {useDispatch, useSelector} from 'react-redux';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import {getImageLibraryPermission} from '../../component/Common';
+import {RootState} from '../../redux/Reducers';
 
 const SignUpCompleteScreen = () => {
-  const navigation = useNavigation();
-  const token = useSelector(state => state.token);
+  const navigation: NavigationProp<ParamListBase> = useNavigation();
+  const token = useSelector((state: RootState) => state.token);
   const dispatch = useDispatch();
 
   const [nickName, setNickName] = useState('');
   const [isChecked, setIsChecked] = useState(false);
   const [uploadLink, setUploadLink] = useState('');
-  const [selectImage, setSelectImage] = useState(null);
+  const [selectImage, setSelectImage] = useState<any>(null);
 
   const onEndEditing = async () => {
     const result = await checkNickName(nickName);
@@ -39,6 +44,8 @@ const SignUpCompleteScreen = () => {
   const getUploadLink = async () => {
     const result = await getPresignedUrl();
     if (result) setUploadLink(result);
+
+    console.log('result', result);
 
     openImagePicker();
   };
@@ -50,8 +57,7 @@ const SignUpCompleteScreen = () => {
       height: 300,
       cropping: true,
       compressImageQuality: 0.8,
-    }).then(image => {
-      console.log(image);
+    }).then((image: any) => {
       setSelectImage(image);
     });
   };
@@ -87,7 +93,7 @@ const SignUpCompleteScreen = () => {
             style={{width: '100%', height: '100%', borderRadius: 80}}
           />
           <Image
-            resizeMode='cover'
+            resizeMode="cover"
             source={Profile_Icon2}
             style={{position: 'absolute', width: 80, height: 80, bottom: 0}}
           />
@@ -104,7 +110,7 @@ const SignUpCompleteScreen = () => {
         </CommonText>
         <CommonInputBox
           value={nickName}
-          onChangeText={v => {
+          onChangeText={(v: string) => {
             setIsChecked(false);
             setNickName(v);
           }}

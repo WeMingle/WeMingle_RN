@@ -8,20 +8,32 @@ import {
   RowBox,
 } from '../../screen/CommonStyled.style';
 import {Colors} from '../../assets/color/Colors';
-import {useNavigation} from '@react-navigation/native';
+import {
+  NavigationProp,
+  ParamListBase,
+  useNavigation,
+} from '@react-navigation/native';
 import {Checkbox, RadioButton} from 'react-native-paper';
+
+interface AccountBottomSlideModalProps {
+  modalVisible: boolean;
+  setModalVisible: (value: boolean) => void;
+  setPostData: any;
+  handleSignUp: () => void;
+}
 
 const AccountBottomSlideModal = ({
   modalVisible,
   setModalVisible,
   setPostData,
   handleSignUp,
-}) => {
-  const navigation = useNavigation();
+}: AccountBottomSlideModalProps) => {
+  const navigation: NavigationProp<ParamListBase> = useNavigation();
+
   const [checked, setChecked] = useState(false);
 
   useEffect(() => {
-    setPostData(prev => {
+    setPostData((prev: any) => {
       return {
         ...prev,
         signupPlatform: 'NONE',
@@ -39,13 +51,13 @@ const AccountBottomSlideModal = ({
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          setModalVisible(prev => !prev);
+          setModalVisible(false);
         }}>
         <Container style={{backgroundColor: 'rgba(0,0,0,0.5)'}}>
           <ModalContainer>
             <CommonText textAlignC>서비스 이용 약관 동의</CommonText>
             <RowBox alignC marginT={28}>
-              <RadioButton color={Colors.blue400} status={'checked'} />
+              <RadioButton value="" color={Colors.blue400} status={'checked'} />
               <CommonText>전체 동의 하기</CommonText>
             </RowBox>
             <View

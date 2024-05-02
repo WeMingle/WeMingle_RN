@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Dimensions, FlatList, Image } from 'react-native';
+import React, {useState} from 'react';
+import {Dimensions, FlatList, Image} from 'react-native';
 import {
   AccountButton,
   BaseSafeView,
@@ -7,14 +7,17 @@ import {
   CommonTouchableOpacity,
   Container,
 } from '../CommonStyled.style';
-import { Colors } from '../../assets/color/Colors';
-import { useNavigation } from '@react-navigation/native';
+import {Colors} from '../../assets/color/Colors';
+import {
+  NavigationProp,
+  ParamListBase,
+  useNavigation,
+} from '@react-navigation/native';
 
 import Arrow_Right from '../../assets/arrow_right.png';
 
 const CertificationSchoolScreen = () => {
-  const navigation = useNavigation();
-
+  const navigation: NavigationProp<ParamListBase> = useNavigation();
   return (
     <BaseSafeView>
       <Container>
@@ -32,7 +35,7 @@ const CertificationSchoolScreen = () => {
             paddingHorizontal: 20,
           }}>
           <CommonText fontSize={14}>학교 인증을 완료해주세요.</CommonText>
-          <Image source={Arrow_Right} style={{ width: 8, height: 15 }} />
+          <Image source={Arrow_Right} style={{width: 8, height: 15}} />
         </CommonTouchableOpacity>
 
         {/* <AccountButton

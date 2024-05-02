@@ -1,6 +1,7 @@
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {axiosPrivate} from '../../api/Common';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { axiosPrivate } from '../../api/Common';
 
 const initialState = {
   accessToken: null,
@@ -10,7 +11,17 @@ const initialState = {
 // thunk api 요청 및 디스패치를 비동기식으로 처리하기 위한 함수
 export const SignUpEmail = createAsyncThunk(
   'token/signUp',
-  async (object, thunkAPI) => {
+  async (
+    object: {
+      memberId: string;
+      password: string;
+      signupPlatform: string;
+      phoneType: string;
+      firebaseToken: string;
+      allowNotification: boolean;
+    },
+    thunkAPI,
+  ) => {
     try {
       return await axiosPrivate
         .post('/member/signup', object)
@@ -53,8 +64,8 @@ export const signInEmail = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  }
-)
+  },
+);
 
 export const TokenSlice = createSlice({
   name: 'token',
@@ -70,16 +81,16 @@ export const TokenSlice = createSlice({
   // builder.addCase()에서 fulfilled(성공), pendding(대기), rejected(실패)
   extraReducers: builder => {
     builder.addCase(SignUpEmail.fulfilled, (state, action) => {
-      state.accessToken = action.payload.accessToken;
-      state.refreshToken = action.payload.refreshToken;
+      state.accessToken = action.payload?.accessToken;
+      state.refreshToken = action.payload?.refreshToken;
     });
     builder.addCase(signInEmail.fulfilled, (state, action) => {
-      state.accessToken = action.payload.accessToken;
-      state.refreshToken = action.payload.refreshToken;
+      state.accessToken = action.payload?.accessToken;
+      state.refreshToken = action.payload?.refreshToken;
     });
   },
 });
 
-export const { setToken } = TokenSlice.actions;
+export const {setToken} = TokenSlice.actions;
 
 export default TokenSlice.reducer;

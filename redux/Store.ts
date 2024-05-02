@@ -1,6 +1,6 @@
-import { configureStore, Middleware } from '@reduxjs/toolkit';
+import {configureStore, Middleware} from '@reduxjs/toolkit';
 import RootReducer from './Reducers';
-import logger from 'redux-logger';
+import {useDispatch} from 'react-redux';
 
 /**
  * 애플리케이션의 '상태'를 관리하기 위한 Store 구성
@@ -14,3 +14,5 @@ export const Store = configureStore({
   // middleware: getDefaultMiddleware => getDefaultMiddleware().concat(logger),
 });
 
+export type AppDispatch = typeof Store.dispatch;
+export const useAppDispatch = useDispatch.withTypes<AppDispatch>();

@@ -1,4 +1,4 @@
-import { combineReducers } from '@reduxjs/toolkit';
+import {combineReducers} from '@reduxjs/toolkit';
 import SampleSlice from './slice/SampleSlice';
 import TokenSlice from './slice/TokenSlice';
 import TabNavigatorSlice from './slice/TabNavigatorSlice';
@@ -14,5 +14,6 @@ const RootReducer = combineReducers({
   matching: MatchingSlice,
   // modal: ModalSlice,
 });
+export type RootState = ReturnType<typeof RootReducer>;
 
 export default RootReducer;

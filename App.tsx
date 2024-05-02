@@ -1,13 +1,13 @@
-import { Provider } from 'react-redux';
+import {Provider} from 'react-redux';
 import RootScreen from './screen/RootScreen';
-import { Store } from './redux/Store';
-import { CommonText } from './screen/CommonStyled.style';
-import { View } from 'react-native';
+import {Store} from './redux/Store';
+import {CommonText} from './screen/CommonStyled.style';
+import {View} from 'react-native';
 import Toast from 'react-native-toast-message';
 
 export default function App() {
   const toastConfig = {
-    customToast: ({ text1, onPress, props }) => (
+    customToast: ({text1, onPress, props}: any) => (
       <View
         onStartShouldSetResponder={onPress}
         style={{
@@ -25,17 +25,15 @@ export default function App() {
             justifyContent: 'center',
             borderRadius: 17,
           }}>
-          <CommonText color={"#fff"}>{text1}</CommonText>
+          <CommonText color={'#fff'}>{text1}</CommonText>
         </View>
       </View>
     ),
-
   };
   return (
     <Provider store={Store}>
       <RootScreen />
       <Toast config={toastConfig} />
-
     </Provider>
   );
 }

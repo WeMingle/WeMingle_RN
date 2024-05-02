@@ -1,51 +1,49 @@
 import axios from 'axios';
-import { BASE_URL, axiosPrivate, makeApiToken } from './Common';
+import {BASE_URL, axiosPrivate} from './Common';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { setToken } from '../redux/slice/TokenSlice';
+import {setToken} from '../redux/slice/TokenSlice';
 
 // 회원가입, 토큰 발행
 // thunk 사용으로 인해 사용X
-export const SignUp = async payload => {
-  await axiosPrivate
-    .post(`/member/signup`, payload)
-    .then(async response => {
-      if (response.status === 200) {
-        const token = {
-          accessToken: response.data?.responseData.accessToken,
-          refreshToken: response.data?.responseData.refreshToken,
-        };
-        await AsyncStorage.setItem('token', JSON.stringify(token));
-        return dispatch(setToken(token));
-      }
-    })
-    .catch(error => {
-      if (!error.response.status === 200) {
-        console.log(error);
-        return;
-      }
-    });
-};
+// export const SignUp = async payload => {
+//   await axiosPrivate
+//     .post(`/member/signup`, payload)
+//     .then(async response => {
+//       if (response.status === 200) {
+//         const token = {
+//           accessToken: response.data?.responseData.accessToken,
+//           refreshToken: response.data?.responseData.refreshToken,
+//         };
+//         await AsyncStorage.setItem('token', JSON.stringify(token));
+//         return dispatch(setToken(token));
+//       }
+//     })
+//     .catch(error => {
+//       if (!error.response.status === 200) {
+//         console.log(error);
+//         return;
+//       }
+//     });
+// };
 
 // 이메일 로그인
-export const signIn = async payload => {
-  await axiosPrivate
-    .post(`/member/signin`, payload)
-    .then(async response => {
-      if (response.status === 200) {
-
-      }
-    })
-}
+export const signIn = async (payload: any) => {
+  await axiosPrivate.post(`/member/signin`, payload).then(async response => {
+    if (response.status === 200) {
+    }
+  });
+};
 
 // 프로필 추가
-export const AddProfile = async payload => {
-  const getBlob = async fileUri => {
+export const AddProfile = async (payload: any) => {
+  const getBlob = async (fileUri: string) => {
     const resp = await fetch(fileUri);
     const imageBody = await resp.blob();
     return imageBody;
   };
 
-  const uploadImageNew = async (uploadUrl, data) => {
+  const uploadImageNew = async (uploadUrl: string, data: any) => {
+    console.log(uploadUrl);
     const imageBody = await getBlob(data);
 
     return fetch(uploadUrl, {
@@ -55,7 +53,6 @@ export const AddProfile = async payload => {
   };
 
   uploadImageNew(payload.url, payload.image);
-  return;
 
   // const image = await getBlob(payload.image);
   // await axios
@@ -78,7 +75,7 @@ export const AddProfile = async payload => {
       }
     })
     .catch(error => {
-      if (!error.response.status === 200) {
+      if (error.response.status !== 200) {
         console.log(error);
         return false;
       }
@@ -88,7 +85,7 @@ export const AddProfile = async payload => {
 };
 
 // 닉네임 체크
-export const checkNickName = async payload => {
+export const checkNickName = async (payload: string) => {
   return await axiosPrivate
     .get(`/nickname/${payload}/availability`)
     .then(response => {

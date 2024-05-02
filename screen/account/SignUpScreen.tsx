@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Image,
   Text,
@@ -29,18 +29,18 @@ import Apple_Icon from '../../assets/apple.png';
 import Google_Icon from '../../assets/google.png';
 import Kakao_Icon from '../../assets/kakaotalk.png';
 import Naver_Icon from '../../assets/naver.png';
-import { Colors } from '../../assets/color/Colors';
-import { useNavigation } from '@react-navigation/native';
+import {Colors} from '../../assets/color/Colors';
+import {useNavigation} from '@react-navigation/native';
 import AccountBottomSlideModal from '../../component/modal/AccountBottomSlideModal';
 import AccountHeader from '../../component/header/AccountHeader';
 
-import { useDispatch } from 'react-redux';
-import { SignUpEmail } from '../../redux/slice/TokenSlice';
-import { handleSnsLogin } from '../../component/Common';
+import {useDispatch} from 'react-redux';
+import {SignUpEmail} from '../../redux/slice/TokenSlice';
+import {handleSnsLogin} from '../../component/Common';
+import {AppDispatch} from '../../redux/Store';
 
 const SignUpScreen = () => {
-  const navigation = useNavigation();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const [modalVisible, setModalVisible] = useState(false);
 
   const [postData, setPostData] = useState({
@@ -58,21 +58,25 @@ const SignUpScreen = () => {
     dispatch(SignUpEmail(postData));
   };
 
-  const handleSignUpWithSNS = async (signupPlatform) => {
-    handleSnsLogin(signupPlatform, (result) => {
+  const handleSignUpWithSNS = async (signupPlatform: string) => {
+    handleSnsLogin(signupPlatform, (result: any) => {
       setPostData(prev => {
-        return { ...prev, signupPlatform: signupPlatform, memberId: result.email, password: result.email }
-      })
+        return {
+          ...prev,
+          signupPlatform: signupPlatform,
+          memberId: result.email,
+          password: result.email,
+        };
+      });
       return setModalVisible(true);
-    })
-  }
+    });
+  };
 
   return (
     <BaseSafeView>
       <AccountBottomSlideModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-        postData={postData}
         setPostData={setPostData}
         handleSignUp={handleSignUp}
       />
@@ -87,7 +91,8 @@ const SignUpScreen = () => {
               backgroundColor: '#0E6FFF',
               borderTopLeftRadius: 5,
               borderBottomLeftRadius: 5,
-            }} />
+            }}
+          />
           <View
             style={{
               height: 4,
@@ -95,7 +100,8 @@ const SignUpScreen = () => {
               backgroundColor: '#D4E5FF',
               borderTopRightRadius: 5,
               borderBottomRightRadius: 5,
-            }} />
+            }}
+          />
         </RowBox>
         <CommonText marginT={15} fontSize={12}>
           아이디와 비밀번호 설정만으로
@@ -109,11 +115,11 @@ const SignUpScreen = () => {
         </CommonText>
         <CommonInputView>
           <TextInput
-            style={{ width: '70%', color: '#212121' }}
+            style={{width: '70%', color: '#212121'}}
             value={postData.memberId}
             onChangeText={v =>
               setPostData(prev => {
-                return { ...prev, memberId: v };
+                return {...prev, memberId: v};
               })
             }
           />
@@ -135,9 +141,9 @@ const SignUpScreen = () => {
           secureTextEntry
           value={postData.password}
           maxLength={20}
-          onChangeText={v => {
+          onChangeText={(v: string) => {
             setPostData(prev => {
-              return { ...prev, password: v };
+              return {...prev, password: v};
             });
             var passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$/;
             if (passwordRegex.test(v)) {
@@ -167,7 +173,7 @@ const SignUpScreen = () => {
           bgColor={regCheck ? '#fff' : Colors.c_gray200}
           editable={regCheck}
           secureTextEntry
-          onChangeText={v => {
+          onChangeText={(v: string) => {
             if (v === postData.password) {
               setPasswordCheck(true);
             } else {
@@ -189,7 +195,7 @@ const SignUpScreen = () => {
               height: 2,
               backgroundColor: Colors.c_gray300,
             }}></FlexAutoView>
-          <CommonText fontSize={12} style={{ paddingHorizontal: 20 }}>
+          <CommonText fontSize={12} style={{paddingHorizontal: 20}}>
             또는 다른 서비스 계정으로 가입
           </CommonText>
           <FlexAutoView
@@ -201,25 +207,26 @@ const SignUpScreen = () => {
 
         <CenterBox>
           <RowBox justify={'space-around'} alignC marginT={20} width={'75%'}>
-            <TouchableOpacity onPress={() => {
-              handleSignUpWithSNS('KAKAO');
-            }}>
-              <Image source={Kakao_Icon} style={{ width: 44, height: 44 }} />
+            <TouchableOpacity
+              onPress={() => {
+                handleSignUpWithSNS('KAKAO');
+              }}>
+              <Image source={Kakao_Icon} style={{width: 44, height: 44}} />
             </TouchableOpacity>
             <TouchableOpacity>
-              <Image source={Naver_Icon} style={{ width: 44, height: 44 }} />
+              <Image source={Naver_Icon} style={{width: 44, height: 44}} />
             </TouchableOpacity>
             <TouchableOpacity>
-              <Image source={Google_Icon} style={{ width: 44, height: 44 }} />
+              <Image source={Google_Icon} style={{width: 44, height: 44}} />
             </TouchableOpacity>
             <TouchableOpacity>
-              <Image source={Apple_Icon} style={{ width: 44, height: 44 }} />
+              <Image source={Apple_Icon} style={{width: 44, height: 44}} />
             </TouchableOpacity>
           </RowBox>
         </CenterBox>
 
         <CenterBox alignC marginT={28}>
-          <CommonText fontSize={12} style={{ paddingHorizontal: 20 }}>
+          <CommonText fontSize={12} style={{paddingHorizontal: 20}}>
             아이디 찾기 | 비밀번호 찾기
           </CommonText>
         </CenterBox>

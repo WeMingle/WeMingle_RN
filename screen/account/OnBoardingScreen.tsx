@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Dimensions, FlatList } from 'react-native';
+import React, {useState} from 'react';
+import {Dimensions, FlatList} from 'react-native';
 import {
   AccountButton,
   BaseSafeView,
@@ -8,14 +8,23 @@ import {
   Container,
   boxWidth,
 } from '../CommonStyled.style';
-import { Colors } from '../../assets/color/Colors';
-import { useNavigation } from '@react-navigation/native';
+import {Colors} from '../../assets/color/Colors';
+import {
+  NavigationProp,
+  ParamListBase,
+  useNavigation,
+} from '@react-navigation/native';
+import {PreventAny} from '@reduxjs/toolkit/dist/entities/models';
 
 const OnboardingScreen = () => {
-  const navigation = useNavigation();
+  const navigation: NavigationProp<ParamListBase> = useNavigation();
 
+  const [selectItems, setSelectItems] = useState<string[] | null>([]);
 
-  const [selectItems, setSelectItems] = useState([]);
+  interface sportsList {
+    name: string;
+    img: string;
+  }
   return (
     <BaseSafeView>
       <Container>
@@ -34,33 +43,35 @@ const OnboardingScreen = () => {
 
         <FlatList
           data={[
-            { name: '러닝', img: '' },
-            { name: '축구', img: '' },
-            { name: '농구', img: '' },
-            { name: '스쿼시', img: '' },
-            { name: '볼링', img: '' },
-            { name: '테니스', img: '' },
-            { name: '클라이밍', img: '' },
-            { name: '자전거', img: '' },
-            { name: '보드', img: '' },
-            { name: '배드민턴', img: '' },
-            { name: '야구', img: '' },
-            { name: '기타', img: '' },
+            {name: '러닝', img: ''},
+            {name: '축구', img: ''},
+            {name: '농구', img: ''},
+            {name: '스쿼시', img: ''},
+            {name: '볼링', img: ''},
+            {name: '테니스', img: ''},
+            {name: '클라이밍', img: ''},
+            {name: '자전거', img: ''},
+            {name: '보드', img: ''},
+            {name: '배드민턴', img: ''},
+            {name: '야구', img: ''},
+            {name: '기타', img: ''},
           ]}
           numColumns={3}
-          style={{ marginTop: 20 }}
-          renderItem={items => {
+          style={{marginTop: 20}}
+          renderItem={(items: {item: sportsList; index: any}) => {
             return (
               <CommonTouchableOpacity
                 onPress={() => {
-                  const SelectedItem = selectItems?.indexOf(items.index);
-                  if (SelectedItem >= 0) {
-                    setSelectItems(prev => {
-                      prev.splice(SelectedItem, 1);
+                  const selectedItem = selectItems?.indexOf(items.index);
+                  if (selectedItem && selectedItem >= 0) {
+                    setSelectItems((prev: any) => {
+                      prev.splice(selectedItem, 1);
                       return [...prev];
                     });
                   } else {
-                    setSelectItems([...selectItems, items.index]);
+                    setSelectItems((prev: any) => {
+                      return [...prev, items.index];
+                    });
                   }
                 }}
                 style={[
@@ -72,7 +83,7 @@ const OnboardingScreen = () => {
                     justifyContent: 'flex-end',
                     borderWidth: 3,
                     borderColor:
-                      selectItems?.indexOf(items.index) >= 0
+                      selectItems && selectItems?.indexOf(items.index) >= 0
                         ? Colors.blue400
                         : '#fff',
                   },
@@ -83,7 +94,7 @@ const OnboardingScreen = () => {
                 <CommonText
                   fontSize={12}
                   color={'#fff'}
-                  style={{ marginBottom: 5 }}>
+                  style={{marginBottom: 5}}>
                   {items.item?.name}
                 </CommonText>
               </CommonTouchableOpacity>
@@ -93,8 +104,8 @@ const OnboardingScreen = () => {
 
         <AccountButton
           onPress={() => navigation.navigate('CertificationSchool')}
-          style={{ bottom: 20, position: 'absolute', alignSelf: 'center' }}
-          bgColor={selectItems.length > 0 ? '#000' : '#D7DCE5'}
+          style={{bottom: 20, position: 'absolute', alignSelf: 'center'}}
+          bgColor={selectItems && selectItems.length > 0 ? '#000' : '#D7DCE5'}
           marginT={20}>
           <CommonText color={'#fff'}>선택완료</CommonText>
         </AccountButton>
