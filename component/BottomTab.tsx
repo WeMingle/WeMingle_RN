@@ -74,10 +74,17 @@ const TabMenus = [
     name: 'Matching',
     nextPage: 'Matching',
   },
+  // {
+  //   title: '내그룹',
+  //   image: Group_Icon,
+  //   name: 'MyGroup',
+  //   nextPage: 'MyGroup',
+  // },
   {
     title: '내그룹',
     image: Group_Icon,
-    name: 'MyGroup',
+    name: 'MyGroup2',
+    nextPage: 'MyGroup2',
   },
   {
     title: '마이페이지',
