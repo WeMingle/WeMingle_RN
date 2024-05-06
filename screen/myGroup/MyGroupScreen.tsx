@@ -92,8 +92,10 @@ const MyGroupScreen = ({navigation: {navigate}, route}: any) => {
                         <CommonText
                           textAlignC
                           fontSize={10}
+                          numberOfLines={1}
+                          ellipsizeMode="tail"
                           color={'#212121'}
-                          style={{marginBottom: 5}}>
+                          style={{marginBottom: 5, width: 96}}>
                           {items.item?.name}
                         </CommonText>
                       </View>
@@ -162,14 +164,18 @@ const MyGroupScreen = ({navigation: {navigate}, route}: any) => {
                     textAlignC
                     fontSize={14}
                     color={'#1C1C1C'}
-                    style={{marginBottom: 5, textAlign: 'left'}}>
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                    style={{marginBottom: 5, textAlign: 'left', width: 152}}>
                     {items.item?.name}
                   </CommonText>
                   <CommonText
                     textAlignC
                     fontSize={12}
                     color={'#666666'}
-                    style={{marginBottom: 5, textAlign: 'left'}}>
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                    style={{marginBottom: 5, textAlign: 'left', width: 152}}>
                     {items.item?.name}
                   </CommonText>
                 </View>

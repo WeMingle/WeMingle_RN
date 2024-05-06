@@ -81,7 +81,9 @@ const MyGroupScreen2 = () => {
                             textAlignC
                             fontSize={10}
                             color={'#fff'}
-                            style={{marginBottom: 5}}>
+                            numberOfLines={1}
+                            ellipsizeMode="tail"
+                            style={{marginBottom: 5, width: 96}}>
                             {items.item?.name}
                           </CommonText>
                         </View>
@@ -135,7 +137,7 @@ const MyGroupScreen2 = () => {
             title: '보호대 공구 진행합니다',
             author: '그룹장',
             time: '56분전',
-            content: `필수 준비물인 보호대 공구합니다.${'\n'}공구 희망하시는 분은 댓글로 이름/번호/입금여부 기입해...`,
+            content: `필수 준비물인 보호대 공구합니다.${'\n'}공구 희망하시는 분은 댓글로 이름/번호/입금여부 기입해주세요`,
             image: [],
             favorite: '999+',
             chat: '999+',
@@ -146,7 +148,7 @@ const MyGroupScreen2 = () => {
             title: '보호대 공구 진행합니다',
             author: '그룹장',
             time: '56분전',
-            content: `필수 준비물인 보호대 공구합니다.${'\n'}공구 희망하시는 분은 댓글로 이름/번호/입금여부 기입해...`,
+            content: `필수 준비물인 보호대 공구합니다.${'\n'}공구 희망하시는 분은 댓글로 이름/번호/입금여부 기입해주세요`,
             image: [],
             favorite: '999+',
             chat: '999+',
@@ -157,7 +159,7 @@ const MyGroupScreen2 = () => {
             title: '보호대 공구 진행합니다',
             author: '그룹장',
             time: '56분전',
-            content: `필수 준비물인 보호대 공구합니다.${'\n'}공구 희망하시는 분은 댓글로 이름/번호/입금여부 기입해...`,
+            content: `필수 준비물인 보호대 공구합니다.${'\n'}공구 희망하시는 분은 댓글로 이름/번호/입금여부 기입해주세요`,
             image: [],
             favorite: '999+',
             chat: '999+',
@@ -168,7 +170,7 @@ const MyGroupScreen2 = () => {
             title: '보호대 공구 진행합니다',
             author: '그룹장',
             time: '56분전',
-            content: `필수 준비물인 보호대 공구합니다.${'\n'}공구 희망하시는 분은 댓글로 이름/번호/입금여부 기입해...`,
+            content: `필수 준비물인 보호대 공구합니다.${'\n'}공구 희망하시는 분은 댓글로 이름/번호/입금여부 기입해주세요`,
             image: [],
             favorite: '999+',
             chat: '999+',
@@ -216,7 +218,12 @@ const MyGroupScreen2 = () => {
                     bgColor={'#AFBAC8'}
                     width={12}
                     height={12}></CommonTouchableOpacity>
-                  <CommonText fontSize={10} color={'#AFBAC8'} paddingLeft={5}>
+                  <CommonText
+                    fontSize={10}
+                    color={'#AFBAC8'}
+                    paddingLeft={5}
+                    numberOfLines={1}
+                    ellipsizeMode="tail">
                     {items.item?.author}
                   </CommonText>
                   <CommonText fontSize={10} color={'#AFBAC8'} paddingLeft={25}>
@@ -233,7 +240,11 @@ const MyGroupScreen2 = () => {
                       marginBottom: 10,
                     }}
                   />
-                  <CommonText fontSize={14} color={'#292E41'}>
+                  <CommonText
+                    fontSize={14}
+                    color={'#292E41'}
+                    numberOfLines={2}
+                    ellipsizeMode="tail">
                     {items.item?.content}
                   </CommonText>
                   <FlatList
