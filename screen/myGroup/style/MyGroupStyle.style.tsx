@@ -4,8 +4,8 @@ import {
   ParamListBase,
   useNavigation,
 } from '@react-navigation/native';
-import {CommonImage} from '../../CommonStyled.style';
-import {TouchableOpacity} from 'react-native';
+import {CommonText, CommonImage} from '../../CommonStyled.style';
+import {View, TouchableOpacity, ActivityIndicator} from 'react-native';
 import Bookmark from '../../../assets/bookmark.png';
 import Bookmark_Active from '../../../assets/bookmark_active.png';
 import Search from '../../../assets/search.png';
@@ -47,5 +47,25 @@ export const SearchButton = ({width, height}: any) => {
       }}>
       <CommonImage source={Search} width={width} height={height} />
     </TouchableOpacity>
+  );
+};
+
+export const SearchLoading = ({search}: any) => {
+  return (
+    <View
+      style={{
+        flexDirection: 'row',
+        justifyContent: 'center',
+        paddingVertical: 15,
+      }}>
+      <ActivityIndicator
+        size="small"
+        style={{marginRight: 10}}
+        color="#0E6FFF"
+      />
+      <CommonText fontSize={16} color={'#8491A7'}>
+        "{search}" 검색중
+      </CommonText>
+    </View>
   );
 };
