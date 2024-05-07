@@ -10,6 +10,7 @@ import CheckBoxON from '../assets/checkbox_on.png';
 import CheckBoxOff from '../assets/checkbox_off.png';
 
 export const ScreenWidth = Dimensions.get('screen').width;
+export const ScreenHeight = Dimensions.get('window').height;
 
 // ios 다이나믹 아일랜드 대응 컴포넌트
 export const BaseSafeView = styled.View`
@@ -132,6 +133,7 @@ interface modalSize {
 }
 export const modalSize: modalSize = {
   small: Dimensions.get('screen').height / 4,
+  mSmall: Dimensions.get('screen').height / 3,
   medium: Dimensions.get('screen').height / 2,
   large: (Dimensions.get('screen').height * 3) / 4,
 };
@@ -284,16 +286,20 @@ export const ConfirmButton = styled(BorderBoxButton)`
     props.marginB && props.marginB}px;
 `;
 
+export const VerticalBar = styled.View`
+  width: ${ScreenWidth}px;
+  height: 1px;
+  left: -20px;
+  background-color: ${Colors.c_gray200};
+  margin-top: ${(props: {marginT: number}) => props.marginT || 20}px;
+  margin-bottom: ${(props: {marginB: number}) => props.marginB || 0}px;
+`;
+
 export const MatchingItem = ({item, index}: any) => {
   return (
     <>
       <RowBox marginT={20} style={{paddingLeft: 20}}>
-        <BorderBox
-          borderColor={Colors.informative}
-          borderR={20}
-          alignC
-          row
-          padding={7}>
+        <BorderBox borderColor={Colors.informative} borderR={20} alignC row>
           <CommonImage source={calendar} width={11} height={11} />
           <CommonText color={Colors.informative} marginL={5} fontSize={11}>
             3월 24일
@@ -305,11 +311,13 @@ export const MatchingItem = ({item, index}: any) => {
           borderR={20}
           alignC
           row
-          padding={7}
-          bgColor={Colors.c_gray200}>
+          bgColor={Colors.c_gray200}
+          style={{
+            paddingRight: 7,
+          }}>
           <CommonImage source={person} width={11} height={11} />
           <CommonText color={Colors.informative} marginL={5} fontSize={11}>
-            3월 24일
+            {item.recruiterType === 'INDIVIDUAL' ? '개인' : '그룹'}
           </CommonText>
         </BorderBox>
       </RowBox>
@@ -328,14 +336,12 @@ export const MatchingItem = ({item, index}: any) => {
         <View
           style={{justifyContent: 'space-between', marginLeft: 15, height: 80}}>
           <CommonText>
-            위밍글러12{' '}
+            {item.writer}
             <CommonText color={Colors.c_gray400} fontSize={12}>
-              매칭 경험 5번
+              매칭 경험 {item.matchingCnt}번
             </CommonText>
           </CommonText>
-          <CommonText fontSize={10}>
-            3월 24일 가볍게 경기 매칭 하실 용병 구합니다.
-          </CommonText>
+          <CommonText fontSize={10}>{item.contents}</CommonText>
           <RowBox marginT={5}>
             <CommonText color={Colors.c_gray500} fontSize={10}>
               지역
@@ -353,7 +359,14 @@ export const MatchingItem = ({item, index}: any) => {
               marginL={25}>
               실력
             </CommonText>
-            <CommonText fontSize={10}>Lv. 1-3</CommonText>
+            <CommonText fontSize={10}>
+              Lv.{' '}
+              {item.ability === 'LOW'
+                ? '1-3'
+                : item.ability === 'MEDIUM'
+                ? '4-6'
+                : '7-9'}
+            </CommonText>
           </RowBox>
         </View>
       </RowBox>

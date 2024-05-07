@@ -33,8 +33,9 @@ export const getMatchingList = createAsyncThunk(
       Object.keys(filterValues).map((v: any) => {
         filterValues[v] && (url += `&${v}=${filterValues[v]}`);
       });
+      console.log('url', url);
       return await axiosPrivate
-        .get(``)
+        .get(url)
         .then(async response => {
           if (response.status === 200) {
             const result = {

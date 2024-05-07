@@ -110,7 +110,8 @@ dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
     implementation("com.facebook.react:flipper-integration")
-    
+    implementation 'com.naver.maps:map-sdk:3.12.0'
+
     implementation project(':react-native-vector-icons')
     //react-native-vector-icons @Lee
 
