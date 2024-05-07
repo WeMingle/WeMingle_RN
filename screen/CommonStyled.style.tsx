@@ -6,6 +6,9 @@ import {FontSizeCalculator} from '../component/Common';
 import calendar from '../assets/calendar_month.png';
 import person from '../assets/person.png';
 
+import CheckBoxON from '../assets/checkbox_on.png';
+import CheckBoxOff from '../assets/checkbox_off.png';
+
 export const ScreenWidth = Dimensions.get('screen').width;
 export const ScreenHeight = Dimensions.get('window').height;
 
@@ -246,7 +249,7 @@ export const BorderBox = styled.View`
   border-color: ${(props: {borderColor: number}) =>
     props.borderColor ? props.borderColor : Colors.c_gray300};
   align-items: ${(props: {alignC: string}) => props.alignC && 'center'};
-  flex-direction: ${(props: {row: number}) => (props.row ? 'row' : 'coulmn')};
+  flex-direction: ${(props: {row: boolean}) => (props.row ? 'row' : 'coulmn')};
   background-color: ${(props: {bgColor: string}) => props.bgColor || '#fff'};
 `;
 
@@ -368,6 +371,16 @@ export const MatchingItem = ({item, index}: any) => {
         </View>
       </RowBox>
     </>
+  );
+};
+
+export const CheckBox = ({isChecked = true}) => {
+  return (
+    <CommonImage
+      source={isChecked ? CheckBoxON : CheckBoxOff}
+      width={18}
+      height={18}
+    />
   );
 };
 

@@ -121,6 +121,7 @@ interface MatchingListBoxProps {
   setModalVisible: (value: boolean) => void;
   sortOption: string;
   matchingList?: any;
+
 }
 
 export const MatchingListBox = ({
@@ -163,6 +164,7 @@ export const MatchingListBox = ({
           />
         </Animated.View>
       )}
+
     </View>
   );
 };
