@@ -1,11 +1,23 @@
-import React, {useEffect, useState} from 'react';
-import {TouchableWithoutFeedback, View} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {Animated, TouchableWithoutFeedback, View} from 'react-native';
+import {
+  type MapType,
+  type NaverMapViewRef,
+  type Camera,
+  NaverMapView,
+  type ClusterMarkerProp,
+  NaverMapArrowheadPathOverlay,
+  NaverMapPathOverlay,
+  NaverMapGroundOverlay,
+  type Region,
+} from '@mj-studio/react-native-naver-map';
 
 import {
   BaseSafeView,
   CommonImage,
   CommonText,
   RowBox,
+  ScreenHeight,
   ScrollContainer,
 } from '../CommonStyled.style';
 import {
@@ -34,12 +46,15 @@ import {getMatchingList} from '../../redux/slice/MatchingSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../redux/Reducers';
 import CalendarBox from '../../component/CalendarBox';
+import {useAppDispatch} from '../../redux/Store';
 
 const MatchingScreen = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const matchingList = useSelector((state: RootState) => state.matching);
+  const matchingList = useSelector(
+    (state: RootState) => state.matching,
+  ).matchingList;
 
   // useState
   const [selectedTab, setSelectedTab] = useState('calendar');
@@ -68,21 +83,20 @@ const MatchingScreen = () => {
   });
 
   // const [isModify, setIsModify] = useState('')
-
   useEffect(() => {
-    return;
-    // dispatch(
-    //   getMatchingList({
-    //     sortOption: sortOption,
-    //     dateFilter: selectedDate,
-    //     sportsType: 'OTHER',
-    //     filterValues: filterValues,
-    //   }),
-    // );
+    dispatch(
+      getMatchingList({
+        sortOption: sortOption,
+        dateFilter: selectedDate,
+        sportsType: 'OTHER',
+        filterValues: filterValues,
+        recruitmentType: 'APPROVAL_BASED',
+      }),
+    );
   }, [sortOption, selectedDate, filterValues]);
 
   return (
-    <BaseSafeView>
+    <BaseSafeView bgColor={Colors.c_gray50}>
       <FilterModal
         modalVisible={filterModalOpen}
         setModalVisible={setFilterModalOpen}
@@ -95,60 +109,79 @@ const MatchingScreen = () => {
         setSortOption={setSortOption}
       />
 
-      <ScrollContainer padding={0} bgColor={Colors.c_gray50}>
-        <View style={{backgroundColor: '#212121'}}>
-          <RowBox alignC justify={'space-between'} padding={20}>
-            <CommonText fontSize={18} color={'#fff'}>
-              매칭
-            </CommonText>
-            <RowBox>
-              <CommonImage source={Alert_Icon} width={24} height={24} />
-              <CommonImage
-                source={Chat_Icon}
-                width={24}
-                height={24}
-                style={{marginLeft: 12}}
-              />
-            </RowBox>
+      <View style={{backgroundColor: '#212121'}}>
+        <RowBox alignC justify={'space-between'} padding={20} height={65}>
+          <CommonText fontSize={18} color={'#fff'}>
+            매칭
+          </CommonText>
+          <RowBox>
+            <CommonImage source={Alert_Icon} width={24} height={24} />
+            <CommonImage
+              source={Chat_Icon}
+              width={24}
+              height={24}
+              style={{marginLeft: 12}}
+            />
           </RowBox>
-          <MatchingTab
-            setSelectedTab={setSelectedTab}
-            selectedTab={selectedTab}
-          />
-        </View>
-        <FilterBox
-          setFilterModalOpen={(value: boolean) => setFilterModalOpen(value)}
+        </RowBox>
+        <MatchingTab
+          setSelectedTab={setSelectedTab}
+          selectedTab={selectedTab}
         />
+      </View>
+      <FilterBox
+        setFilterModalOpen={(value: boolean) => setFilterModalOpen(value)}
+      />
 
-        {selectedTab === 'calendar' ? (
-          <>
-            <CalendarBox
-              selectedDate={selectedDate}
-              setSelectedDate={value => setSelectedDate(value)}
-            />
-            <MatchingListBox
-              marginT={10}
-              sortOption={sortOption}
-              setModalVisible={() => setSortOptionOpen(true)}
-            />
-          </>
-        ) : (
-          <>
-            <TouchableWithoutFeedback>
-              <RowBox alingC padding={20} bgColor={'#fff'}>
-                <CommonText fontSize={16} bold>
-                  전체
-                </CommonText>
-                <CommonImage source={Arrow_down} width={24} height={20} />
-              </RowBox>
-            </TouchableWithoutFeedback>
-            <MatchingListBox
-              sortOption={sortOption}
-              setModalVisible={() => setSortOptionOpen(true)}
-            />
-          </>
-        )}
-      </ScrollContainer>
+      {selectedTab === 'calendar' ? (
+        <>
+          <CalendarBox
+            selectedDate={selectedDate}
+            setSelectedDate={value => setSelectedDate(value)}
+          />
+          <MatchingListBox
+            marginT={10}
+            sortOption={sortOption}
+            setModalVisible={() => setSortOptionOpen(true)}
+            matchingList={matchingList}
+          />
+        </>
+      ) : (
+        <>
+          <NaverMapView
+            style={{
+              width: '100%',
+              height: ScreenHeight - 65 - 40 - 65 - 40 - 60 - 55,
+              marginBottom: -10,
+            }}
+          />
+          <TouchableWithoutFeedback
+            style={{
+              borderTopLeftRadius: 20,
+              borderTopRightRadius: 20,
+              bottom: 5,
+            }}>
+            <RowBox
+              alingC
+              padding={20}
+              bgColor={'#fff'}
+              height={60}
+              style={{
+                borderTopLeftRadius: 20,
+                borderTopRightRadius: 20,
+              }}>
+              <CommonText fontSize={16} bold>
+                전체
+              </CommonText>
+              <CommonImage source={Arrow_down} width={24} height={20} />
+            </RowBox>
+          </TouchableWithoutFeedback>
+          <MatchingListBox
+            sortOption={sortOption}
+            setModalVisible={() => setSortOptionOpen(true)}
+          />
+        </>
+      )}
       <MatchingFloatingButton
         onPress={() => {
           navigation.navigate('MatchingDateSelect');

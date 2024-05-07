@@ -43,7 +43,6 @@ export const AddProfile = async (payload: any) => {
   };
 
   const uploadImageNew = async (uploadUrl: string, data: any) => {
-    console.log(uploadUrl);
     const imageBody = await getBlob(data);
 
     return fetch(uploadUrl, {

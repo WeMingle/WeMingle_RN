@@ -22,10 +22,16 @@ import MyProfileScreen from './myPage/MyProfileScreen';
 import MatchingListScreen from './myPage/MatchingListScreen';
 import MatchingScreen from './matching/MatchingScreen';
 import MatchingWriteScreen from './matching/MatchingWriteScreen';
-import {BackHandler, View} from 'react-native';
+import {BackHandler, Platform, View} from 'react-native';
 import {BottomTabView} from '../component/BottomTab';
 import MatchingDateSelectScreen from './matching/MatchingDateSelectScreen';
 import {showToastMessage} from '../component/Toast';
+import {
+  PERMISSIONS,
+  request,
+  requestLocationAccuracy,
+  requestMultiple,
+} from 'react-native-permissions';
 
 let count = 0; //  종료카운트
 
@@ -43,6 +49,37 @@ const RootScreen = () => {
 
   useEffect(() => {
     getToken();
+  }, []);
+
+  useEffect(() => {
+    if (Platform.OS === 'ios') {
+      request(PERMISSIONS.IOS.LOCATION_ALWAYS).then(status => {
+        console.log(`Location request status: ${status}`);
+        if (status === 'granted') {
+          requestLocationAccuracy({
+            purposeKey: 'common-purpose', // replace your purposeKey of Info.plist
+          })
+            .then(accuracy => {
+              console.log(`Location accuracy is: ${accuracy}`);
+            })
+            .catch(e => {
+              console.error(`Location accuracy request has been failed: ${e}`);
+            });
+        }
+      });
+    }
+    if (Platform.OS === 'android') {
+      requestMultiple([
+        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+        PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION,
+      ])
+        .then(status => {
+          console.log(`Location request status: ${status}`);
+        })
+        .catch(e => {
+          console.error(`Location request has been failed: ${e}`);
+        });
+    }
   }, []);
 
   return (

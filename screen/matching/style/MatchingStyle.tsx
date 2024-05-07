@@ -1,4 +1,4 @@
-import {TouchableOpacity, View} from 'react-native';
+import {Animated, TouchableOpacity, View} from 'react-native';
 import styled from 'styled-components/native';
 import {Colors} from '../../../assets/color/Colors';
 import {
@@ -13,7 +13,9 @@ import {
 import Arrow_Right from '../../../assets/arrow_right.png';
 import Filter_Icon from '../../../assets/filter_icon.png';
 import Arrow_down from '../../../assets/arrow_down.png';
-import {Dispatch, SetStateAction} from 'react';
+import {Dispatch, SetStateAction, useRef} from 'react';
+import {FlatList} from 'react-native-gesture-handler';
+import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 
 export const MathcingTabButton = styled.TouchableOpacity`
   width: 50%;
@@ -48,7 +50,7 @@ export const MatchingTab = ({
 }: MatchingTabProps) => {
   return (
     <>
-      <RowBox>
+      <RowBox height={40}>
         <MathcingTabButton
           onPress={() => setSelectedTab('calendar')}
           selected={selectedTab === 'calendar' ? true : false}>
@@ -100,8 +102,14 @@ export const FilterBox = ({setFilterModalOpen}: FilterBoxProps) => {
           marginL={15}
           padding={6}
           borderR={10}
-          style={{alignItems: 'center', justifyContent: 'center'}}>
-          <CommonImage source={Filter_Icon} width={15} height={14} />
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: 30,
+            height: 30,
+            padding: 0,
+          }}>
+          <CommonImage source={Filter_Icon} width={12} height={12} />
         </BorderBoxButton>
       </RowBox>
     </RowBox>
@@ -112,16 +120,25 @@ interface MatchingListBoxProps {
   marginT?: number;
   setModalVisible: (value: boolean) => void;
   sortOption: string;
+  matchingList?: any;
 }
 
 export const MatchingListBox = ({
   marginT,
   setModalVisible,
   sortOption,
+  matchingList,
 }: MatchingListBoxProps) => {
+  const bottomSheetRef = useRef<BottomSheet>(null);
+
   return (
     <View style={{marginTop: marginT, backgroundColor: '#fff'}}>
-      <RowBox justify={'space-between'} padding={20} borderB borderT>
+      <RowBox
+        justify={'space-between'}
+        padding={20}
+        borderB
+        borderT
+        height={60}>
         <CommonText fontSize={12} color={Colors.c_gray400}>
           27개의 구인글
         </CommonText>
@@ -134,9 +151,18 @@ export const MatchingListBox = ({
           <CommonImage source={Arrow_down} width={10} height={20} />
         </RowBox>
       </RowBox>
-      <MatchingItem />
-      <MatchingItem />
-      <MatchingItem borderBottomN />
+
+      {matchingList && (
+        <Animated.View>
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={Object.keys(matchingList)}
+            renderItem={({item, index}) => {
+              return <MatchingItem item={matchingList[item]} />;
+            }}
+          />
+        </Animated.View>
+      )}
     </View>
   );
 };

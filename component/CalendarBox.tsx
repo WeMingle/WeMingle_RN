@@ -11,6 +11,7 @@ import moment from 'moment';
 import Arrow_Left from '../assets/arrow_left.png';
 import Arrow_Right_Calendar from '../assets/arrow_right_calendar.png';
 import {useState, memo, useEffect} from 'react';
+import {Animated, View} from 'react-native';
 
 interface CalendarBoxProps {
   selectedDate?: string | string[];
@@ -52,9 +53,8 @@ const CalendarBox = memo(
       });
       setMarkedDates(dates);
     }, [selectedDate]);
-
     return (
-      <Container style={{paddingBottom: 50}}>
+      <Animated.View style={[{backgroundColor: '#fff', paddingBottom: 50}]}>
         <Calendar
           LocaleConfig
           theme={{
@@ -100,7 +100,7 @@ const CalendarBox = memo(
           )}
           markedDates={markedDates}
         />
-      </Container>
+      </Animated.View>
     );
   },
 );
