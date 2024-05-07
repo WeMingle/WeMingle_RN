@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Dimensions, FlatList, Image, View} from 'react-native';
 import {
   AccountButton,
@@ -23,6 +23,7 @@ import {MyButtonFrame} from './style/MyPageStyle.style';
 import Arrow_Right_White from '../../assets/arrow_right_white.png';
 import Arrow_Right from '../../assets/arrow_right.png';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import { getMyGroupList } from '../../api/MyPage';
 
 const testData = [
   {image: 'none', name: '숭실대 축구 동아리'},
@@ -35,10 +36,25 @@ const testData = [
   {image: 'none', name: '숭실대 축구 동아리'},
 ];
 
+interface GroupList {
+  teamName: string,
+  teamImgUrl: string;
+}
+
 const MyPageScreen = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
-
   const [selectItems, setSelectItems] = useState([]);
+  const [groupList, setGroupList] = useState<GroupList[]>()
+
+  useEffect(() => {
+    const _getFunction = async () => {
+      const result = await getMyGroupList();
+      
+      if(result)
+        setGroupList(Object.values(result))
+    }
+    _getFunction();
+  }, [])
 
   const MyInfoButton = () => {
     return (
@@ -171,7 +187,7 @@ const MyPageScreen = () => {
           </RowBox>
 
           <FlatList
-            data={testData}
+            data={groupList}
             horizontal
             style={{marginVertical: 20, flexGrow: 0}}
             renderItem={items => {
@@ -200,7 +216,7 @@ const MyPageScreen = () => {
                     fontSize={10}
                     color={'#212121'}
                     style={{marginBottom: 5}}>
-                    {items.item?.name}
+                    {items.item?.teamName}
                   </CommonText>
                 </View>
               );
@@ -214,7 +230,7 @@ const MyPageScreen = () => {
                 backgroundColor: Colors.c_gray200,
               }}
             />
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('ScrapList')}>
               <CommonText fontSize={14} marginT={20}>
                 스크랩
               </CommonText>

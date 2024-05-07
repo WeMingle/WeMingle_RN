@@ -26,6 +26,10 @@ import {BackHandler, View} from 'react-native';
 import {BottomTabView} from '../component/BottomTab';
 import MatchingDateSelectScreen from './matching/MatchingDateSelectScreen';
 import {showToastMessage} from '../component/Toast';
+import Component from 'react-native-paper/lib/typescript/components/List/ListItem';
+import ScrapListScreen from './myPage/ScrapListScreen';
+
+// Jeon
 import MyGroupScreen from './myGroup/MyGroupScreen';
 import MyGroupScreen2 from './myGroup/MyGroupScreen2';
 import MyGroupSearchScreen from './myGroup/MyGroupSearchScreen';
@@ -192,6 +196,10 @@ const TabRouterSetting = [
     name: 'MatchingDateSelect',
     component: MatchingDateSelectScreen,
   },
+  {
+    name: 'ScrapList',
+    component: ScrapListScreen
+  }
 ];
 
 export default RootScreen;
