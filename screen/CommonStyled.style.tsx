@@ -8,6 +8,7 @@ import person from '../assets/person.png';
 
 import CheckBoxON from '../assets/checkbox_on.png';
 import CheckBoxOff from '../assets/checkbox_off.png';
+import moment from 'moment';
 
 export const ScreenWidth = Dimensions.get('screen').width;
 export const ScreenHeight = Dimensions.get('window').height;
@@ -294,7 +295,6 @@ export const VerticalBar = styled.View`
   margin-top: ${(props: {marginT: number}) => props.marginT || 20}px;
   margin-bottom: ${(props: {marginB: number}) => props.marginB || 0}px;
 `;
-
 export const MatchingItem = ({item, index}: any) => {
   return (
     <>
@@ -302,7 +302,10 @@ export const MatchingItem = ({item, index}: any) => {
         <BorderBox borderColor={Colors.informative} borderR={20} alignC row>
           <CommonImage source={calendar} width={11} height={11} />
           <CommonText color={Colors.informative} marginL={5} fontSize={11}>
-            3월 24일
+            {`${item.matchingDate[0].slice(
+              5,
+              7,
+            )}월 ${item.matchingDate[0].slice(8, 10)}일`}
           </CommonText>
         </BorderBox>
         <BorderBox
@@ -338,6 +341,7 @@ export const MatchingItem = ({item, index}: any) => {
           <CommonText>
             {item.writer}
             <CommonText color={Colors.c_gray400} fontSize={12}>
+              {' '}
               매칭 경험 {item.matchingCnt}번
             </CommonText>
           </CommonText>
@@ -347,10 +351,12 @@ export const MatchingItem = ({item, index}: any) => {
               지역
             </CommonText>
             <CommonText fontSize={10} marginL={15}>
-              서울 전체
-              <CommonText fontSize={10} color={Colors.c_gray400}>
-                (협의가능)
-              </CommonText>
+              {item.areaList}
+              {item.locationConsensusPossible && (
+                <CommonText fontSize={10} color={Colors.c_gray400}>
+                  (협의가능)
+                </CommonText>
+              )}
             </CommonText>
             <CommonText
               color={Colors.c_gray500}

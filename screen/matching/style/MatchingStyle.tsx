@@ -121,7 +121,6 @@ interface MatchingListBoxProps {
   setModalVisible: (value: boolean) => void;
   sortOption: string;
   matchingList?: any;
-
 }
 
 export const MatchingListBox = ({
@@ -158,13 +157,12 @@ export const MatchingListBox = ({
           <FlatList
             showsVerticalScrollIndicator={false}
             data={Object.keys(matchingList)}
-            renderItem={({item, index}) => {
+            renderItem={({item, index}: any) => {
               return <MatchingItem item={matchingList[item]} />;
             }}
           />
         </Animated.View>
       )}
-
     </View>
   );
 };

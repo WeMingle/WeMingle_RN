@@ -15,7 +15,7 @@ interface getMatchingListPaylod {
   dateFilter: string;
   recruitmentType: string;
   sportsType: string;
-  filterValues: string;
+  filterValues?: any;
 }
 
 export const getMatchingList = createAsyncThunk(

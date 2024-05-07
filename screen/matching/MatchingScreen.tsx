@@ -1,16 +1,6 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {Animated, TouchableWithoutFeedback, View} from 'react-native';
-import {
-  type MapType,
-  type NaverMapViewRef,
-  type Camera,
-  NaverMapView,
-  type ClusterMarkerProp,
-  NaverMapArrowheadPathOverlay,
-  NaverMapPathOverlay,
-  NaverMapGroundOverlay,
-  type Region,
-} from '@mj-studio/react-native-naver-map';
+import {useEffect, useState} from 'react';
+import {TouchableWithoutFeedback, View} from 'react-native';
+import {NaverMapView} from '@mj-studio/react-native-naver-map';
 
 import {
   BaseSafeView,
@@ -18,7 +8,6 @@ import {
   CommonText,
   RowBox,
   ScreenHeight,
-  ScrollContainer,
 } from '../CommonStyled.style';
 import {
   FilterBox,
@@ -43,7 +32,7 @@ import {
 
 import moment from 'moment';
 import {getMatchingList} from '../../redux/slice/MatchingSlice';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {RootState} from '../../redux/Reducers';
 import CalendarBox from '../../component/CalendarBox';
 import {useAppDispatch} from '../../redux/Store';
@@ -79,7 +68,7 @@ const MatchingScreen = () => {
     areaList: null, // 지역
     excludeExpired: true, // 마감 제외
     recruitmentType: 'APPROVAL_BASED', // 구인 형태
-    recruiterType: 'INDIVIDUAL', //INDIVIDUAL, TEAM
+    recruiterType: 'INDIVIDUAL', //INDIVIDUAL, TEAM,
   });
 
   // const [isModify, setIsModify] = useState('')

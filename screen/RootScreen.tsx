@@ -92,7 +92,7 @@ const RootScreen = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={'MyPage'}>
+      <Stack.Navigator initialRouteName={'Matching'}>
         {RouterSetting.map((v, index) => {
           const ranNum = Math.random().toString(36).substr(2, 10);
           return (
@@ -236,8 +236,8 @@ const TabRouterSetting = [
   },
   {
     name: 'ScrapList',
-    component: ScrapListScreen
-  }
+    component: ScrapListScreen,
+  },
 ];
 
 export default RootScreen;
