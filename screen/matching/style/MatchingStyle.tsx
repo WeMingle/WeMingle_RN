@@ -110,8 +110,8 @@ export const FilterBox = ({setFilterModalOpen}: FilterBoxProps) => {
 
 interface MatchingListBoxProps {
   marginT?: number;
-  setModalVisible: (value: boolean) => void;
-  sortOption: string;
+  setModalVisible?: (value: boolean) => void;
+  sortOption?: string;
 }
 
 export const MatchingListBox = ({
@@ -121,19 +121,21 @@ export const MatchingListBox = ({
 }: MatchingListBoxProps) => {
   return (
     <View style={{marginTop: marginT, backgroundColor: '#fff'}}>
-      <RowBox justify={'space-between'} padding={20} borderB borderT>
-        <CommonText fontSize={12} color={Colors.c_gray400}>
-          27개의 구인글
-        </CommonText>
-        <RowBox alignC>
-          <TouchableOpacity onPress={() => setModalVisible(false)}>
-            <CommonText fontSize={12} marginR={15}>
-              {sortOption === 'NEW' ? '최신순' : '마감임박순'}
-            </CommonText>
-          </TouchableOpacity>
-          <CommonImage source={Arrow_down} width={10} height={20} />
+      {sortOption && (
+        <RowBox justify={'space-between'} padding={20} borderB borderT>
+          <CommonText fontSize={12} color={Colors.c_gray400}>
+            27개의 구인글
+          </CommonText>
+          <RowBox alignC>
+            <TouchableOpacity onPress={() => setModalVisible(false)}>
+              <CommonText fontSize={12} marginR={15}>
+                {sortOption === 'NEW' ? '최신순' : '마감임박순'}
+              </CommonText>
+            </TouchableOpacity>
+            <CommonImage source={Arrow_down} width={10} height={20} />
+          </RowBox>
         </RowBox>
-      </RowBox>
+      )}
       <MatchingItem />
       <MatchingItem />
       <MatchingItem borderBottomN />
