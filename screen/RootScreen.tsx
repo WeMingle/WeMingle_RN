@@ -26,9 +26,10 @@ import {BackHandler, View} from 'react-native';
 import {BottomTabView} from '../component/BottomTab';
 import MatchingDateSelectScreen from './matching/MatchingDateSelectScreen';
 import {showToastMessage} from '../component/Toast';
+import MyGroupDefaultScreen from './myGroup/MyGroupDefaultScreen';
 import MyGroupScreen from './myGroup/MyGroupScreen';
-import MyGroupScreen2 from './myGroup/MyGroupScreen2';
 import MyGroupSearchScreen from './myGroup/MyGroupSearchScreen';
+import SearchResultScreen from './myGroup/SearchResultScreen';
 
 let count = 0; //  종료카운트
 
@@ -165,16 +166,20 @@ const TabRouterSetting = [
     component: MyProfileScreen,
   },
   {
+    name: 'MyGroupDefault',
+    component: MyGroupDefaultScreen,
+  },
+  {
     name: 'MyGroup',
     component: MyGroupScreen,
   },
   {
-    name: 'MyGroup2',
-    component: MyGroupScreen2,
-  },
-  {
     name: 'MyGroupSearch',
     component: MyGroupSearchScreen,
+  },
+  {
+    name: 'SearchResult',
+    component: SearchResultScreen,
   },
   {
     name: 'MatchingList',

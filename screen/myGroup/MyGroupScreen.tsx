@@ -1,5 +1,10 @@
-import React, {useState} from 'react';
-import {FlatList, View} from 'react-native';
+import React, {useState, useEffect, useCallback} from 'react';
+import {FlatList, View, TouchableOpacity} from 'react-native';
+import {
+  NavigationProp,
+  ParamListBase,
+  useNavigation,
+} from '@react-navigation/native';
 import {
   BaseSafeView,
   CommonImage,
@@ -8,13 +13,18 @@ import {
   Container,
   RowBox,
 } from '../CommonStyled.style';
-import {useNavigation} from '@react-navigation/native';
-import Search from '../../assets/search.png';
+import {Colors} from '../../assets/color/Colors';
+import More_Vert from '../../assets/more_vert.png';
 import Add_Box from '../../assets/add_box.png';
+import Action_Key from '../../assets/action_key.png';
 import Arrow_Right from '../../assets/arrow_right.png';
-import {SearchButton} from './style/MyGroupStyle.style';
+import Favorite from '../../assets/favorite.png';
+import SMS from '../../assets/sms.png';
+import Check_Mygroup from '../../assets/check_mygroup.png';
+import {ClickBookmark, SearchButton} from './style/MyGroupStyle.style';
 
-const MyGroupScreen = ({navigation: {navigate}, route}: any) => {
+const MyGroupScreen = () => {
+  const navigation: NavigationProp<ParamListBase> = useNavigation();
   return (
     <BaseSafeView>
       <FlatList
@@ -24,58 +34,72 @@ const MyGroupScreen = ({navigation: {navigate}, route}: any) => {
               <View style={{paddingHorizontal: 20, paddingVertical: 30}}>
                 <RowBox alignC justify={'space-between'}>
                   <CommonText fontSize={18} color={'#fff'}>
-                    {route.params.pageName.length === 7
-                      ? '그룹 둘러보기'
-                      : '내그룹'}
+                    내그룹
                   </CommonText>
                   <RowBox>
                     <SearchButton width={24} height={24} />
-                    <CommonImage
-                      source={Add_Box}
-                      width={24}
-                      height={24}
-                      style={{marginLeft: 12}}
-                    />
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.navigate('SearchResult', {
+                          pageName: '그룹 둘러보기',
+                        });
+                      }}>
+                      <CommonImage
+                        source={Add_Box}
+                        width={24}
+                        height={24}
+                        style={{marginLeft: 12}}
+                      />
+                    </TouchableOpacity>
                   </RowBox>
                 </RowBox>
-              </View>
-              <Container
-                bgColor={'#fff'}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  borderTopLeftRadius: 20,
-                  borderTopRightRadius: 20,
-                }}>
-                <RowBox justify={'space-between'} marginTop={40}>
-                  <CommonText fontSize={16}>
-                    ㅇㅇㅇ님의 학교에 속한 그룹이에요!
-                  </CommonText>
-                  <CommonImage source={Arrow_Right} width={24} height={24} />
-                </RowBox>
-
-                <FlatList
-                  data={[
-                    {image: 'none', name: '숭실대 축구 동아리'},
-                    {image: 'none', name: '숭실대 축구 동아리'},
-                    {image: 'none', name: '숭실대 축구 동아리'},
-                    {image: 'none', name: '숭실대 축구 동아리'},
-                    {image: 'none', name: '숭실대 축구 동아리'},
-                    {image: 'none', name: '숭실대 축구 동아리'},
-                    {image: 'none', name: '숭실대 축구 동아리'},
-                    {image: 'none', name: '숭실대 축구 동아리'},
-                  ]}
-                  horizontal
-                  style={{marginVertical: 20, flexGrow: 0}}
-                  renderItem={items => {
-                    return (
+                <RowBox>
+                  <FlatList
+                    data={[
+                      {image: 'none', name: '숭실대 축구 동아리'},
+                      {image: 'none', name: '숭실대 축구 동아리'},
+                      {image: 'none', name: '숭실대 축구 동아리'},
+                    ]}
+                    horizontal
+                    style={{marginVertical: 20, flexGrow: 0}}
+                    renderItem={items => {
+                      return (
+                        <View
+                          style={{
+                            marginLeft:
+                              items.index === 0 ||
+                              items.index === items.length - 1
+                                ? 0
+                                : 10,
+                          }}>
+                          <CommonTouchableOpacity
+                            style={[
+                              {
+                                borderRadius: 10,
+                                marginBottom: 10,
+                                alignItems: 'center',
+                                justifyContent: 'flex-end',
+                              },
+                            ]}
+                            bgColor={'#000'}
+                            width={96}
+                            height={96}></CommonTouchableOpacity>
+                          <CommonText
+                            textAlignC
+                            fontSize={10}
+                            color={'#fff'}
+                            numberOfLines={1}
+                            ellipsizeMode="tail"
+                            style={{marginBottom: 5, width: 96}}>
+                            {items.item?.name}
+                          </CommonText>
+                        </View>
+                      );
+                    }}
+                    ListFooterComponent={
                       <View
                         style={{
-                          marginLeft:
-                            items.index === 0 ||
-                            items.index === items.length - 1
-                              ? 0
-                              : 10,
+                          marginLeft: 10,
                         }}>
                         <CommonTouchableOpacity
                           style={[
@@ -86,98 +110,234 @@ const MyGroupScreen = ({navigation: {navigate}, route}: any) => {
                               justifyContent: 'flex-end',
                             },
                           ]}
-                          bgColor={'#000'}
+                          bgColor={'#d2d2d2'}
                           width={96}
-                          height={96}></CommonTouchableOpacity>
-                        <CommonText
-                          textAlignC
-                          fontSize={10}
-                          numberOfLines={1}
-                          ellipsizeMode="tail"
-                          color={'#212121'}
-                          style={{marginBottom: 5, width: 96}}>
-                          {items.item?.name}
-                        </CommonText>
+                          height={96}
+                          onPress={() => {
+                            navigation.navigate('MyGroupDefault', {
+                              pageName: '그룹 둘러보기',
+                            });
+                          }}></CommonTouchableOpacity>
                       </View>
-                    );
-                  }}
-                />
-
-                <RowBox justify={'space-between'} marginTop={20}>
-                  <CommonText fontSize={16} color={'#000000'}>
-                    위밍글이 추천하는 그룹
-                  </CommonText>
+                    }
+                  />
+                </RowBox>
+              </View>
+              <Container
+                bgColor={'#fff'}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  borderTopLeftRadius: 20,
+                  borderTopRightRadius: 20,
+                }}>
+                <RowBox>
+                  <CommonText fontSize={14}>새글피드</CommonText>
                 </RowBox>
               </Container>
             </Container>
           </View>
         }
         data={[
-          {image: 'none', name: '숭실대 축구 동아리'},
-          {image: 'none', name: '숭실대 축구 동아리'},
-          {image: 'none', name: '숭실대 축구 동아리'},
-          {image: 'none', name: '숭실대 축구 동아리'},
-          {image: 'none', name: '숭실대 축구 동아리'},
-          {image: 'none', name: '숭실대 축구 동아리'},
-          {image: 'none', name: '숭실대 축구 동아리'},
-          {image: 'none', name: '숭실대 축구 동아리'},
-          {image: 'none', name: '숭실대 축구 동아리'},
-          {image: 'none', name: '숭실대 축구 동아리'},
-          {image: 'none', name: '숭실대 축구 동아리'},
-          {image: 'none', name: '숭실대 축구 동아리'},
+          {
+            group: '숭실대 축구동아리',
+            title: '보호대 공구 진행합니다',
+            author: '그룹장',
+            time: '56분전',
+            content: `필수 준비물인 보호대 공구합니다.${'\n'}공구 희망하시는 분은 댓글로 이름/번호/입금여부 기입해주세요`,
+            image: [],
+            favorite: '999+',
+            chat: '999+',
+            bookmark: true,
+          },
+          {
+            group: '숭실대 축구동아리',
+            title: '보호대 공구 진행합니다',
+            author: '그룹장',
+            time: '56분전',
+            content: `필수 준비물인 보호대 공구합니다.${'\n'}공구 희망하시는 분은 댓글로 이름/번호/입금여부 기입해주세요`,
+            image: [],
+            favorite: '999+',
+            chat: '999+',
+            bookmark: false,
+          },
+          {
+            group: '숭실대 축구동아리',
+            title: '보호대 공구 진행합니다',
+            author: '그룹장',
+            time: '56분전',
+            content: `필수 준비물인 보호대 공구합니다.${'\n'}공구 희망하시는 분은 댓글로 이름/번호/입금여부 기입해주세요`,
+            image: [],
+            favorite: '999+',
+            chat: '999+',
+            bookmark: true,
+          },
+          {
+            group: '숭실대 축구동아리',
+            title: '보호대 공구 진행합니다',
+            author: '그룹장',
+            time: '56분전',
+            content: `필수 준비물인 보호대 공구합니다.${'\n'}공구 희망하시는 분은 댓글로 이름/번호/입금여부 기입해주세요`,
+            image: [],
+            favorite: '999+',
+            chat: '999+',
+            bookmark: true,
+          },
         ]}
         style={{
           flexGrow: 0,
           width: '100%',
           height: '100%',
         }}
-        numColumns={2}
         renderItem={items => {
           return (
-            <View style={{flex: 1, alignItems: 'center'}}>
+            <View style={{width: '100%'}}>
               <View
                 style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                }}>
-                <View
-                  style={{
-                    marginHorizontal: 10,
-                    marginBottom:
-                      items.index === 0 || items.index === items.length - 1
-                        ? 0
-                        : 10,
-                  }}>
+                  width: '100%',
+                  height: 1,
+                  backgroundColor: Colors.c_gray200,
+                }}
+              />
+              <View style={{padding: 20}}>
+                <TouchableOpacity>
+                  <CommonText fontSize={12} color={'#0E6FFF'}>
+                    {items.item?.group}
+                  </CommonText>
+                </TouchableOpacity>
+                <RowBox alignC justify={'space-between'} marginT={10}>
+                  <CommonText fontSize={18}>{items.item?.title}</CommonText>
+                  <CommonImage
+                    source={More_Vert}
+                    width={3}
+                    height={14.54}
+                    marginHorizontal={10}
+                  />
+                </RowBox>
+                <RowBox alignC justify={'space-start'} marginT={10}>
                   <CommonTouchableOpacity
                     style={[
                       {
-                        borderRadius: 10,
-                        marginBottom: 10,
+                        borderRadius: 50,
                         alignItems: 'center',
-                        justifyContent: 'flex-end',
                       },
                     ]}
-                    bgColor={'#000'}
-                    width={152}
-                    height={152}></CommonTouchableOpacity>
+                    bgColor={'#AFBAC8'}
+                    width={12}
+                    height={12}></CommonTouchableOpacity>
                   <CommonText
-                    textAlignC
+                    fontSize={10}
+                    color={'#AFBAC8'}
+                    paddingLeft={5}
+                    numberOfLines={1}
+                    ellipsizeMode="tail">
+                    {items.item?.author}
+                  </CommonText>
+                  <CommonText fontSize={10} color={'#AFBAC8'} paddingLeft={25}>
+                    {items.item?.time}
+                  </CommonText>
+                </RowBox>
+                <View>
+                  <View
+                    style={{
+                      width: '100%',
+                      height: 1,
+                      backgroundColor: Colors.c_gray200,
+                      marginTop: 10,
+                      marginBottom: 10,
+                    }}
+                  />
+                  <CommonText
                     fontSize={14}
-                    color={'#1C1C1C'}
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
-                    style={{marginBottom: 5, textAlign: 'left', width: 152}}>
-                    {items.item?.name}
+                    color={'#292E41'}
+                    numberOfLines={2}
+                    ellipsizeMode="tail">
+                    {items.item?.content}
                   </CommonText>
-                  <CommonText
-                    textAlignC
-                    fontSize={12}
-                    color={'#666666'}
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
-                    style={{marginBottom: 5, textAlign: 'left', width: 152}}>
-                    {items.item?.name}
-                  </CommonText>
+                  <FlatList
+                    data={[{image: 'none'}, {image: 'none'}]}
+                    horizontal
+                    style={{
+                      marginVertical: 20,
+                      flexGrow: 0,
+                    }}
+                    renderItem={items => {
+                      return (
+                        <View
+                          style={{
+                            marginLeft:
+                              items.index === 0 ||
+                              items.index === items.length - 1
+                                ? 0
+                                : 10,
+                          }}>
+                          <CommonTouchableOpacity
+                            style={[
+                              {
+                                borderRadius: 10,
+                                marginBottom: 5,
+                                alignItems: 'center',
+                                justifyContent: 'flex-end',
+                              },
+                            ]}
+                            bgColor={'#F3F3F3'}
+                            width={80}
+                            height={80}></CommonTouchableOpacity>
+                        </View>
+                      );
+                    }}
+                  />
+                  <RowBox justify={'space-start'}>
+                    <View
+                      style={{
+                        width: 59,
+                        height: 24,
+                        marginRight: 10,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}>
+                      <CommonImage
+                        source={Favorite}
+                        width={26}
+                        height={24}
+                        marginRight={3}
+                      />
+                      <CommonText fontSize={10} alignItems="center">
+                        {items.item?.favorite}
+                      </CommonText>
+                    </View>
+                    <View
+                      style={{
+                        width: 59,
+                        height: 24,
+                        marginRight: 10,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}>
+                      <CommonImage
+                        source={SMS}
+                        width={26}
+                        height={24}
+                        marginRight={3}
+                      />
+                      <CommonText fontSize={10} alignItems="center">
+                        {items.item?.chat}
+                      </CommonText>
+                    </View>
+                    <View
+                      style={{
+                        width: 26,
+                        height: 24,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}>
+                      <ClickBookmark
+                        bookmark={items.item.bookmark}
+                        width={26}
+                        height={24}
+                      />
+                    </View>
+                  </RowBox>
                 </View>
               </View>
             </View>

@@ -1,11 +1,22 @@
 import React, {useState, useEffect, useCallback} from 'react';
+import type {PropsWithChildren} from 'react';
+import {
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Button,
+  ActivityIndicator,
+} from 'react-native';
 import {
   NavigationProp,
   ParamListBase,
   useNavigation,
 } from '@react-navigation/native';
 import {CommonText, CommonImage} from '../../CommonStyled.style';
-import {View, TouchableOpacity, ActivityIndicator} from 'react-native';
+// import {View, TouchableOpacity, ActivityIndicator} from 'react-native';
 import Bookmark from '../../../assets/bookmark.png';
 import Bookmark_Active from '../../../assets/bookmark_active.png';
 import Search from '../../../assets/search.png';

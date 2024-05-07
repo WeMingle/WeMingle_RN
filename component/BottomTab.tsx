@@ -83,8 +83,8 @@ const TabMenus = [
   {
     title: '내그룹',
     image: Group_Icon,
-    name: 'MyGroup2',
-    nextPage: 'MyGroup2',
+    name: 'MyGroup',
+    nextPage: 'MyGroup',
   },
   {
     title: '마이페이지',
