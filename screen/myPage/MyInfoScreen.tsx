@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Dimensions, FlatList, Image, View} from 'react-native';
 import {
   AccountButton,
@@ -26,14 +26,44 @@ import Arrow_Right from '../../assets/arrow_right.png';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import AccountHeader from '../../component/header/AccountHeader';
 import {CommonHeader} from '../../component/header/CommonHeader';
+import {useAppDispatch} from '../../redux/Store';
+import {getMyInfo} from '../../api/MyPage';
 
 interface TextFieldProps {
   leftText: string;
-  centerText: string;
+  centerText?: string | number;
   rightText?: string;
 }
+
+interface MyInfoProps {
+  nickname: string;
+  majorActivityArea: string;
+  numberOfMatches: number;
+  gender: string;
+  abilityList: string[];
+  oneLineIntroduction: string;
+  profilePicId: string;
+  birthYear: number;
+  abilityPublic: boolean;
+  majorActivityAreaPublic: boolean;
+  birthYearPublic: boolean;
+}
+
 const MyInfoScreen = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
+  const dispatch = useAppDispatch();
+
+  const [configVisible, setConfigVisible] = useState(false);
+  const [myInfo, setMyInfo] = useState<MyInfoProps>();
+
+  const asyncFunction = async () => {
+    const result = await getMyInfo();
+    setMyInfo(result);
+  };
+
+  useEffect(() => {
+    const result = asyncFunction();
+  }, []);
 
   const TextField = ({
     leftText,
@@ -56,8 +86,6 @@ const MyInfoScreen = () => {
     );
   };
 
-  const [configVisible, setConfigVisible] = useState(false);
-
   return (
     <BaseSafeView>
       <Container>
@@ -72,10 +100,10 @@ const MyInfoScreen = () => {
           <ProfileBox />
           <View style={{marginLeft: 15}}>
             <CommonText bold fontSize={16} textAlign={'left'}>
-              닉네임
+              {myInfo?.nickname}
             </CommonText>
             <CommonText marginT={7} fontSize={14} color={Colors.c_gray400}>
-              한줄 소개글
+              {myInfo?.oneLineIntroduction}
             </CommonText>
           </View>
         </RowBox>
@@ -83,10 +111,14 @@ const MyInfoScreen = () => {
         <TextField leftText={'실력'} centerText={'Lv.1-3'}></TextField>
         <TextField
           leftText={'활동지역'}
-          centerText={'서울시 강남구'}></TextField>
-        <TextField leftText={'매칭 경험'} centerText={'5번'}></TextField>
-        <TextField leftText={'성별'} centerText={'남'}></TextField>
-        <TextField leftText={'나이'} centerText={'03년생'}></TextField>
+          centerText={myInfo?.majorActivityArea}></TextField>
+        <TextField
+          leftText={'매칭 경험'}
+          centerText={`${myInfo?.numberOfMatches}회`}></TextField>
+        <TextField
+          leftText={'성별'}
+          centerText={myInfo?.gender === 'MALE' ? '남' : '여'}></TextField>
+        <TextField leftText={'나이'} centerText={myInfo?.birthYear}></TextField>
 
         <View
           style={{

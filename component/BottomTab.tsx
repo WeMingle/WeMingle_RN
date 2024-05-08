@@ -16,7 +16,7 @@ import {
 
 export const BottomTabView = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
-  const currentTab = useSelector(state => state.currentTab).currentTab;
+  const currentTab = useSelector((state: any) => state.currentTab).currentTab;
   const dispatch = useDispatch();
   const changeTab = (name: string, nextPage: string) => {
     dispatch(setCurrentTab({currentTab: name}));
