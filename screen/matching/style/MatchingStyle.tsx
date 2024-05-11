@@ -16,6 +16,11 @@ import Arrow_down from '../../../assets/arrow_down.png';
 import {Dispatch, SetStateAction, useRef} from 'react';
 import {FlatList} from 'react-native-gesture-handler';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
+import {
+  NavigationProp,
+  ParamListBase,
+  useNavigation,
+} from '@react-navigation/native';
 
 export const MathcingTabButton = styled.TouchableOpacity`
   width: 50%;
@@ -69,6 +74,7 @@ interface FilterBoxProps {
   setFilterModalOpen: (bool: boolean) => void;
 }
 export const FilterBox = ({setFilterModalOpen}: FilterBoxProps) => {
+  const navigation: NavigationProp<ParamListBase> = useNavigation();
   return (
     <RowBox
       borderB

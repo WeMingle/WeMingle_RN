@@ -40,6 +40,7 @@ import {
   requestLocationAccuracy,
   requestMultiple,
 } from 'react-native-permissions';
+import AlertModal from '../component/modal/AlertModal';
 
 let count = 0; //  종료카운트
 
@@ -103,6 +104,7 @@ const RootScreen = () => {
               options={{
                 headerShown: false,
                 gestureDirection: 'horizontal',
+                presentation: v.presentation && v.presentation,
               }}
             />
           );
@@ -190,6 +192,11 @@ const RouterSetting = [
   {
     name: 'CertificationSchool',
     component: CertificationSchoolScreen,
+  },
+  {
+    name: 'AlertModal',
+    component: AlertModal,
+    presentation: 'transparentModal',
   },
 ];
 
