@@ -3,29 +3,6 @@ import {BASE_URL, axiosPrivate} from './Common';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {setToken} from '../redux/slice/TokenSlice';
 
-// 회원가입, 토큰 발행
-// thunk 사용으로 인해 사용X
-// export const SignUp = async payload => {
-//   await axiosPrivate
-//     .post(`/member/signup`, payload)
-//     .then(async response => {
-//       if (response.status === 200) {
-//         const token = {
-//           accessToken: response.data?.responseData.accessToken,
-//           refreshToken: response.data?.responseData.refreshToken,
-//         };
-//         await AsyncStorage.setItem('token', JSON.stringify(token));
-//         return dispatch(setToken(token));
-//       }
-//     })
-//     .catch(error => {
-//       if (!error.response.status === 200) {
-//         console.log(error);
-//         return;
-//       }
-//     });
-// };
-
 // 이메일 로그인
 export const signIn = async (payload: any) => {
   await axiosPrivate.post(`/member/signin`, payload).then(async response => {
@@ -34,8 +11,8 @@ export const signIn = async (payload: any) => {
   });
 };
 
-// 프로필 추가
-export const AddProfile = async (payload: any) => {
+// BLOB presignedUrl로 이미지 직접 업로드
+export const uploadImageWithBLOB = (payload: any) => {
   const getBlob = async (fileUri: string) => {
     const resp = await fetch(fileUri);
     const imageBody = await resp.blob();
@@ -52,19 +29,11 @@ export const AddProfile = async (payload: any) => {
   };
 
   uploadImageNew(payload.url, payload.image);
+};
 
-  // const image = await getBlob(payload.image);
-  // await axios
-  //   .put(payload.url, image, {
-  //     'Content-Type': 'image/jpeg',
-  //   })
-  //   .then(response => {
-  //     return true;
-  //   })
-  //   .catch(e => {
-  //     console.log(e);
-  //     return false;
-  //   });
+// 프로필 추가
+export const AddProfile = async (payload: any) => {
+  uploadImageWithBLOB(payload);
 
   const result = await axiosPrivate
     .post('member/profile', payload.nickName)

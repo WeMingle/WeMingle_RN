@@ -15,7 +15,11 @@ import person from '../assets/person.png';
 import CheckBoxON from '../assets/checkbox_on.png';
 import CheckBoxOff from '../assets/checkbox_off.png';
 import moment from 'moment';
+
 import {ClickBookmark} from './myGroup/style/MyGroupStyle.style';
+
+import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
+
 
 export const ScreenWidth = Dimensions.get('screen').width;
 export const ScreenHeight = Dimensions.get('window').height;
@@ -44,6 +48,13 @@ export const Container = styled.View`
   background-color: ${(props: {bgColor: string}) => props.bgColor || '#fff'};
 `;
 
+export const ModalBackdrop = styled(TouchableWithoutFeedback)`
+  justify-content: center;
+  align-items: center;
+  width: ${ScreenWidth}px;
+  height: ${ScreenHeight}px;
+  background-color: rgba(0, 0, 0, 0.4);
+`;
 // 가로정렬 View
 export const RowBox = styled.View`
   ${(props: {width: number}) => props.width && `width: ${props.width}px`};
@@ -157,6 +168,14 @@ export const ModalContainer = styled.View`
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   padding: 20px;
+`;
+
+export const AlertModalContainer = styled.View`
+  width: 80%;
+  border-radius: 15px;
+  background-color: #fff;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export const AccountHeader = styled(RowBox)`
@@ -277,6 +296,7 @@ export const BorderBoxButton = styled.TouchableOpacity`
   background-color: ${(props: {bgColor: string}) => props.bgColor || '#fff'};
   margin-right: ${(props: {marginR: number}) =>
     props.marginR && props.marginR}px;
+  margin-top: ${(props: {marginT: number}) => props.marginT && props.marginT}px;
 `;
 
 export const profileBox = styled(CenterBox)``;
