@@ -4,6 +4,7 @@ import {Store} from './redux/Store';
 import {CommonText} from './screen/CommonStyled.style';
 import {View} from 'react-native';
 import Toast from 'react-native-toast-message';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 export default function App() {
   const toastConfig = {
@@ -31,9 +32,11 @@ export default function App() {
     ),
   };
   return (
-    <Provider store={Store}>
-      <RootScreen />
-      <Toast config={toastConfig} />
-    </Provider>
+    <GestureHandlerRootView style={{flex: 1}}>
+      <Provider store={Store}>
+        <RootScreen />
+        <Toast config={toastConfig} />
+      </Provider>
+    </GestureHandlerRootView>
   );
 }

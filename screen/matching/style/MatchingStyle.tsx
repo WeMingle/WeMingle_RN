@@ -15,7 +15,10 @@ import Filter_Icon from '../../../assets/filter_icon.png';
 import Arrow_down from '../../../assets/arrow_down.png';
 import {Dispatch, SetStateAction, useRef} from 'react';
 import {FlatList} from 'react-native-gesture-handler';
-import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
+import BottomSheet, {
+  BottomSheetFlatList,
+  BottomSheetView,
+} from '@gorhom/bottom-sheet';
 
 export const MathcingTabButton = styled.TouchableOpacity`
   width: 50%;
@@ -26,6 +29,17 @@ export const MathcingTabButton = styled.TouchableOpacity`
     props.selected ? ' #fff' : Colors.c_gray200};
   align-items: center;
   justify-content: center;
+`;
+
+export const MathcingTabButtonSticky = styled.TouchableOpacity`
+  width: 50%;
+  height: 40px;
+  background-color: #fff;
+  align-items: center;
+  justify-content: center;
+  border-bottom-width: ${(props: {selected: boolean}) =>
+    props.selected ? '2px' : '0px'};
+  border-bottom-color: #212121;
 `;
 
 export const MatchingFloatingButton = styled.TouchableOpacity`
@@ -65,6 +79,29 @@ export const MatchingTab = ({
     </>
   );
 };
+
+export const MatchingTabSticky = ({
+  setSelectedTab,
+  selectedTab,
+}: MatchingTabProps) => {
+  return (
+    <>
+      <RowBox height={40}>
+        <MathcingTabButtonSticky
+          onPress={() => setSelectedTab('calendar')}
+          selected={selectedTab === 'calendar' ? true : false}>
+          <CommonText bold>캘린더</CommonText>
+        </MathcingTabButtonSticky>
+        <MathcingTabButtonSticky
+          onPress={() => setSelectedTab('map')}
+          selected={selectedTab === 'map' ? true : false}>
+          <CommonText bold>지도</CommonText>
+        </MathcingTabButtonSticky>
+      </RowBox>
+    </>
+  );
+};
+
 interface FilterBoxProps {
   setFilterModalOpen: (bool: boolean) => void;
 }
@@ -129,40 +166,37 @@ export const MatchingListBox = ({
   sortOption,
   matchingList,
 }: MatchingListBoxProps) => {
-  const bottomSheetRef = useRef<BottomSheet>(null);
-
   return (
-    <View style={{marginTop: marginT, backgroundColor: '#fff'}}>
-      <RowBox
-        justify={'space-between'}
-        padding={20}
-        borderB
-        borderT
-        height={60}>
-        <CommonText fontSize={12} color={Colors.c_gray400}>
-          27개의 구인글
-        </CommonText>
-        <RowBox alignC>
-          <TouchableOpacity onPress={() => setModalVisible(false)}>
-            <CommonText fontSize={12} marginR={15}>
-              {sortOption === 'NEW' ? '최신순' : '마감임박순'}
-            </CommonText>
-          </TouchableOpacity>
-          <CommonImage source={Arrow_down} width={10} height={20} />
-        </RowBox>
-      </RowBox>
-
+    <>
       {matchingList && (
-        <Animated.View>
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            data={Object.keys(matchingList)}
-            renderItem={({item, index}: any) => {
-              return <MatchingItem item={matchingList[item]} />;
-            }}
-          />
-        </Animated.View>
+        <BottomSheetFlatList
+          ListHeaderComponent={
+            <RowBox
+              justify={'space-between'}
+              padding={20}
+              borderB
+              borderT
+              height={60}>
+              <CommonText fontSize={12} color={Colors.c_gray400}>
+                27개의 구인글
+              </CommonText>
+              <RowBox alignC>
+                <TouchableOpacity onPress={() => setModalVisible(false)}>
+                  <CommonText fontSize={12} marginR={15}>
+                    {sortOption === 'NEW' ? '최신순' : '마감임박순'}
+                  </CommonText>
+                </TouchableOpacity>
+                <CommonImage source={Arrow_down} width={10} height={20} />
+              </RowBox>
+            </RowBox>
+          }
+          showsVerticalScrollIndicator={false}
+          data={Object.keys(matchingList)}
+          renderItem={({item, index}: any) => {
+            return <MatchingItem item={matchingList[item]} />;
+          }}
+        />
       )}
-    </View>
+    </>
   );
 };
