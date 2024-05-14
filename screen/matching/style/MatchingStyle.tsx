@@ -15,10 +15,19 @@ import Filter_Icon from '../../../assets/filter_icon.png';
 import Arrow_down from '../../../assets/arrow_down.png';
 import {Dispatch, SetStateAction, useRef} from 'react';
 import {FlatList} from 'react-native-gesture-handler';
+
 import BottomSheet, {
   BottomSheetFlatList,
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
+
+import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
+import {
+  NavigationProp,
+  ParamListBase,
+  useNavigation,
+} from '@react-navigation/native';
+
 
 export const MathcingTabButton = styled.TouchableOpacity`
   width: 50%;
@@ -106,6 +115,7 @@ interface FilterBoxProps {
   setFilterModalOpen: (bool: boolean) => void;
 }
 export const FilterBox = ({setFilterModalOpen}: FilterBoxProps) => {
+  const navigation: NavigationProp<ParamListBase> = useNavigation();
   return (
     <RowBox
       borderB
@@ -158,6 +168,7 @@ interface MatchingListBoxProps {
   setModalVisible: (value: boolean) => void;
   sortOption: string;
   matchingList?: any;
+  matchingCount: number;
 }
 
 export const MatchingListBox = ({
@@ -165,9 +176,34 @@ export const MatchingListBox = ({
   setModalVisible,
   sortOption,
   matchingList,
+  matchingCount = 0,
 }: MatchingListBoxProps) => {
   return (
+
     <>
+
+    <View style={{marginTop: marginT, backgroundColor: '#fff'}}>
+      {setModalVisible && (
+        <RowBox
+          justify={'space-between'}
+          padding={20}
+          borderB
+          borderT
+          height={60}>
+          <CommonText fontSize={12} color={Colors.c_gray400}>
+            {matchingCount}개의 구인글
+          </CommonText>
+          <RowBox alignC>
+            <TouchableOpacity onPress={() => setModalVisible(false)}>
+              <CommonText fontSize={12} marginR={15}>
+                {sortOption === 'NEW' ? '최신순' : '마감임박순'}
+              </CommonText>
+            </TouchableOpacity>
+            <CommonImage source={Arrow_down} width={10} height={20} />
+          </RowBox>
+        </RowBox>
+      )}
+
       {matchingList && (
         <BottomSheetFlatList
           ListHeaderComponent={

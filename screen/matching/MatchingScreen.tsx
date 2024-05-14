@@ -50,6 +50,9 @@ const MatchingScreen = () => {
   const matchingList = useSelector(
     (state: RootState) => state.matching,
   ).matchingList;
+  const matchingCount = useSelector(
+    (state: RootState) => state.matching,
+  ).matchingCount;
 
   // useState
   const [selectedTab, setSelectedTab] = useState('calendar');
@@ -60,13 +63,6 @@ const MatchingScreen = () => {
   const [selectedDate, setSelectedDate] = useState<string>(
     moment().format('YYYY-MM-DD'),
   );
-
-  // const [recruitmentType, setRecuruitmentType] = useState('APPROVAL_BASED') //FIRST_SERVED_BASED, APPROVAL_BASED
-  // const [ability, setAbility] = useState(null); //LOW, MEDIUM, HIGH
-  // const [gender, setGender] = useState(null); //  (MALE, FEMALE)
-  // const [areaList, setAreaList] = useState(null);
-  // const [excludeExpired, setExcludeExpired] = useState(null); //true,false
-  // const [sportsType, setSportsType] = useState(null); // RUNNING, SOCCER, BASKETBALL, BASEBALL, TENNIS, BOWLING, SQUASH, CLIMBING, CYCLING, BADMINTON, SKATEBOARDING, OTHER
 
   const [filterValues, setFilterValues] = useState({
     ability: null, // 운동 실력
@@ -203,6 +199,7 @@ const MatchingScreen = () => {
               }}
             />
           </BottomSheet>
+
         </>
       ) : (
         <>
@@ -237,6 +234,7 @@ const MatchingScreen = () => {
           <MatchingListBox
             sortOption={sortOption}
             setModalVisible={() => setSortOptionOpen(true)}
+            matchingCount={matchingCount}
           />
         </>
       )}

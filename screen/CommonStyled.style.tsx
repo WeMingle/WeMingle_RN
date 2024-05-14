@@ -1,4 +1,10 @@
-import {Dimensions, Platform, StatusBar, View} from 'react-native';
+import {
+  Dimensions,
+  Platform,
+  StatusBar,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import styled from 'styled-components/native';
 import {Colors} from '../assets/color/Colors';
 import {FontSizeCalculator} from '../component/Common';
@@ -9,6 +15,10 @@ import person from '../assets/person.png';
 import CheckBoxON from '../assets/checkbox_on.png';
 import CheckBoxOff from '../assets/checkbox_off.png';
 import moment from 'moment';
+
+import {ClickBookmark} from './myGroup/style/MyGroupStyle.style';
+
+import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 
 export const ScreenWidth = Dimensions.get('screen').width;
 export const ScreenHeight = Dimensions.get('window').height;
@@ -37,6 +47,13 @@ export const Container = styled.View`
   background-color: ${(props: {bgColor: string}) => props.bgColor || '#fff'};
 `;
 
+export const ModalBackdrop = styled(TouchableWithoutFeedback)`
+  justify-content: center;
+  align-items: center;
+  width: ${ScreenWidth}px;
+  height: ${ScreenHeight}px;
+  background-color: rgba(0, 0, 0, 0.4);
+`;
 // 가로정렬 View
 export const RowBox = styled.View`
   ${(props: {width: number}) => props.width && `width: ${props.width}px`};
@@ -152,6 +169,14 @@ export const ModalContainer = styled.View`
   padding: 20px;
 `;
 
+export const AlertModalContainer = styled.View`
+  width: 80%;
+  border-radius: 15px;
+  background-color: #fff;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 export const AccountHeader = styled(RowBox)`
   align-items: center;
   padding: 0 0 10px 0;
@@ -240,10 +265,12 @@ export const MatchingBorderBox = styled.View`
 
 export const BorderBox = styled.View`
   margin-left: ${(props: {marginL?: number}) => props.marginL || 0}px;
+  margin-right: ${(props: {marginR?: number}) => props.marginR || 0}px;
+  margin-top: ${(props: {marginT?: number}) => props.marginT || 0}px;
   padding: ${(props: {padding?: number}) =>
     props.padding ? props.padding : 5}px;
   height: ${(props: {height?: number}) => props.height && props.height}px;
-  width: ${(props: {width: number}) => props.width && props.width}ox;
+  width: ${(props: {width: number}) => props.width && props.width}px;
   border-radius: ${(props: {borderR: number}) =>
     props.borderR ? props.borderR : 15}px;
   border-width: 1px;
@@ -270,6 +297,7 @@ export const BorderBoxButton = styled.TouchableOpacity`
   background-color: ${(props: {bgColor: string}) => props.bgColor || '#fff'};
   margin-right: ${(props: {marginR: number}) =>
     props.marginR && props.marginR}px;
+  margin-top: ${(props: {marginT: number}) => props.marginT && props.marginT}px;
 `;
 
 export const profileBox = styled(CenterBox)``;
@@ -298,31 +326,39 @@ export const VerticalBar = styled.View`
 export const MatchingItem = ({item, index}: any) => {
   return (
     <>
-      <RowBox marginT={20} style={{paddingLeft: 20}}>
-        <BorderBox borderColor={Colors.informative} borderR={20} alignC row>
-          <CommonImage source={calendar} width={11} height={11} />
-          <CommonText color={Colors.informative} marginL={5} fontSize={11}>
-            {`${item.matchingDate[0].slice(
-              5,
-              7,
-            )}월 ${item.matchingDate[0].slice(8, 10)}일`}
-          </CommonText>
-        </BorderBox>
-        <BorderBox
-          borderColor={'#fff'}
-          marginL={5}
-          borderR={20}
-          alignC
-          row
-          bgColor={Colors.c_gray200}
-          style={{
-            paddingRight: 7,
-          }}>
-          <CommonImage source={person} width={11} height={11} />
-          <CommonText color={Colors.informative} marginL={5} fontSize={11}>
-            {item.recruiterType === 'INDIVIDUAL' ? '개인' : '그룹'}
-          </CommonText>
-        </BorderBox>
+      <RowBox
+        justify={'space-between'}
+        marginT={20}
+        style={{paddingLeft: 20, paddingRight: 20}}>
+        <RowBox>
+          <BorderBox borderColor={Colors.informative} borderR={20} alignC row>
+            <CommonImage source={calendar} width={11} height={11} />
+            <CommonText color={Colors.informative} marginL={5} fontSize={11}>
+              {`${item.matchingDate[0].slice(
+                5,
+                7,
+              )}월 ${item.matchingDate[0].slice(8, 10)}일`}
+            </CommonText>
+          </BorderBox>
+          <BorderBox
+            borderColor={'#fff'}
+            marginL={5}
+            borderR={20}
+            alignC
+            row
+            bgColor={Colors.c_gray200}
+            style={{
+              paddingRight: 7,
+            }}>
+            <CommonImage source={person} width={11} height={11} />
+            <CommonText color={Colors.informative} marginL={5} fontSize={11}>
+              {item.recruiterType === 'INDIVIDUAL' ? '개인' : '그룹'}
+            </CommonText>
+          </BorderBox>
+        </RowBox>
+        <TouchableOpacity>
+          <ClickBookmark bookmark={item?.bookmarked} width={26} height={24} />
+        </TouchableOpacity>
       </RowBox>
       <RowBox alignC padding={20} style={{paddingBottom: 30}} borderB>
         <CommonTouchableOpacity
@@ -379,6 +415,16 @@ export const MatchingItem = ({item, index}: any) => {
     </>
   );
 };
+
+export const HorizontalBar = styled.View`
+  width: ${ScreenWidth}px;
+  height: 1px;
+  background-color: ${Colors.c_gray200};
+  margin-top: ${(props: {marginT: number}) =>
+    props.marginT || props.marginT === 0 ? props.marginT : 20}px;
+  margin-bottom: ${(props: {marginB: number}) =>
+    props.marginB || props.marginB === 0 ? props.marginB : 20}px;
+`;
 
 export const CheckBox = ({isChecked = true}) => {
   return (

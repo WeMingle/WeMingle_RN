@@ -26,13 +26,18 @@ import {BackHandler, Platform, View} from 'react-native';
 import {BottomTabView} from '../component/BottomTab';
 import MatchingDateSelectScreen from './matching/MatchingDateSelectScreen';
 import {showToastMessage} from '../component/Toast';
-import Component from 'react-native-paper/lib/typescript/components/List/ListItem';
 import ScrapListScreen from './myPage/ScrapListScreen';
+import HomeScreen from './home/HomeScreen';
 
-// Jeon
+//MyGroup - 전하윤
+import MyGroupDefaultScreen from './myGroup/MyGroupDefaultScreen';
 import MyGroupScreen from './myGroup/MyGroupScreen';
-import MyGroupScreen2 from './myGroup/MyGroupScreen2';
 import MyGroupSearchScreen from './myGroup/MyGroupSearchScreen';
+import SearchResultScreen from './myGroup/SearchResultScreen';
+import SearchProfileScreen from './myGroup/SearchProfileScreen';
+import GroupPageScreen from './myGroup/GroupPageScreen';
+import GroupChattingPageScreen from './myGroup/GroupChattingPageScreen';
+import GroupMemberPageScreen from './myGroup/GroupMemberPageScreen';
 
 import {
   PERMISSIONS,
@@ -40,6 +45,7 @@ import {
   requestLocationAccuracy,
   requestMultiple,
 } from 'react-native-permissions';
+import AlertModal from '../component/modal/AlertModal';
 
 let count = 0; //  종료카운트
 
@@ -92,7 +98,8 @@ const RootScreen = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={'MyPage'}>
+
+      <Stack.Navigator initialRouteName={'Home'}>
         {RouterSetting.map((v, index) => {
           const ranNum = Math.random().toString(36).substr(2, 10);
           return (
@@ -103,6 +110,7 @@ const RootScreen = () => {
               options={{
                 headerShown: false,
                 gestureDirection: 'horizontal',
+                presentation: v.presentation && v.presentation,
               }}
             />
           );
@@ -191,6 +199,11 @@ const RouterSetting = [
     name: 'CertificationSchool',
     component: CertificationSchoolScreen,
   },
+  {
+    name: 'AlertModal',
+    component: AlertModal,
+    presentation: 'transparentModal',
+  },
 ];
 
 const TabRouterSetting = [
@@ -207,16 +220,36 @@ const TabRouterSetting = [
     component: MyProfileScreen,
   },
   {
+    name: 'MyGroupDefault',
+    component: MyGroupDefaultScreen,
+  },
+  {
     name: 'MyGroup',
     component: MyGroupScreen,
   },
   {
-    name: 'MyGroup2',
-    component: MyGroupScreen2,
-  },
-  {
     name: 'MyGroupSearch',
     component: MyGroupSearchScreen,
+  },
+  {
+    name: 'SearchResult',
+    component: SearchResultScreen,
+  },
+  {
+    name: 'SearchProfile',
+    component: SearchProfileScreen,
+  },
+  {
+    name: 'GroupPage',
+    component: GroupPageScreen,
+  },
+  {
+    name: 'GroupChatting',
+    component: GroupChattingPageScreen,
+  },
+  {
+    name: 'GroupMember',
+    component: GroupMemberPageScreen,
   },
   {
     name: 'MatchingList',
@@ -237,6 +270,10 @@ const TabRouterSetting = [
   {
     name: 'ScrapList',
     component: ScrapListScreen,
+  },
+  {
+    name: 'Home',
+    component: HomeScreen,
   },
 ];
 
