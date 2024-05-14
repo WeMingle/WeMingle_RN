@@ -1,11 +1,12 @@
-import {useEffect, useState} from 'react';
-import {TouchableWithoutFeedback, View} from 'react-native';
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {TouchableOpacity, TouchableWithoutFeedback, View} from 'react-native';
 import {NaverMapView} from '@mj-studio/react-native-naver-map';
 
 import {
   BaseSafeView,
   CommonImage,
   CommonText,
+  MatchingItem,
   RowBox,
   ScreenHeight,
 } from '../CommonStyled.style';
@@ -14,6 +15,7 @@ import {
   MatchingFloatingButton,
   MatchingListBox,
   MatchingTab,
+  MatchingTabSticky,
 } from './style/MatchingStyle';
 
 import MatchingSortOptionModal from '../../component/modal/MatchingSortOptionModal';
@@ -36,6 +38,10 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../redux/Reducers';
 import CalendarBox from '../../component/CalendarBox';
 import {useAppDispatch} from '../../redux/Store';
+import BottomSheet, {
+  BottomSheetFlatList,
+  BottomSheetView,
+} from '@gorhom/bottom-sheet';
 
 const MatchingScreen = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
@@ -80,6 +86,23 @@ const MatchingScreen = () => {
     );
   }, [sortOption, selectedDate, filterValues]);
 
+  // ref
+  const bottomSheetRef = useRef<BottomSheet>(null);
+
+  // variables
+  const snapPoints = useMemo(() => ['37%', '37%', '83%'], []);
+
+  const [isSticky, setIsSticky] = useState(false);
+
+  const handleSheetChange = useCallback(index => {
+    // console.log(index);
+    if (index === 1) {
+      setIsSticky(false);
+    } else {
+      setIsSticky(true);
+    }
+  }, []);
+
   return (
     <BaseSafeView bgColor={Colors.c_gray50}>
       <FilterModal
@@ -94,26 +117,34 @@ const MatchingScreen = () => {
         setSortOption={setSortOption}
       />
 
-      <View style={{backgroundColor: '#212121'}}>
-        <RowBox alignC justify={'space-between'} padding={20} height={65}>
-          <CommonText fontSize={18} color={'#fff'}>
-            매칭
-          </CommonText>
-          <RowBox>
-            <CommonImage source={Alert_Icon} width={24} height={24} />
-            <CommonImage
-              source={Chat_Icon}
-              width={24}
-              height={24}
-              style={{marginLeft: 12}}
-            />
+      {!isSticky ? (
+        <View style={{backgroundColor: '#212121'}}>
+          <RowBox alignC justify={'space-between'} padding={20} height={65}>
+            <CommonText fontSize={18} color={'#fff'}>
+              매칭
+            </CommonText>
+            <RowBox>
+              <CommonImage source={Alert_Icon} width={24} height={24} />
+              <CommonImage
+                source={Chat_Icon}
+                width={24}
+                height={24}
+                style={{marginLeft: 12}}
+              />
+            </RowBox>
           </RowBox>
-        </RowBox>
-        <MatchingTab
+          <MatchingTab
+            setSelectedTab={setSelectedTab}
+            selectedTab={selectedTab}
+          />
+        </View>
+      ) : (
+        <MatchingTabSticky
           setSelectedTab={setSelectedTab}
           selectedTab={selectedTab}
         />
-      </View>
+      )}
+
       <FilterBox
         setFilterModalOpen={(value: boolean) => setFilterModalOpen(value)}
       />
@@ -121,16 +152,54 @@ const MatchingScreen = () => {
       {selectedTab === 'calendar' ? (
         <>
           <CalendarBox
+            isSticky={isSticky}
             selectedDate={selectedDate}
             setSelectedDate={value => setSelectedDate(value)}
           />
-          <MatchingListBox
-            marginT={10}
-            sortOption={sortOption}
-            setModalVisible={() => setSortOptionOpen(true)}
-            matchingList={matchingList}
-            matchingCount={matchingCount}
-          />
+
+          <BottomSheet
+            onChange={handleSheetChange}
+            ref={bottomSheetRef}
+            snapPoints={snapPoints}
+            index={1}
+            handleComponent={null}>
+            <BottomSheetFlatList
+              ListHeaderComponent={
+                <>
+                  <View
+                    style={{
+                      height: 10,
+                      backgroundColor: Colors.c_gray50,
+                      width: '100%',
+                    }}
+                  />
+                  <RowBox
+                    justify={'space-between'}
+                    padding={20}
+                    borderB
+                    height={60}>
+                    <CommonText fontSize={12} color={Colors.c_gray400}>
+                      27개의 구인글
+                    </CommonText>
+                    <RowBox alignC>
+                      <TouchableOpacity onPress={() => setSortOptionOpen(true)}>
+                        <CommonText fontSize={12} marginR={15}>
+                          {sortOption === 'NEW' ? '최신순' : '마감임박순'}
+                        </CommonText>
+                      </TouchableOpacity>
+                      <CommonImage source={Arrow_down} width={10} height={20} />
+                    </RowBox>
+                  </RowBox>
+                </>
+              }
+              showsVerticalScrollIndicator={false}
+              data={Object.keys(matchingList)}
+              renderItem={({item}: any) => {
+                return <MatchingItem item={matchingList[item]} />;
+              }}
+            />
+          </BottomSheet>
+
         </>
       ) : (
         <>

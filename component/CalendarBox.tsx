@@ -14,6 +14,7 @@ import {useState, memo, useEffect} from 'react';
 import {Animated, View} from 'react-native';
 
 interface CalendarBoxProps {
+  isSticky?: boolean;
   selectedDate?: string | string[];
   setSelectedDate: (day: string) => void;
 }
@@ -27,9 +28,9 @@ interface markedDates {
 }
 
 const CalendarBox = memo(
-  ({selectedDate, setSelectedDate}: CalendarBoxProps) => {
+  ({selectedDate, setSelectedDate, isSticky}: CalendarBoxProps) => {
     const [markedDates, setMarkedDates] = useState<markedDates>({});
-
+    // console.log(isSticky);
     useEffect(() => {
       if (!Array.isArray(selectedDate)) {
         setMarkedDates(() => {
@@ -54,7 +55,7 @@ const CalendarBox = memo(
       setMarkedDates(dates);
     }, [selectedDate]);
     return (
-      <Animated.View style={[{backgroundColor: '#fff', paddingBottom: 50}]}>
+      <Animated.View style={[{backgroundColor: '#fff', paddingBottom: 100}]}>
         <Calendar
           LocaleConfig
           theme={{
@@ -85,13 +86,13 @@ const CalendarBox = memo(
           }}
           renderArrow={direction => (
             <>
-              <RowBox height={30} alignC>
+              <RowBox height={20} alignC>
                 {direction === 'left' ? (
                   <CommonImage source={Arrow_Left} width={7} height={14} />
                 ) : (
                   <CommonImage
                     source={Arrow_Right_Calendar}
-                    width={7}
+                    width={8}
                     height={14}
                   />
                 )}

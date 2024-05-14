@@ -98,6 +98,7 @@ const RootScreen = () => {
 
   return (
     <NavigationContainer>
+
       <Stack.Navigator initialRouteName={'Home'}>
         {RouterSetting.map((v, index) => {
           const ranNum = Math.random().toString(36).substr(2, 10);
