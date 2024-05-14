@@ -20,7 +20,6 @@ import {ClickBookmark} from './myGroup/style/MyGroupStyle.style';
 
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 
-
 export const ScreenWidth = Dimensions.get('screen').width;
 export const ScreenHeight = Dimensions.get('window').height;
 
@@ -356,7 +355,7 @@ export const MatchingItem = ({item, index}: any) => {
           </BorderBox>
         </RowBox>
         <TouchableOpacity>
-          <ClickBookmark bookmark={true} width={26} height={24} />
+          <ClickBookmark bookmark={item?.bookmarked} width={26} height={24} />
         </TouchableOpacity>
       </RowBox>
       <RowBox alignC padding={20} style={{paddingBottom: 30}} borderB>
