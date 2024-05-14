@@ -14,20 +14,14 @@ import Arrow_Right from '../../../assets/arrow_right.png';
 import Filter_Icon from '../../../assets/filter_icon.png';
 import Arrow_down from '../../../assets/arrow_down.png';
 import {Dispatch, SetStateAction, useRef} from 'react';
-import {FlatList} from 'react-native-gesture-handler';
 
-import BottomSheet, {
-  BottomSheetFlatList,
-  BottomSheetView,
-} from '@gorhom/bottom-sheet';
-
-import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import {
   NavigationProp,
   ParamListBase,
   useNavigation,
 } from '@react-navigation/native';
-
+import {BottomSheetFlatList} from '@gorhom/bottom-sheet';
+import {FlatList} from 'react-native-gesture-handler';
 
 export const MathcingTabButton = styled.TouchableOpacity`
   width: 50%;
@@ -165,47 +159,23 @@ export const FilterBox = ({setFilterModalOpen}: FilterBoxProps) => {
 
 interface MatchingListBoxProps {
   marginT?: number;
-  setModalVisible: (value: boolean) => void;
-  sortOption: string;
+  setModalVisible?: (value: boolean) => void;
+  sortOption?: string;
   matchingList?: any;
-  matchingCount: number;
+  matchingCount?: number;
 }
 
 export const MatchingListBox = ({
   marginT,
-  setModalVisible,
+  setModalVisible = () => {},
   sortOption,
   matchingList,
   matchingCount = 0,
 }: MatchingListBoxProps) => {
   return (
-
     <>
-
-    <View style={{marginTop: marginT, backgroundColor: '#fff'}}>
-      {setModalVisible && (
-        <RowBox
-          justify={'space-between'}
-          padding={20}
-          borderB
-          borderT
-          height={60}>
-          <CommonText fontSize={12} color={Colors.c_gray400}>
-            {matchingCount}개의 구인글
-          </CommonText>
-          <RowBox alignC>
-            <TouchableOpacity onPress={() => setModalVisible(false)}>
-              <CommonText fontSize={12} marginR={15}>
-                {sortOption === 'NEW' ? '최신순' : '마감임박순'}
-              </CommonText>
-            </TouchableOpacity>
-            <CommonImage source={Arrow_down} width={10} height={20} />
-          </RowBox>
-        </RowBox>
-      )}
-
       {matchingList && (
-        <BottomSheetFlatList
+        <FlatList
           ListHeaderComponent={
             <RowBox
               justify={'space-between'}
@@ -214,7 +184,49 @@ export const MatchingListBox = ({
               borderT
               height={60}>
               <CommonText fontSize={12} color={Colors.c_gray400}>
-                27개의 구인글
+                {matchingCount}개의 구인글
+              </CommonText>
+              <RowBox alignC>
+                <TouchableOpacity onPress={() => setModalVisible(false)}>
+                  <CommonText fontSize={12} marginR={15}>
+                    {sortOption === 'NEW' ? '최신순' : '마감임박순'}
+                  </CommonText>
+                </TouchableOpacity>
+                <CommonImage source={Arrow_down} width={10} height={20} />
+              </RowBox>
+            </RowBox>
+          }
+          showsVerticalScrollIndicator={false}
+          data={Object.keys(matchingList)}
+          renderItem={({item, index}: any) => {
+            return <MatchingItem item={matchingList[item]} />;
+          }}
+        />
+      )}
+    </>
+  );
+};
+
+export const MatchingListBoxWidthBottomSheet = ({
+  marginT,
+  setModalVisible = () => {},
+  sortOption,
+  matchingList,
+  matchingCount = 0,
+}: MatchingListBoxProps) => {
+  return (
+    <>
+      {matchingList && (
+        <FlatList
+          ListHeaderComponent={
+            <RowBox
+              justify={'space-between'}
+              padding={20}
+              borderB
+              borderT
+              height={60}>
+              <CommonText fontSize={12} color={Colors.c_gray400}>
+                {matchingCount}개의 구인글
               </CommonText>
               <RowBox alignC>
                 <TouchableOpacity onPress={() => setModalVisible(false)}>
