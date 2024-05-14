@@ -13,6 +13,7 @@ import {
   ParamListBase,
   useNavigation,
 } from '@react-navigation/native';
+import {MyGroup} from '../redux/slice/MyGroupSlice';
 
 export const BottomTabView = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
@@ -24,6 +25,9 @@ export const BottomTabView = () => {
       navigation.navigate(nextPage);
     }
   };
+  // const renderData = ({sliceName}:any) => {
+  //   dispatch
+  // }
 
   return (
     <RowBox

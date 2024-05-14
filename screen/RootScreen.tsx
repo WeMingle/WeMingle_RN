@@ -26,10 +26,16 @@ import {BackHandler, View} from 'react-native';
 import {BottomTabView} from '../component/BottomTab';
 import MatchingDateSelectScreen from './matching/MatchingDateSelectScreen';
 import {showToastMessage} from '../component/Toast';
+
+//MyGroup - 전하윤
 import MyGroupDefaultScreen from './myGroup/MyGroupDefaultScreen';
 import MyGroupScreen from './myGroup/MyGroupScreen';
 import MyGroupSearchScreen from './myGroup/MyGroupSearchScreen';
 import SearchResultScreen from './myGroup/SearchResultScreen';
+import SearchProfileScreen from './myGroup/SearchProfileScreen';
+import GroupPageScreen from './myGroup/GroupPageScreen';
+import GroupChattingPageScreen from './myGroup/GroupChattingPageScreen';
+import GroupMemberPageScreen from './myGroup/GroupMemberPageScreen';
 
 let count = 0; //  종료카운트
 
@@ -180,6 +186,22 @@ const TabRouterSetting = [
   {
     name: 'SearchResult',
     component: SearchResultScreen,
+  },
+  {
+    name: 'SearchProfile',
+    component: SearchProfileScreen,
+  },
+  {
+    name: 'GroupPage',
+    component: GroupPageScreen,
+  },
+  {
+    name: 'GroupChatting',
+    component: GroupChattingPageScreen,
+  },
+  {
+    name: 'GroupMember',
+    component: GroupMemberPageScreen,
   },
   {
     name: 'MatchingList',

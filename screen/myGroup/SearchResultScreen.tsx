@@ -1,19 +1,11 @@
-import React, {
-  useState,
-  useEffect,
-  useCallback,
-  PropsWithChildren,
-} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
-  FlatList,
   View,
   TouchableOpacity,
   TextInput,
   BackHandler,
-  ActivityIndicator,
   StyleSheet,
   Keyboard,
-  Alert,
 } from 'react-native';
 import {
   NavigationProp,
@@ -23,44 +15,12 @@ import {
 import {
   BaseSafeView,
   CommonImage,
-  CommonText,
-  CommonTouchableOpacity,
   Container,
   RowBox,
 } from '../CommonStyled.style';
-import Back_White from '../../assets/back_icon_white.png';
 import Search from '../../assets/search.png';
-import {Colors} from '../../assets/color/Colors';
-import Add_Box from '../../assets/add_box.png';
-import Arrow_Right from '../../assets/arrow_right.png';
-import {SearchButton} from './style/MyGroupStyle.style';
-
-type AccordionItemPros = PropsWithChildren<{
-  title: string;
-}>;
-
-export const AccordionItem = ({children, title}: AccordionItemPros) => {
-  console.log('타이틀 : ', title);
-  const [expanded, setExpanded] = useState(false);
-
-  const toggleItem = () => {
-    setExpanded(!expanded);
-  };
-
-  const body = <View style={styles.accordBody}>{children}</View>;
-
-  return (
-    <View style={styles.accordContainer}>
-      {/* // <View style={{height: 200}}> */}
-      <TouchableOpacity style={styles.accordHeader} onPress={toggleItem}>
-        <CommonText color={'#666666'} fontSize={20}>
-          {title}
-        </CommonText>
-      </TouchableOpacity>
-      {expanded && body}
-    </View>
-  );
-};
+import {SearchTabs} from './style/SearchTabs';
+import {BackButton} from './style/MyGroupStyle.style';
 
 const SearchResultScreen = ({navigation: {navigate}, route}: any) => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
@@ -71,35 +31,12 @@ const SearchResultScreen = ({navigation: {navigate}, route}: any) => {
     Keyboard.dismiss();
   };
 
-  const onBackPress = () => {
-    if (navigation?.canGoBack()) {
-      navigation.goBack();
-      return true;
-    }
-    return false;
-  };
-
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', onBackPress);
-    return () => {
-      BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-    };
-  }),
-    [onBackPress];
-
   return (
     <BaseSafeView>
       <Container bgColor={'#212121'} padding={0}>
         <View style={{paddingHorizontal: 20, paddingVertical: 30}}>
           <RowBox alignC justify={'space-around'}>
-            <TouchableOpacity onPress={onBackPress}>
-              <CommonImage
-                source={Back_White}
-                width={48}
-                height={24}
-                marginRight={20}
-              />
-            </TouchableOpacity>
+            <BackButton />
             <View style={styles.block}>
               <TextInput
                 placeholder="검색어를 입력하세요."
@@ -117,127 +54,19 @@ const SearchResultScreen = ({navigation: {navigate}, route}: any) => {
             </View>
           </RowBox>
         </View>
-        <Container
-          bgColor={'#fff'}
+        <View
           style={{
             width: '100%',
             height: '100%',
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            paddingTop: 10,
+            backgroundColor: '#ffffff',
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
           }}>
-          <View
-            style={{
-              // flexDirection: 'row',
-              justifyContent: 'space-between',
-              paddingVertical: 20,
-            }}>
-            <CommonText fontSize={18} color={'#1C1C1C'} marginBottom={20}>
-              그룹
-            </CommonText>
-            <FlatList
-              data={[
-                {image: 'none', name: '숭실대 축구 동아리'},
-                {image: 'none', name: '숭실대 축구 동아리'},
-                // {image: 'none', name: '숭실대 축구 동아리'},
-                // {image: 'none', name: '숭실대 축구 동아리'},
-                // {image: 'none', name: '숭실대 축구 동아리'},
-                // {image: 'none', name: '숭실대 축구 동아리'},
-                // {image: 'none', name: '숭실대 축구 동아리'},
-                // {image: 'none', name: '숭실대 축구 동아리'},
-                // {image: 'none', name: '숭실대 축구 동아리'},
-                // {image: 'none', name: '숭실대 축구 동아리'},
-                // {image: 'none', name: '숭실대 축구 동아리'},
-                // {image: 'none', name: '숭실대 축구 동아리'},
-              ]}
-              style={{
-                flexGrow: 0,
-                width: '100%',
-                height: '100%',
-              }}
-              numColumns={2}
-              renderItem={items => {
-                return (
-                  <View style={{flex: 1, alignItems: 'center'}}>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                      }}>
-                      <View
-                        style={{
-                          marginHorizontal: 10,
-                          marginBottom:
-                            items.index === 0 ||
-                            items.index === items.length - 1
-                              ? 0
-                              : 10,
-                        }}>
-                        <CommonTouchableOpacity
-                          style={[
-                            {
-                              borderRadius: 10,
-                              marginBottom: 10,
-                              alignItems: 'center',
-                              justifyContent: 'flex-end',
-                            },
-                          ]}
-                          bgColor={'#000'}
-                          width={152}
-                          height={152}></CommonTouchableOpacity>
-                        <CommonText
-                          textAlignC
-                          fontSize={14}
-                          color={'#1C1C1C'}
-                          numberOfLines={1}
-                          ellipsizeMode="tail"
-                          style={{
-                            marginBottom: 5,
-                            textAlign: 'left',
-                            width: 152,
-                          }}>
-                          {items.item?.name}
-                        </CommonText>
-                        <CommonText
-                          textAlignC
-                          fontSize={12}
-                          color={'#666666'}
-                          numberOfLines={1}
-                          ellipsizeMode="tail"
-                          style={{
-                            marginBottom: 5,
-                            textAlign: 'left',
-                            width: 152,
-                          }}>
-                          {items.item?.name}
-                        </CommonText>
-                      </View>
-                    </View>
-                  </View>
-                );
-              }}
-            />
-          </View>
-          <View style={{width: '100%', paddingVertical: 20}}>
-            <View
-              style={{
-                width: '100%',
-                height: 1,
-                backgroundColor: Colors.c_gray200,
-              }}
-            />
-          </View>
-          <View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-              }}>
-              <CommonText fontSize={18} color={'#1C1C1C'} paddingRight={10}>
-                프로필
-              </CommonText>
-            </View>
-          </View>
-        </Container>
+          <SearchTabs />
+        </View>
       </Container>
     </BaseSafeView>
   );
@@ -266,36 +95,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingLeft: 10,
-  },
-  container: {
-    flex: 1,
-  },
-  accordContainer: {
-    height: 40,
-    width: '100%',
-  },
-  accordHeader: {
-    alignItems: 'center',
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    color: 'black',
-    backgroundColor: '#ffffff',
-    borderWidth: 1,
-    borderRadius: 10,
-  },
-  accordTitle: {
-    fontSize: 20,
-    color: '#666666',
-  },
-  accordBody: {
-    padding: 12,
-  },
-  textSmall: {
-    fontSize: 16,
-  },
-  seperator: {
-    height: 12,
   },
 });
 

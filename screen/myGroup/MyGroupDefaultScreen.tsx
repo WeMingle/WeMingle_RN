@@ -8,13 +8,19 @@ import {
   Container,
   RowBox,
 } from '../CommonStyled.style';
-import {useNavigation} from '@react-navigation/native';
+import {
+  NavigationProp,
+  ParamListBase,
+  useNavigation,
+} from '@react-navigation/native';
 import Search from '../../assets/search.png';
 import Add_Box from '../../assets/add_box.png';
 import Arrow_Right from '../../assets/arrow_right.png';
 import {SearchButton} from './style/MyGroupStyle.style';
 
-const MyGroupDefaultScreen = ({navigation: {navigate}, route}: any) => {
+const MyGroupDefaultScreen = ({pageName}: any) => {
+  const navigation: NavigationProp<ParamListBase> = useNavigation();
+
   return (
     <BaseSafeView>
       <FlatList
@@ -24,9 +30,7 @@ const MyGroupDefaultScreen = ({navigation: {navigate}, route}: any) => {
               <View style={{paddingHorizontal: 20, paddingVertical: 30}}>
                 <RowBox alignC justify={'space-between'}>
                   <CommonText fontSize={18} color={'#fff'}>
-                    {route.params.pageName.length === 7
-                      ? '그룹 둘러보기'
-                      : '내그룹'}
+                    {pageName === '내그룹' ? pageName : '그룹 둘러보기'}
                   </CommonText>
                   <RowBox>
                     <SearchButton width={24} height={24} />
@@ -88,7 +92,10 @@ const MyGroupDefaultScreen = ({navigation: {navigate}, route}: any) => {
                           ]}
                           bgColor={'#000'}
                           width={96}
-                          height={96}></CommonTouchableOpacity>
+                          height={96}
+                          onPress={() => {
+                            navigation.navigate('GroupPage');
+                          }}></CommonTouchableOpacity>
                         <CommonText
                           textAlignC
                           fontSize={10}
@@ -159,7 +166,10 @@ const MyGroupDefaultScreen = ({navigation: {navigate}, route}: any) => {
                     ]}
                     bgColor={'#000'}
                     width={152}
-                    height={152}></CommonTouchableOpacity>
+                    height={152}
+                    onPress={() => {
+                      navigation.navigate('GroupPage');
+                    }}></CommonTouchableOpacity>
                   <CommonText
                     textAlignC
                     fontSize={14}

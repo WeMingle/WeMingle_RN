@@ -4,7 +4,6 @@ import {
   View,
   TouchableOpacity,
   TextInput,
-  BackHandler,
   ActivityIndicator,
   StyleSheet,
   Keyboard,
@@ -24,9 +23,8 @@ import {
   RowBox,
 } from '../CommonStyled.style';
 import {Colors} from '../../assets/color/Colors';
-import Back_White from '../../assets/back_icon_white.png';
 import Close from '../../assets/Close.png';
-import {SearchLoading} from './style/MyGroupStyle.style';
+import {SearchLoading, BackButton} from './style/MyGroupStyle.style';
 import Search from '../../assets/search.png';
 
 interface Search {
@@ -82,40 +80,17 @@ const MyGroupSearchScreen = ({user}: any) => {
     Keyboard.dismiss();
   };
 
-  const onBackPress = () => {
-    if (navigation?.canGoBack()) {
-      navigation.goBack();
-      return true;
-    }
-    return false;
-  };
-
   const onAllRemove = () => {
     console.log(typeof searchList);
     setSearchList([]);
   };
-
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', onBackPress);
-    return () => {
-      BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-    };
-  }),
-    [onBackPress];
 
   return (
     <BaseSafeView>
       <Container bgColor={'#212121'} padding={0}>
         <View style={{paddingHorizontal: 20, paddingVertical: 30}}>
           <RowBox alignC justify={'space-around'}>
-            <TouchableOpacity onPress={onBackPress}>
-              <CommonImage
-                source={Back_White}
-                width={48}
-                height={24}
-                marginRight={20}
-              />
-            </TouchableOpacity>
+            <BackButton />
             <View style={styles.block}>
               <TextInput
                 placeholder="검색어를 입력하세요."
