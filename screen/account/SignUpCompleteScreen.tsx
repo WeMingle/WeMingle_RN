@@ -45,8 +45,6 @@ const SignUpCompleteScreen = () => {
     const result = await getPresignedUrl();
     if (result) setUploadLink(result);
 
-    console.log('result', result);
-
     openImagePicker();
   };
 

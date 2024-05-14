@@ -6,6 +6,7 @@ import {
   Container,
   ModalContainer,
   RowBox,
+  VerticalBar,
 } from '../../screen/CommonStyled.style';
 import {Colors} from '../../assets/color/Colors';
 import {
@@ -60,12 +61,7 @@ const AccountBottomSlideModal = ({
               <RadioButton value="" color={Colors.blue400} status={'checked'} />
               <CommonText>전체 동의 하기</CommonText>
             </RowBox>
-            <View
-              style={{
-                height: 1,
-                backgroundColor: Colors.c_gray300,
-                marginTop: 12,
-              }}></View>
+            <VerticalBar marginT={12} />
             <RowBox alignC marginT={20} justify={'space-between'}>
               <RowBox alignC>
                 <Checkbox color={Colors.blue400} status={'checked'} />

@@ -12,7 +12,7 @@ interface CommonHeaderProps {
 
 export const CommonHeader = ({
   headerTitle = '',
-  rightButtonPress = () => {},
+  rightButtonPress,
 }: CommonHeaderProps) => {
   const navigation = useNavigation();
 
@@ -29,12 +29,14 @@ export const CommonHeader = ({
           {headerTitle}
         </CommonText>
       </RowBox>
-      <TouchableOpacity onPress={rightButtonPress}>
-        <Image
-          source={Config_Icon}
-          style={{width: 24, height: 24, marginRight: 5, right: 5}}
-        />
-      </TouchableOpacity>
+      {rightButtonPress && (
+        <TouchableOpacity onPress={rightButtonPress}>
+          <Image
+            source={Config_Icon}
+            style={{width: 24, height: 24, marginRight: 5, right: 5}}
+          />
+        </TouchableOpacity>
+      )}
     </RowBox>
   );
 };

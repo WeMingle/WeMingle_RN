@@ -6,7 +6,13 @@ import {FontSizeCalculator} from '../component/Common';
 import calendar from '../assets/calendar_month.png';
 import person from '../assets/person.png';
 
+import CheckBoxON from '../assets/checkbox_on.png';
+import CheckBoxOff from '../assets/checkbox_off.png';
+import moment from 'moment';
+import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
+
 export const ScreenWidth = Dimensions.get('screen').width;
+export const ScreenHeight = Dimensions.get('window').height;
 
 // ios 다이나믹 아일랜드 대응 컴포넌트
 export const BaseSafeView = styled.View`
@@ -32,6 +38,13 @@ export const Container = styled.View`
   background-color: ${(props: {bgColor: string}) => props.bgColor || '#fff'};
 `;
 
+export const ModalBackdrop = styled(TouchableWithoutFeedback)`
+  justify-content: center;
+  align-items: center;
+  width: ${ScreenWidth}px;
+  height: ${ScreenHeight}px;
+  background-color: rgba(0, 0, 0, 0.4);
+`;
 // 가로정렬 View
 export const RowBox = styled.View`
   ${(props: {width: number}) => props.width && `width: ${props.width}px`};
@@ -129,6 +142,7 @@ interface modalSize {
 }
 export const modalSize: modalSize = {
   small: Dimensions.get('screen').height / 4,
+  mSmall: Dimensions.get('screen').height / 3,
   medium: Dimensions.get('screen').height / 2,
   large: (Dimensions.get('screen').height * 3) / 4,
 };
@@ -144,6 +158,14 @@ export const ModalContainer = styled.View`
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   padding: 20px;
+`;
+
+export const AlertModalContainer = styled.View`
+  width: 80%;
+  border-radius: 15px;
+  background-color: #fff;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export const AccountHeader = styled(RowBox)`
@@ -244,7 +266,7 @@ export const BorderBox = styled.View`
   border-color: ${(props: {borderColor: number}) =>
     props.borderColor ? props.borderColor : Colors.c_gray300};
   align-items: ${(props: {alignC: string}) => props.alignC && 'center'};
-  flex-direction: ${(props: {row: number}) => (props.row ? 'row' : 'coulmn')};
+  flex-direction: ${(props: {row: boolean}) => (props.row ? 'row' : 'coulmn')};
   background-color: ${(props: {bgColor: string}) => props.bgColor || '#fff'};
 `;
 
@@ -264,6 +286,7 @@ export const BorderBoxButton = styled.TouchableOpacity`
   background-color: ${(props: {bgColor: string}) => props.bgColor || '#fff'};
   margin-right: ${(props: {marginR: number}) =>
     props.marginR && props.marginR}px;
+  margin-top: ${(props: {marginT: number}) => props.marginT && props.marginT}px;
 `;
 
 export const profileBox = styled(CenterBox)``;
@@ -281,19 +304,25 @@ export const ConfirmButton = styled(BorderBoxButton)`
     props.marginB && props.marginB}px;
 `;
 
+export const VerticalBar = styled.View`
+  width: ${ScreenWidth}px;
+  height: 1px;
+  left: -20px;
+  background-color: ${Colors.c_gray200};
+  margin-top: ${(props: {marginT: number}) => props.marginT || 20}px;
+  margin-bottom: ${(props: {marginB: number}) => props.marginB || 0}px;
+`;
 export const MatchingItem = ({item, index}: any) => {
   return (
     <>
       <RowBox marginT={20} style={{paddingLeft: 20}}>
-        <BorderBox
-          borderColor={Colors.informative}
-          borderR={20}
-          alignC
-          row
-          padding={7}>
+        <BorderBox borderColor={Colors.informative} borderR={20} alignC row>
           <CommonImage source={calendar} width={11} height={11} />
           <CommonText color={Colors.informative} marginL={5} fontSize={11}>
-            3월 24일
+            {`${item.matchingDate[0].slice(
+              5,
+              7,
+            )}월 ${item.matchingDate[0].slice(8, 10)}일`}
           </CommonText>
         </BorderBox>
         <BorderBox
@@ -302,11 +331,13 @@ export const MatchingItem = ({item, index}: any) => {
           borderR={20}
           alignC
           row
-          padding={7}
-          bgColor={Colors.c_gray200}>
+          bgColor={Colors.c_gray200}
+          style={{
+            paddingRight: 7,
+          }}>
           <CommonImage source={person} width={11} height={11} />
           <CommonText color={Colors.informative} marginL={5} fontSize={11}>
-            3월 24일
+            {item.recruiterType === 'INDIVIDUAL' ? '개인' : '그룹'}
           </CommonText>
         </BorderBox>
       </RowBox>
@@ -325,23 +356,24 @@ export const MatchingItem = ({item, index}: any) => {
         <View
           style={{justifyContent: 'space-between', marginLeft: 15, height: 80}}>
           <CommonText>
-            위밍글러12{' '}
+            {item.writer}
             <CommonText color={Colors.c_gray400} fontSize={12}>
-              매칭 경험 5번
+              {' '}
+              매칭 경험 {item.matchingCnt}번
             </CommonText>
           </CommonText>
-          <CommonText fontSize={10}>
-            3월 24일 가볍게 경기 매칭 하실 용병 구합니다.
-          </CommonText>
+          <CommonText fontSize={10}>{item.contents}</CommonText>
           <RowBox marginT={5}>
             <CommonText color={Colors.c_gray500} fontSize={10}>
               지역
             </CommonText>
             <CommonText fontSize={10} marginL={15}>
-              서울 전체
-              <CommonText fontSize={10} color={Colors.c_gray400}>
-                (협의가능)
-              </CommonText>
+              {item.areaList}
+              {item.locationConsensusPossible && (
+                <CommonText fontSize={10} color={Colors.c_gray400}>
+                  (협의가능)
+                </CommonText>
+              )}
             </CommonText>
             <CommonText
               color={Colors.c_gray500}
@@ -350,11 +382,28 @@ export const MatchingItem = ({item, index}: any) => {
               marginL={25}>
               실력
             </CommonText>
-            <CommonText fontSize={10}>Lv. 1-3</CommonText>
+            <CommonText fontSize={10}>
+              Lv.{' '}
+              {item.ability === 'LOW'
+                ? '1-3'
+                : item.ability === 'MEDIUM'
+                ? '4-6'
+                : '7-9'}
+            </CommonText>
           </RowBox>
         </View>
       </RowBox>
     </>
+  );
+};
+
+export const CheckBox = ({isChecked = true}) => {
+  return (
+    <CommonImage
+      source={isChecked ? CheckBoxON : CheckBoxOff}
+      width={18}
+      height={18}
+    />
   );
 };
 

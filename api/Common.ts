@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-import { Store } from '../redux/Store';
-
+import {Store} from '../redux/Store';
 
 export const BASE_URL = 'http://49.172.40.78:8080';
 
@@ -17,9 +16,7 @@ export const axiosPrivate = axios.create({
 axiosPrivate.interceptors.request.use(config => {
   const token = Store.getState()?.token.accessToken;
 
-  config.headers.Authorization =
-    `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0aHJ1c3VtMTIzQGdtYWlsLmNvbSIsImlhdCI6MTcxMTk4MzA4NiwiZXhwIjo0ODIyMzgzMDg2LCJzdWIiOiJXZU1pbmdsZSIsImlkIjoibWVtYmVySWQwIiwicm9sZSI6IlJPTEVfQURNSU4ifQ.OkVWQpb-w4r5GtIYXufXU9kLs4KSnG26olvVuqydlcw`;
-
+  config.headers.Authorization = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0aHJ1c3VtMTIzQGdtYWlsLmNvbSIsImlhdCI6MTcxMTk4MzA4NiwiZXhwIjo0ODIyMzgzMDg2LCJzdWIiOiJXZU1pbmdsZSIsImlkIjoibWVtYmVySWQwIiwicm9sZSI6IlJPTEVfQURNSU4ifQ.OkVWQpb-w4r5GtIYXufXU9kLs4KSnG26olvVuqydlcw`;
 
   return config;
 });

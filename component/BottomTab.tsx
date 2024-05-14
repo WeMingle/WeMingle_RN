@@ -2,9 +2,14 @@ import {Dimensions, TouchableWithoutFeedback, View} from 'react-native';
 import {Colors} from '../assets/color/Colors';
 
 import Home_Icon from '../assets/home_icon.png';
+import Home_Icon_On from '../assets/home_on.png';
 import Matchin_Icon from '../assets/matching_icon.png';
+import Matchin_Icon_On from '../assets/matching_on.png';
 import Group_Icon from '../assets/group_icon.png';
+import Group_Icon_On from '../assets/group_on.png';
 import MyPage_Icon from '../assets/mypage_icon.png';
+import MyPage_Icon_On from '../assets/mypage_on.png';
+
 import {useDispatch, useSelector} from 'react-redux';
 import {CommonImage, CommonText, RowBox} from '../screen/CommonStyled.style';
 import {setCurrentTab} from '../redux/slice/TabNavigatorSlice';
@@ -19,7 +24,7 @@ export const BottomTabView = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
   const currentTab = useSelector(state => state.currentTab).currentTab;
   const dispatch = useDispatch();
-  const changeTab = (name, nextPage) => {
+  const changeTab = (name: string, nextPage: string) => {
     dispatch(setCurrentTab({currentTab: name}));
     if (!!nextPage) {
       navigation.navigate(nextPage);
@@ -49,7 +54,11 @@ export const BottomTabView = () => {
               changeTab(v.name, v.nextPage);
             }}>
             <View style={{alignItems: 'center', flex: 1}}>
-              <CommonImage source={v.image} width={24} height={24} />
+              <CommonImage
+                source={currentTab === v.name ? v.onImage : v.image}
+                width={24}
+                height={24}
+              />
               <CommonText
                 fontSize={10}
                 marginT={5}
@@ -68,6 +77,7 @@ const TabMenus = [
   {
     title: '홈',
     image: Home_Icon,
+    onimage: Home_Icon_On,
     // selectedImage: Home_Icon,
     name: 'Home',
     nextPage: '',
@@ -75,15 +85,10 @@ const TabMenus = [
   {
     title: '매칭',
     image: Matchin_Icon,
+    onImage: Matchin_Icon_On,
     name: 'Matching',
     nextPage: 'Matching',
   },
-  // {
-  //   title: '내그룹',
-  //   image: Group_Icon,
-  //   name: 'MyGroup',
-  //   nextPage: 'MyGroup',
-  // },
   {
     title: '내그룹',
     image: Group_Icon,
@@ -93,6 +98,7 @@ const TabMenus = [
   {
     title: '마이페이지',
     image: MyPage_Icon,
+    onImage: MyPage_Icon_On,
     name: 'MyPage',
     nextPage: 'MyPage',
   },

@@ -22,10 +22,12 @@ import MyProfileScreen from './myPage/MyProfileScreen';
 import MatchingListScreen from './myPage/MatchingListScreen';
 import MatchingScreen from './matching/MatchingScreen';
 import MatchingWriteScreen from './matching/MatchingWriteScreen';
-import {BackHandler, View} from 'react-native';
+import {BackHandler, Platform, View} from 'react-native';
 import {BottomTabView} from '../component/BottomTab';
 import MatchingDateSelectScreen from './matching/MatchingDateSelectScreen';
 import {showToastMessage} from '../component/Toast';
+import Component from 'react-native-paper/lib/typescript/components/List/ListItem';
+import ScrapListScreen from './myPage/ScrapListScreen';
 
 //MyGroup - 전하윤
 import MyGroupDefaultScreen from './myGroup/MyGroupDefaultScreen';
@@ -36,6 +38,14 @@ import SearchProfileScreen from './myGroup/SearchProfileScreen';
 import GroupPageScreen from './myGroup/GroupPageScreen';
 import GroupChattingPageScreen from './myGroup/GroupChattingPageScreen';
 import GroupMemberPageScreen from './myGroup/GroupMemberPageScreen';
+
+import {
+  PERMISSIONS,
+  request,
+  requestLocationAccuracy,
+  requestMultiple,
+} from 'react-native-permissions';
+import AlertModal from '../component/modal/AlertModal';
 
 let count = 0; //  종료카운트
 
@@ -55,9 +65,40 @@ const RootScreen = () => {
     getToken();
   }, []);
 
+  useEffect(() => {
+    if (Platform.OS === 'ios') {
+      request(PERMISSIONS.IOS.LOCATION_ALWAYS).then(status => {
+        console.log(`Location request status: ${status}`);
+        if (status === 'granted') {
+          requestLocationAccuracy({
+            purposeKey: 'common-purpose', // replace your purposeKey of Info.plist
+          })
+            .then(accuracy => {
+              console.log(`Location accuracy is: ${accuracy}`);
+            })
+            .catch(e => {
+              console.error(`Location accuracy request has been failed: ${e}`);
+            });
+        }
+      });
+    }
+    if (Platform.OS === 'android') {
+      requestMultiple([
+        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+        PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION,
+      ])
+        .then(status => {
+          console.log(`Location request status: ${status}`);
+        })
+        .catch(e => {
+          console.error(`Location request has been failed: ${e}`);
+        });
+    }
+  }, []);
+
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={'MyPage'}>
+      <Stack.Navigator initialRouteName={'Matching'}>
         {RouterSetting.map((v, index) => {
           const ranNum = Math.random().toString(36).substr(2, 10);
           return (
@@ -68,6 +109,7 @@ const RootScreen = () => {
               options={{
                 headerShown: false,
                 gestureDirection: 'horizontal',
+                presentation: v.presentation && v.presentation,
               }}
             />
           );
@@ -156,6 +198,11 @@ const RouterSetting = [
     name: 'CertificationSchool',
     component: CertificationSchoolScreen,
   },
+  {
+    name: 'AlertModal',
+    component: AlertModal,
+    presentation: 'transparentModal',
+  },
 ];
 
 const TabRouterSetting = [
@@ -218,6 +265,10 @@ const TabRouterSetting = [
   {
     name: 'MatchingDateSelect',
     component: MatchingDateSelectScreen,
+  },
+  {
+    name: 'ScrapList',
+    component: ScrapListScreen,
   },
 ];
 

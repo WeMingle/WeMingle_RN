@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 
 import {
@@ -16,11 +16,24 @@ import {
 } from '@react-navigation/native';
 import {CommonHeaderBlack} from '../../component/header/CommonHeader';
 import CalendarBox from '../../component/CalendarBox';
+import {getMatchingWritableGroup} from '../../api/Matching';
+import WritableMatchingGroupModal from '../../component/modal/WritableMatchingGroupModal';
 
 const MatchingDateSelectScreen = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
-  const [selectedDate, setSelectedDate] = useState<any[]>([]);
 
+  // useState
+  const [selectedDate, setSelectedDate] = useState<any[]>([]);
+  const [writableGroups, setWritableGroups] = useState({});
+
+  const [modalVisible, setModalVisible] = useState(false);
+
+  //useEffect
+  useEffect(() => {
+    _onRendered();
+  }, []);
+
+  // Function
   const _setSelectedDate = (day: number | string) => {
     const index = selectedDate?.indexOf(day);
     if (index < 0) {
@@ -35,8 +48,25 @@ const MatchingDateSelectScreen = () => {
     }
   };
 
+  const _onRendered = async () => {
+    const result = await getMatchingWritableGroup();
+
+    // console.log('result', result);
+    setWritableGroups(result);
+    setModalVisible(true);
+  };
+
+  const _setSelectedGroup = (value: string) => {
+    return;
+  };
+
   return (
     <BaseSafeView>
+      <WritableMatchingGroupModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        selectedGroup={_setSelectedGroup}
+      />
       <Container padding={0}>
         <View style={{backgroundColor: '#212121'}}>
           <CommonHeaderBlack headerTitle={'매칭글 작성'} />
