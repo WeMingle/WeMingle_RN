@@ -29,10 +29,15 @@ import {showToastMessage} from '../component/Toast';
 import Component from 'react-native-paper/lib/typescript/components/List/ListItem';
 import ScrapListScreen from './myPage/ScrapListScreen';
 
-// Jeon
+//MyGroup - 전하윤
+import MyGroupDefaultScreen from './myGroup/MyGroupDefaultScreen';
 import MyGroupScreen from './myGroup/MyGroupScreen';
-import MyGroupScreen2 from './myGroup/MyGroupScreen2';
 import MyGroupSearchScreen from './myGroup/MyGroupSearchScreen';
+import SearchResultScreen from './myGroup/SearchResultScreen';
+import SearchProfileScreen from './myGroup/SearchProfileScreen';
+import GroupPageScreen from './myGroup/GroupPageScreen';
+import GroupChattingPageScreen from './myGroup/GroupChattingPageScreen';
+import GroupMemberPageScreen from './myGroup/GroupMemberPageScreen';
 
 import {
   PERMISSIONS,
@@ -214,16 +219,36 @@ const TabRouterSetting = [
     component: MyProfileScreen,
   },
   {
+    name: 'MyGroupDefault',
+    component: MyGroupDefaultScreen,
+  },
+  {
     name: 'MyGroup',
     component: MyGroupScreen,
   },
   {
-    name: 'MyGroup2',
-    component: MyGroupScreen2,
-  },
-  {
     name: 'MyGroupSearch',
     component: MyGroupSearchScreen,
+  },
+  {
+    name: 'SearchResult',
+    component: SearchResultScreen,
+  },
+  {
+    name: 'SearchProfile',
+    component: SearchProfileScreen,
+  },
+  {
+    name: 'GroupPage',
+    component: GroupPageScreen,
+  },
+  {
+    name: 'GroupChatting',
+    component: GroupChattingPageScreen,
+  },
+  {
+    name: 'GroupMember',
+    component: GroupMemberPageScreen,
   },
   {
     name: 'MatchingList',

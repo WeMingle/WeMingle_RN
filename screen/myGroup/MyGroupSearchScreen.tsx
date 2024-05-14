@@ -4,7 +4,6 @@ import {
   View,
   TouchableOpacity,
   TextInput,
-  BackHandler,
   ActivityIndicator,
   StyleSheet,
   Keyboard,
@@ -24,9 +23,8 @@ import {
   RowBox,
 } from '../CommonStyled.style';
 import {Colors} from '../../assets/color/Colors';
-import Back_White from '../../assets/back_icon_white.png';
 import Close from '../../assets/Close.png';
-import {SearchLoading} from './style/MyGroupStyle.style';
+import {SearchLoading, BackButton} from './style/MyGroupStyle.style';
 import Search from '../../assets/search.png';
 
 interface Search {
@@ -38,15 +36,20 @@ const MyGroupSearchScreen = ({user}: any) => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
 
   const [text, setText] = useState('');
-
-  // const [searchList, setSearchList] = useState([
-  //   {id: 1, search: '농구'},
-  //   {id: 2, search: '스노우보드'},
-  // ]);
-
+  //searchList 안에 있는 Object 없애도 됨. (예시로 몇개 넣어둔거임.)
   const [searchList, setSearchList] = useState<Search[]>([
-    {id: 1, search: '농구'},
-    {id: 2, search: '스노우보드'},
+    {
+      id: 1,
+      search: '축구',
+    },
+    {
+      id: 2,
+      search: '농구',
+    },
+    {
+      id: 3,
+      search: '배구',
+    },
   ]);
 
   const onInsert = (txt: string) => {
@@ -77,43 +80,17 @@ const MyGroupSearchScreen = ({user}: any) => {
     Keyboard.dismiss();
   };
 
-  const onBackPress = () => {
-    if (navigation?.canGoBack()) {
-      navigation.goBack();
-      return true;
-    }
-    return false;
-  };
-
   const onAllRemove = () => {
     console.log(typeof searchList);
-    // setSearchList(
-    //   Object.keys(searchList).forEach(key => delete searchList[key]),
-    // );
-    // const allRemoveSearch:searchList
+    setSearchList([]);
   };
-
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', onBackPress);
-    return () => {
-      BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-    };
-  }),
-    [onBackPress];
 
   return (
     <BaseSafeView>
       <Container bgColor={'#212121'} padding={0}>
         <View style={{paddingHorizontal: 20, paddingVertical: 30}}>
           <RowBox alignC justify={'space-around'}>
-            <TouchableOpacity onPress={onBackPress}>
-              <CommonImage
-                source={Back_White}
-                width={48}
-                height={24}
-                marginRight={20}
-              />
-            </TouchableOpacity>
+            <BackButton />
             <View style={styles.block}>
               <TextInput
                 placeholder="검색어를 입력하세요."
@@ -206,22 +183,22 @@ const MyGroupSearchScreen = ({user}: any) => {
                 {
                   image: 'none',
                   title: '축구동아리',
-                  content: `숭실대 축구동아리입니다${'\n'}2324 신입생 모집중`,
+                  content: `숭실대 축구동아리입니다 2324 신입생 모집중`,
                 },
                 {
                   image: 'none',
                   title: '축구동아리',
-                  content: `숭실대 축구동아리입니다${'\n'}2324 신입생 모집중`,
+                  content: `숭실대 축구동아리입니다 2324 신입생 모집중`,
                 },
                 {
                   image: 'none',
                   title: '축구동아리',
-                  content: `숭실대 축구동아리입니다${'\n'}2324 신입생 모집중`,
+                  content: `숭실대 축구동아리입니다 2324 신입생 모집중`,
                 },
                 {
                   image: 'none',
                   title: '축구동아리',
-                  content: `숭실대 축구동아리입니다${'\n'}2324 신입생 모집중`,
+                  content: `숭실대 축구동아리입니다 2324 신입생 모집중`,
                 },
               ]}
               horizontal
@@ -250,10 +227,17 @@ const MyGroupSearchScreen = ({user}: any) => {
                     <CommonText
                       fontSize={14}
                       color={'#1C1C1C'}
-                      style={{marginBottom: 5}}>
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                      style={{marginBottom: 5, width: 132}}>
                       {items.item?.title}
                     </CommonText>
-                    <CommonText fontSize={12} color={'#8491A7'}>
+                    <CommonText
+                      fontSize={12}
+                      color={'#8491A7'}
+                      numberOfLines={2}
+                      ellipsizeMode="tail"
+                      style={{width: 132}}>
                       {items.item?.content}
                     </CommonText>
                   </View>

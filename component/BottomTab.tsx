@@ -18,6 +18,7 @@ import {
   ParamListBase,
   useNavigation,
 } from '@react-navigation/native';
+import {MyGroup} from '../redux/slice/MyGroupSlice';
 
 export const BottomTabView = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
@@ -29,6 +30,9 @@ export const BottomTabView = () => {
       navigation.navigate(nextPage);
     }
   };
+  // const renderData = ({sliceName}:any) => {
+  //   dispatch
+  // }
 
   return (
     <RowBox
@@ -85,18 +89,11 @@ const TabMenus = [
     name: 'Matching',
     nextPage: 'Matching',
   },
-  // {
-  //   title: '내그룹',
-  //   image: Group_Icon,
-  //   name: 'MyGroup',
-  //   nextPage: 'MyGroup',
-  // },
   {
     title: '내그룹',
     image: Group_Icon,
-    onImage: Group_Icon_On,
-    name: 'MyGroup2',
-    nextPage: 'MyGroup2',
+    name: 'MyGroup',
+    nextPage: 'MyGroup',
   },
   {
     title: '마이페이지',
