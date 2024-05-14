@@ -26,8 +26,8 @@ import {BackHandler, Platform, View} from 'react-native';
 import {BottomTabView} from '../component/BottomTab';
 import MatchingDateSelectScreen from './matching/MatchingDateSelectScreen';
 import {showToastMessage} from '../component/Toast';
-import Component from 'react-native-paper/lib/typescript/components/List/ListItem';
 import ScrapListScreen from './myPage/ScrapListScreen';
+import HomeScreen from './home/HomeScreen';
 
 // Jeon
 import MyGroupScreen from './myGroup/MyGroupScreen';
@@ -93,7 +93,7 @@ const RootScreen = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={'Matching'}>
+      <Stack.Navigator initialRouteName={'Home'}>
         {RouterSetting.map((v, index) => {
           const ranNum = Math.random().toString(36).substr(2, 10);
           return (
@@ -244,6 +244,10 @@ const TabRouterSetting = [
   {
     name: 'ScrapList',
     component: ScrapListScreen,
+  },
+  {
+    name: 'Home',
+    component: HomeScreen,
   },
 ];
 
