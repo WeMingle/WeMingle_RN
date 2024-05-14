@@ -77,10 +77,9 @@ const TabMenus = [
   {
     title: '홈',
     image: Home_Icon,
-    onimage: Home_Icon_On,
-    // selectedImage: Home_Icon,
+    onImage: Home_Icon_On,
     name: 'Home',
-    nextPage: '',
+    nextPage: 'Home',
   },
   {
     title: '매칭',

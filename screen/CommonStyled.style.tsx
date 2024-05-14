@@ -256,10 +256,12 @@ export const MatchingBorderBox = styled.View`
 
 export const BorderBox = styled.View`
   margin-left: ${(props: {marginL?: number}) => props.marginL || 0}px;
+  margin-right: ${(props: {marginR?: number}) => props.marginR || 0}px;
+  margin-top: ${(props: {marginT?: number}) => props.marginT || 0}px;
   padding: ${(props: {padding?: number}) =>
     props.padding ? props.padding : 5}px;
   height: ${(props: {height?: number}) => props.height && props.height}px;
-  width: ${(props: {width: number}) => props.width && props.width}ox;
+  width: ${(props: {width: number}) => props.width && props.width}px;
   border-radius: ${(props: {borderR: number}) =>
     props.borderR ? props.borderR : 15}px;
   border-width: 1px;
@@ -396,6 +398,16 @@ export const MatchingItem = ({item, index}: any) => {
     </>
   );
 };
+
+export const HorizontalBar = styled.View`
+  width: ${ScreenWidth}px;
+  height: 1px;
+  background-color: ${Colors.c_gray200};
+  margin-top: ${(props: {marginT: number}) =>
+    props.marginT || props.marginT === 0 ? props.marginT : 20}px;
+  margin-bottom: ${(props: {marginB: number}) =>
+    props.marginB || props.marginB === 0 ? props.marginB : 20}px;
+`;
 
 export const CheckBox = ({isChecked = true}) => {
   return (
