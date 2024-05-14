@@ -163,6 +163,7 @@ interface MatchingListBoxProps {
   sortOption?: string;
   matchingList?: any;
   matchingCount?: number;
+  hideHeader?: boolean;
 }
 
 export const MatchingListBox = ({
@@ -171,30 +172,33 @@ export const MatchingListBox = ({
   sortOption,
   matchingList,
   matchingCount = 0,
+  hideHeader,
 }: MatchingListBoxProps) => {
   return (
     <>
       {matchingList && (
         <FlatList
           ListHeaderComponent={
-            <RowBox
-              justify={'space-between'}
-              padding={20}
-              borderB
-              borderT
-              height={60}>
-              <CommonText fontSize={12} color={Colors.c_gray400}>
-                {matchingCount}개의 구인글
-              </CommonText>
-              <RowBox alignC>
-                <TouchableOpacity onPress={() => setModalVisible(false)}>
-                  <CommonText fontSize={12} marginR={15}>
-                    {sortOption === 'NEW' ? '최신순' : '마감임박순'}
-                  </CommonText>
-                </TouchableOpacity>
-                <CommonImage source={Arrow_down} width={10} height={20} />
+            !hideHeader ? (
+              <RowBox
+                justify={'space-between'}
+                padding={20}
+                borderB
+                borderT
+                height={60}>
+                <CommonText fontSize={12} color={Colors.c_gray400}>
+                  {matchingCount}개의 구인글
+                </CommonText>
+                <RowBox alignC>
+                  <TouchableOpacity onPress={() => setModalVisible(false)}>
+                    <CommonText fontSize={12} marginR={15}>
+                      {sortOption === 'NEW' ? '최신순' : '마감임박순'}
+                    </CommonText>
+                  </TouchableOpacity>
+                  <CommonImage source={Arrow_down} width={10} height={20} />
+                </RowBox>
               </RowBox>
-            </RowBox>
+            ) : null
           }
           showsVerticalScrollIndicator={false}
           data={Object.keys(matchingList)}

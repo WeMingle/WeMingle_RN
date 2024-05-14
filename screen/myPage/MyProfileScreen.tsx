@@ -211,6 +211,7 @@ const MyProfileScreen = () => {
               }}
             />
           </TouchableOpacity>
+
           <View
             style={{
               paddingHorizontal: 20,

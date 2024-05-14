@@ -46,6 +46,7 @@ import {
   requestMultiple,
 } from 'react-native-permissions';
 import AlertModal from '../component/modal/AlertModal';
+import AllPostScreen from './myPage/AllPostScreen';
 
 let count = 0; //  종료카운트
 
@@ -98,7 +99,6 @@ const RootScreen = () => {
 
   return (
     <NavigationContainer>
-
       <Stack.Navigator initialRouteName={'Home'}>
         {RouterSetting.map((v, index) => {
           const ranNum = Math.random().toString(36).substr(2, 10);
@@ -274,6 +274,10 @@ const TabRouterSetting = [
   {
     name: 'Home',
     component: HomeScreen,
+  },
+  {
+    name: 'AllPost',
+    component: AllPostScreen,
   },
 ];
 

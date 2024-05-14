@@ -242,9 +242,12 @@ const MyPageScreen = () => {
             <CommonText fontSize={14} marginT={20}>
               작성한 매칭 일지
             </CommonText>
-            <CommonText fontSize={14} marginT={20}>
-              모든 작성 글
-            </CommonText>
+            <TouchableOpacity onPress={() => navigation.navigate('AllPost')}>
+              <CommonText fontSize={14} marginT={20}>
+                모든 작성 글
+              </CommonText>
+            </TouchableOpacity>
+
             <View
               style={{
                 width: '100%',
