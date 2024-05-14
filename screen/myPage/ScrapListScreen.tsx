@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Dimensions,
   FlatList,
@@ -43,11 +43,25 @@ import Arrow_Down from '../../assets/arrow_down.png';
 import CheckBoxON from '../../assets/checkbox_on.png';
 import CheckBoxOff from '../../assets/checkbox_off.png';
 import {MatchingListBox} from '../matching/style/MatchingStyle';
+import {useAppDispatch} from '../../redux/Store';
+import {getScrap} from '../../api/MyPage';
 
 const ScrapListScreen = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
+  const dispatch = useAppDispatch();
 
   const [selectedTab, setSelectedTab] = useState('matching');
+  const [scrapList, setScrapList] = useState<any>();
+
+  console.log(scrapList);
+
+  useEffect(() => {
+    const asyncFunction = async () => {
+      const result = await getScrap();
+      setScrapList(result);
+    };
+    asyncFunction();
+  }, []);
 
   const Tab = ({title = '', isSelected = true}) => {
     return (
@@ -114,7 +128,7 @@ const ScrapListScreen = () => {
           </RowBox>
         </TouchableOpacity>
       </RowBox>
-      <MatchingListBox />
+      <MatchingListBox matchingList={scrapList} />
     </BaseSafeView>
   );
 };

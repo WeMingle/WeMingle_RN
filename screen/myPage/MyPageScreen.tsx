@@ -23,7 +23,7 @@ import {MyButtonFrame} from './style/MyPageStyle.style';
 import Arrow_Right_White from '../../assets/arrow_right_white.png';
 import Arrow_Right from '../../assets/arrow_right.png';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import { getMyGroupList } from '../../api/MyPage';
+import {getMyGroupList} from '../../api/MyPage';
 
 const testData = [
   {image: 'none', name: '숭실대 축구 동아리'},
@@ -37,24 +37,23 @@ const testData = [
 ];
 
 interface GroupList {
-  teamName: string,
+  teamName: string;
   teamImgUrl: string;
 }
 
 const MyPageScreen = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
   const [selectItems, setSelectItems] = useState([]);
-  const [groupList, setGroupList] = useState<GroupList[]>()
+  const [groupList, setGroupList] = useState<GroupList[]>();
 
   useEffect(() => {
     const _getFunction = async () => {
       const result = await getMyGroupList();
-      
-      if(result)
-        setGroupList(Object.values(result))
-    }
+
+      if (result) setGroupList(Object.values(result));
+    };
     _getFunction();
-  }, [])
+  }, []);
 
   const MyInfoButton = () => {
     return (
@@ -181,10 +180,15 @@ const MyPageScreen = () => {
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
           }}>
-          <RowBox justify={'space-between'}>
-            <CommonText fontSize={14}>내 그룹</CommonText>
-            <CommonImage source={Arrow_Right} width={24} height={24} />
-          </RowBox>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('MyGroup2');
+            }}>
+            <RowBox justify={'space-between'}>
+              <CommonText fontSize={14}>내 그룹</CommonText>
+              <CommonImage source={Arrow_Right} width={24} height={24} />
+            </RowBox>
+          </TouchableOpacity>
 
           <FlatList
             data={groupList}

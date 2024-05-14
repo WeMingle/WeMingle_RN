@@ -1,4 +1,10 @@
-import {Dimensions, Platform, StatusBar, View} from 'react-native';
+import {
+  Dimensions,
+  Platform,
+  StatusBar,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import styled from 'styled-components/native';
 import {Colors} from '../assets/color/Colors';
 import {FontSizeCalculator} from '../component/Common';
@@ -9,6 +15,9 @@ import person from '../assets/person.png';
 import CheckBoxON from '../assets/checkbox_on.png';
 import CheckBoxOff from '../assets/checkbox_off.png';
 import moment from 'moment';
+
+import {ClickBookmark} from './myGroup/style/MyGroupStyle.style';
+
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 
 export const ScreenWidth = Dimensions.get('screen').width;
@@ -317,31 +326,39 @@ export const VerticalBar = styled.View`
 export const MatchingItem = ({item, index}: any) => {
   return (
     <>
-      <RowBox marginT={20} style={{paddingLeft: 20}}>
-        <BorderBox borderColor={Colors.informative} borderR={20} alignC row>
-          <CommonImage source={calendar} width={11} height={11} />
-          <CommonText color={Colors.informative} marginL={5} fontSize={11}>
-            {`${item.matchingDate[0].slice(
-              5,
-              7,
-            )}월 ${item.matchingDate[0].slice(8, 10)}일`}
-          </CommonText>
-        </BorderBox>
-        <BorderBox
-          borderColor={'#fff'}
-          marginL={5}
-          borderR={20}
-          alignC
-          row
-          bgColor={Colors.c_gray200}
-          style={{
-            paddingRight: 7,
-          }}>
-          <CommonImage source={person} width={11} height={11} />
-          <CommonText color={Colors.informative} marginL={5} fontSize={11}>
-            {item.recruiterType === 'INDIVIDUAL' ? '개인' : '그룹'}
-          </CommonText>
-        </BorderBox>
+      <RowBox
+        justify={'space-between'}
+        marginT={20}
+        style={{paddingLeft: 20, paddingRight: 20}}>
+        <RowBox>
+          <BorderBox borderColor={Colors.informative} borderR={20} alignC row>
+            <CommonImage source={calendar} width={11} height={11} />
+            <CommonText color={Colors.informative} marginL={5} fontSize={11}>
+              {`${item.matchingDate[0].slice(
+                5,
+                7,
+              )}월 ${item.matchingDate[0].slice(8, 10)}일`}
+            </CommonText>
+          </BorderBox>
+          <BorderBox
+            borderColor={'#fff'}
+            marginL={5}
+            borderR={20}
+            alignC
+            row
+            bgColor={Colors.c_gray200}
+            style={{
+              paddingRight: 7,
+            }}>
+            <CommonImage source={person} width={11} height={11} />
+            <CommonText color={Colors.informative} marginL={5} fontSize={11}>
+              {item.recruiterType === 'INDIVIDUAL' ? '개인' : '그룹'}
+            </CommonText>
+          </BorderBox>
+        </RowBox>
+        <TouchableOpacity>
+          <ClickBookmark bookmark={item?.bookmarked} width={26} height={24} />
+        </TouchableOpacity>
       </RowBox>
       <RowBox alignC padding={20} style={{paddingBottom: 30}} borderB>
         <CommonTouchableOpacity

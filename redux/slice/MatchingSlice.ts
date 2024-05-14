@@ -4,10 +4,7 @@ import {axiosPrivate} from '../../api/Common';
 const initialState = {
   matchingList: {},
   nextUrl: '',
-};
-
-export const test = () => {
-  console.log('asd');
+  matchingCount: 0,
 };
 
 interface getMatchingListPaylod {
@@ -29,11 +26,18 @@ export const getMatchingList = createAsyncThunk(
         sportsType,
         filterValues,
       } = payload;
-      let url = `/post/match/calendar?sortOption=${sortOption}&dateFilter=${dateFilter}&recruitmentType=${recruitmentType}&sportsType=${sportsType}`;
+      let url = `/post/match/calendar/count?sortOption=${sortOption}&dateFilter=${dateFilter}&recruitmentType=${recruitmentType}&sportsType=${sportsType}`;
+      const matchingCount = await axiosPrivate.get(url).then(async response => {
+        if (response.status === 200) {
+          const result = response.data.responseData;
+          return result;
+        }
+      });
+      url = `/post/match/calendar?sortOption=${sortOption}&dateFilter=${dateFilter}&recruitmentType=${recruitmentType}&sportsType=${sportsType}`;
       Object.keys(filterValues).map((v: any) => {
         filterValues[v] && (url += `&${v}=${filterValues[v]}`);
       });
-      console.log('url', url);
+      // console.log('url', url);
       return await axiosPrivate
         .get(url)
         .then(async response => {
@@ -41,6 +45,7 @@ export const getMatchingList = createAsyncThunk(
             const result = {
               matchingList: response.data.responseData['post list'],
               nextUrl: response.data.responseData['next url'],
+              matchingCount: matchingCount,
             };
             return result;
           }
@@ -66,12 +71,14 @@ export const MatchingSlice = createSlice({
     getMatching(state, action) {
       state.matchingList = action.payload.matchingList;
       state.nextUrl = action.payload.nextUrl;
+      state.matchingCount = action.payload.matchingCount;
     },
   },
   extraReducers: builder => {
     builder.addCase(getMatchingList.fulfilled, (state, action) => {
       state.matchingList = action.payload?.matchingList;
       state.nextUrl = action.payload?.nextUrl;
+      state.matchingCount = action.payload?.matchingCount;
     });
   },
 });
