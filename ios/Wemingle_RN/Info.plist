@@ -72,6 +72,18 @@
 		<string>Pretendard-Regular.ttf</string>
 		<string>Pretendard-SemiBold.ttf</string>
 	</array>
+		<key>NSCameraUsageDescription</key>
+	<string>${PRODUCT_NAME}에서 카메라에 접근하려고 합니다.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>${PRODUCT_NAME}에서 회원님의 위치정보에 접근하려고 합니다.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>${PRODUCT_NAME}에서 회원님의 위치정보에 접근하려고 합니다.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>${PRODUCT_NAME}에서 위치정보에 접근하려고 합니다.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>${PRODUCT_NAME}에서 회원님의 추가 정보를 위해 파일을 다운로드 할 수 있도록 합니다.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>${PRODUCT_NAME}에서 포토라이브러리에 접근하려고 합니다.</string>
 	<key>NMFClientId</key>
   <string>v5k5fyd07q</string>
 </dict>

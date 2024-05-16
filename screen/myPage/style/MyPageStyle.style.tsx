@@ -34,8 +34,8 @@ export const MyButtonFrame = styled(RowBox)`
 
 export const ConfigFrameContainer = styled.View`
   position: absolute;
-  right: 20;
-  top: 50;
+  right: 20px;
+  top: 50px;
 `;
 
 export const MatchingListTab = styled(TouchableNativeFeedback)`
