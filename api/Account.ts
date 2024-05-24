@@ -79,3 +79,42 @@ export const getPresignedUrl = async () => {
       return false;
     });
 };
+
+// onboard sports
+export const addOnboard = async (payload: string) => {
+  return await axiosPrivate
+    .post('/onboard', {selectedSport: payload})
+    .then(response => {
+      if (response?.status === 200) {
+        console.log('asd');
+        return response.data.responseData;
+      }
+    })
+    .catch(e => console.log(e));
+};
+
+export const certificationEmail = async (payload: string) => {
+  return await axiosPrivate
+    .post('/mail', {univEmail: payload})
+    .then(response => {
+      if (response?.status === 200) {
+        console.log('asd');
+        return response.data.responseData;
+      }
+    })
+    .catch(e => console.log(e));
+};
+
+export const checkEmailNumber = async (payload: any) => {
+  return await axiosPrivate
+    .post('/mail/verify', {
+      univEmail: payload.email,
+      verificationCode: payload.checkNum,
+    })
+    .then(response => {
+      if (response?.status === 200) {
+        return response.data.responseData;
+      }
+    })
+    .catch(e => console.log(e));
+};

@@ -305,12 +305,16 @@ const VoteGraph = styled.View`
   background-color: #5c667b;
 `;
 
-export const SearchButton = ({width, height}: any) => {
+export const SearchButton = ({
+  width,
+  height,
+  nextPage = 'MyGroupSearch',
+}: any) => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate('MyGroupSearch');
+        navigation.navigate(nextPage);
       }}>
       <CommonImage source={Search} width={width} height={height} />
     </TouchableOpacity>

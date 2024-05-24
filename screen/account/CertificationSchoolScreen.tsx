@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
-import {Dimensions, FlatList, Image} from 'react-native';
+import {Dimensions, FlatList, Image, TextInput} from 'react-native';
 import {
   AccountButton,
   BaseSafeView,
+  CommonInputView,
   CommonText,
   CommonTouchableOpacity,
   Container,
@@ -15,13 +16,20 @@ import {
 } from '@react-navigation/native';
 
 import Arrow_Right from '../../assets/arrow_right.png';
+import {CommonHeader} from '../../component/header/CommonHeader';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {certificationEmail, checkEmailNumber} from '../../api/Account';
+import {check} from 'react-native-permissions';
 
 const CertificationSchoolScreen = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
+
+  const [email, setEmail] = useState<string>('dlgusxo1000@gmail.com');
+  const [checkNum, setCheckNum] = useState<number | null>(null);
   return (
     <BaseSafeView>
       <Container>
-        <CommonTouchableOpacity
+        {/* <CommonTouchableOpacity
           marginT={20}
           width={Dimensions.get('screen').width - 40}
           height={60}
@@ -36,15 +44,49 @@ const CertificationSchoolScreen = () => {
           }}>
           <CommonText fontSize={14}>학교 인증을 완료해주세요.</CommonText>
           <Image source={Arrow_Right} style={{width: 8, height: 15}} />
-        </CommonTouchableOpacity>
+        </CommonTouchableOpacity> */}
+        <CommonHeader headerTitle={'학교 인증'} />
 
-        {/* <AccountButton
-          onPress={() => navigation.navigate('Onboarding')}
+        <CommonText marginT={28} fontSize={14}>
+          학교 메일 주소
+        </CommonText>
+        <CommonInputView>
+          <TextInput
+            style={{width: '70%', color: '#212121'}}
+            value={email}
+            onChangeText={v => setEmail(v)}
+          />
+          <TouchableOpacity
+            onPress={() => {
+              certificationEmail(email);
+            }}>
+            <CommonText color={Colors.blue400} fontSize={14}>
+              인증번호받기
+            </CommonText>
+          </TouchableOpacity>
+        </CommonInputView>
+
+        <CommonText marginT={28} fontSize={14}>
+          인증번호
+        </CommonText>
+        <CommonInputView>
+          <TextInput
+            style={{width: '70%', color: '#212121'}}
+            keyboardType="number-pad"
+            value={checkNum}
+            onChangeText={v => setCheckNum(v)}
+          />
+        </CommonInputView>
+
+        <AccountButton
+          onPress={() => {
+            checkEmailNumber({email: email, checkNum: checkNum});
+          }}
           style={{bottom: 20, position: 'absolute', alignSelf: 'center'}}
-          bgColor={'#D7DCE5'}
+          bgColor={checkNum ? '#000' : '#D7DCE5'}
           marginT={20}>
           <CommonText color={'#fff'}>선택완료</CommonText>
-        </AccountButton> */}
+        </AccountButton>
       </Container>
     </BaseSafeView>
   );

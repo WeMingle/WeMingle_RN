@@ -78,7 +78,9 @@ const WritableMatchingGroupModal = ({
                   padding={0}>
                   <TouchableOpacity
                     hitSlop={{bottom: 50, top: 50}}
-                    onPress={() => {}}>
+                    onPress={() => {
+                      selectedGroup('test');
+                    }}>
                     <GroupList title={'위밍 24'} />
                   </TouchableOpacity>
 

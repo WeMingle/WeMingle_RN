@@ -13,6 +13,9 @@ import {
 import Arrow_Right from '../../../assets/arrow_right.png';
 import Filter_Icon from '../../../assets/filter_icon.png';
 import Arrow_down from '../../../assets/arrow_down.png';
+import calendar from '../../../assets/calendar_month.png';
+import person from '../../../assets/person.png';
+
 import {Dispatch, SetStateAction, useRef} from 'react';
 
 import {
@@ -249,6 +252,92 @@ export const MatchingListBoxWidthBottomSheet = ({
           }}
         />
       )}
+    </>
+  );
+};
+
+interface PopularMatchingBoxProps {
+  image: string;
+  nickname: string;
+  location: string;
+  ability: string;
+  matchingCnt: number;
+  matchingDate: string;
+  recruiterType: string;
+  areas: string;
+}
+
+export const PopularMatchingBox = (props: {item: PopularMatchingBoxProps}) => {
+  const item = props.item;
+  return (
+    <>
+      <BorderBox marginR={10} padding={20}>
+        <RowBox>
+          <BorderBox borderColor={Colors.informative} borderR={20} alignC row>
+            <CommonImage source={calendar} width={11} height={11} />
+            <CommonText color={Colors.informative} marginL={5} fontSize={11}>
+              {`${item.matchingDate[0].slice(
+                5,
+                7,
+              )}월 ${item.matchingDate[0].slice(8, 10)}일`}
+            </CommonText>
+          </BorderBox>
+          <BorderBox
+            borderColor={'#fff'}
+            marginL={5}
+            borderR={20}
+            alignC
+            row
+            bgColor={Colors.c_gray200}
+            style={{
+              paddingRight: 7,
+            }}>
+            <CommonImage source={person} width={11} height={11} />
+            <CommonText color={Colors.informative} marginL={5} fontSize={11}>
+              {item.recruiterType === 'INDIVIDUAL' ? '개인' : '그룹'}
+            </CommonText>
+          </BorderBox>
+        </RowBox>
+        <RowBox marginT={10}>
+          <View
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: 15,
+              backgroundColor: '#212121',
+              marginRight: 10,
+            }}
+          />
+          <View
+            style={{
+              justifyContent: 'space-around',
+            }}>
+            <CommonText>{item.nickname}</CommonText>
+            <CommonText color={Colors.c_gray400} fontSize={12}>
+              매칭 경험 {item.matchingCnt}번
+            </CommonText>
+          </View>
+        </RowBox>
+        <RowBox marginT={15}>
+          <CommonText color={Colors.c_gray500} marginR={8}>
+            지역
+          </CommonText>
+          <CommonText>{item?.areas[0]}</CommonText>
+        </RowBox>
+        <RowBox marginT={8}>
+          <CommonText color={Colors.c_gray500} marginR={8}>
+            실력
+          </CommonText>
+          <CommonText fontSize={10}>
+            Lv.{' '}
+            {item.ability === 'LOW'
+              ? '1-3'
+              : item.ability === 'MEDIUM'
+              ? '4-6'
+              : '7-9'}
+          </CommonText>
+        </RowBox>
+      </BorderBox>
     </>
   );
 };

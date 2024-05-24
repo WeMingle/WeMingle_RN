@@ -14,3 +14,23 @@ export const getMatchingWritableGroup = async () => {
     });
   return result;
 };
+
+export const getPopularMatchingList = async () => {
+  const result = await axiosPrivate
+    .get('/post/match/popular/home')
+    .then(response => {
+      if (response.status === 200) {
+        return response.data?.responseData;
+      }
+    });
+  return result;
+};
+
+export const getRecentMatchingList = async () => {
+  const result = await axiosPrivate.get('/post/match').then(response => {
+    if (response.status === 200) {
+      return response.data?.responseData;
+    }
+  });
+  return result;
+};

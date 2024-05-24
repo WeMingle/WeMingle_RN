@@ -53,7 +53,7 @@ export const getImageLibraryPermission = async () => {
 
 export const hasAndroidPermission = async () => {
   const getCheckPermissionPromise = async () => {
-    if (Platform.Version >= 33) {
+    if (Number(Platform.Version) >= 33) {
       const [hasReadMediaImagesPermission, hasReadMediaVideoPermission] =
         await Promise.all([
           PermissionsAndroid.check(
@@ -68,7 +68,7 @@ export const hasAndroidPermission = async () => {
   };
 
   const getRequestPermissionPromise = async () => {
-    if (Platform.Version >= 33) {
+    if (Number(Platform.Version) >= 33) {
       const statuses = await PermissionsAndroid.requestMultiple([
         PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES,
       ]);
@@ -109,4 +109,42 @@ export const FontSizeCalculator = (size: number) => {
       ? responsiveFontSize(size * 0.1)
       : responsiveFontSize(size * 0.128);
   return returnFontSize;
+};
+
+//지도 전체 영역에 대한 bound를 획득합니다.
+export const getMapBounds = (
+  center: {latitude: number; longitude: number}, //구하고자 하는 지도 영역의 센터값입니다.
+  zoomlevel: number, //현재 지도의 줌 레벨입니다.
+  mapWidth: number, //지도의 길이값입니다. 픽셀단위입니다.
+  mapHeight: number, //지도의 높이값입니다. 픽셀단위입니다.
+) => {
+  // 네이버 지도 기본 줌레벨은 16입니다.
+  // zoom level이 16일때 1px : 1m로 가정합니다.
+  // 참조: https://d2.naver.com/helloworld/1174
+  // 참조: https://www.ncloud.com/support/notice/all/738
+  const metersPerPixel = Math.pow(2, 16 - zoomlevel);
+  // 1m 당 위도 변화 : 1 / ((2*pi*지구반지름(m)) / 360(degree))
+  const deltaLatPerMeter = 0.00000899321;
+  // 1m 당 경도 변화 : 1 / cos(위도)((2*pi*지구반지름(m)) / 360(degree))
+  const deltaLngPerMeter =
+    deltaLatPerMeter / Math.cos((center.latitude * Math.PI) / 180);
+  //맵 중앙으로부터 상하 bound 까지의 거리입니다.
+  // (맵 높이 / 2)(pixels) * (meteres/pixel) * (deltaLat / meter) = 상하 위도 차이.
+  const deltaLat = (mapHeight / 2) * metersPerPixel * deltaLatPerMeter;
+  //맵 중앙으로부터 좌우 bound 까지의 거리입니다.
+  // (맵 길이 / 2)(pixels) * (meteres/pixel) * (deltaLat / meter) = 좌우 경도 차이.
+  const deltaLng = (mapWidth / 2) * metersPerPixel * deltaLngPerMeter;
+  let points = [
+    //NorthEast
+    {
+      lat: center.latitude + deltaLat,
+      lng: center.longitude + deltaLng,
+    },
+    //SouthWest
+    {
+      lat: center.latitude - deltaLat,
+      lng: center.longitude - deltaLng,
+    },
+  ];
+  return points;
 };

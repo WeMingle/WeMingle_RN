@@ -19,6 +19,7 @@ import moment from 'moment';
 import {ClickBookmark} from './myGroup/style/MyGroupStyle.style';
 
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
+import {useIsFocused} from '@react-navigation/native';
 
 export const ScreenWidth = Dimensions.get('screen').width;
 export const ScreenHeight = Dimensions.get('window').height;
@@ -110,7 +111,9 @@ export const CommontInput = styled.TextInput`
   include-font-padding: false;
   font-family: Pretendard-${(props: {bold?: boolean}) => (props.bold ? 'SemiBold' : 'Medium')};
   font-size: ${(props: {fontSize?: number}) =>
-    FontSizeCalculator(props.fontSize) || FontSizeCalculator(14)}px;
+    props.fontSize
+      ? FontSizeCalculator(props.fontSize)
+      : FontSizeCalculator(14)}px;
   margin-top: ${(props: {marginT: number}) => props.marginT || 0}px;
 `;
 
@@ -201,7 +204,9 @@ export const CommonText = styled.Text`
   include-font-padding: false;
   font-family: Pretendard-${(props: {bold: string}) => (props.bold ? 'SemiBold' : 'Medium')};
   font-size: ${(props: {fontSize?: number}) =>
-    FontSizeCalculator(props.fontSize) || FontSizeCalculator(14)}px;
+    props.fontSize
+      ? FontSizeCalculator(props.fontSize)
+      : FontSizeCalculator(14)}px;
   color: ${(props: {color: string}) => props.color || '#000'};
   margin-top: ${(props: {marginT: string}) => props.marginT || 0}px;
   margin-right: ${(props: {marginR: string}) => props.marginR || 0}px;
@@ -323,13 +328,14 @@ export const VerticalBar = styled.View`
   margin-top: ${(props: {marginT: number}) => props.marginT || 20}px;
   margin-bottom: ${(props: {marginB: number}) => props.marginB || 0}px;
 `;
-export const MatchingItem = ({item, index}: any) => {
+export const MatchingItem = ({item, index, paddingN}: any) => {
+  const isFocus = useIsFocused();
   return (
     <>
       <RowBox
         justify={'space-between'}
         marginT={20}
-        style={{paddingLeft: 20, paddingRight: 20}}>
+        style={paddingN ? {} : {paddingLeft: 20, paddingRight: 20}}>
         <RowBox>
           <BorderBox borderColor={Colors.informative} borderR={20} alignC row>
             <CommonImage source={calendar} width={11} height={11} />
@@ -360,7 +366,11 @@ export const MatchingItem = ({item, index}: any) => {
           <ClickBookmark bookmark={item?.bookmarked} width={26} height={24} />
         </TouchableOpacity>
       </RowBox>
-      <RowBox alignC padding={20} style={{paddingBottom: 30}} borderB>
+      <RowBox
+        alignC
+        padding={paddingN ? 0 : 20}
+        style={{paddingBottom: 30, paddingTop: 20}}
+        borderB>
         <CommonTouchableOpacity
           style={[
             {

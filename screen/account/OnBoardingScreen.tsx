@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
-import {Dimensions, FlatList} from 'react-native';
+import {Dimensions, FlatList, TouchableOpacity} from 'react-native';
 import {
   AccountButton,
   BaseSafeView,
+  CommonImage,
   CommonText,
   CommonTouchableOpacity,
   Container,
@@ -16,10 +17,24 @@ import {
 } from '@react-navigation/native';
 import {PreventAny} from '@reduxjs/toolkit/dist/entities/models';
 
+import Onboarding_1 from '../../assets/onboarding_running.png';
+import Onboarding_2 from '../../assets/onboarding_soccer.png';
+import Onboarding_3 from '../../assets/onboarding_basketball.png';
+import Onboarding_4 from '../../assets/onboarding_squash.png';
+import Onboarding_5 from '../../assets/onboarding_bowling.png';
+import Onboarding_6 from '../../assets/onboarding_tennis.png';
+import Onboarding_7 from '../../assets/onboarding_climbing.png';
+import Onboarding_8 from '../../assets/onboarding_cycle.png';
+import Onboarding_9 from '../../assets/onboarding_board.png';
+import Onboarding_10 from '../../assets/Onboarding_badminton.png';
+import Onboarding_11 from '../../assets/onboarding_baseball.png';
+import {transparent} from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
+import {addOnboard} from '../../api/Account';
+
 const OnboardingScreen = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
 
-  const [selectItems, setSelectItems] = useState<string[] | null>([]);
+  const [selectItems, setSelectItems] = useState<number | null>();
 
   interface sportsList {
     name: string;
@@ -43,69 +58,70 @@ const OnboardingScreen = () => {
 
         <FlatList
           data={[
-            {name: '러닝', img: ''},
-            {name: '축구', img: ''},
-            {name: '농구', img: ''},
-            {name: '스쿼시', img: ''},
-            {name: '볼링', img: ''},
-            {name: '테니스', img: ''},
-            {name: '클라이밍', img: ''},
-            {name: '자전거', img: ''},
-            {name: '보드', img: ''},
-            {name: '배드민턴', img: ''},
-            {name: '야구', img: ''},
+            {name: '러닝', img: Onboarding_1},
+            {name: '축구', img: Onboarding_2},
+            {name: '농구', img: Onboarding_3},
+            {name: '스쿼시', img: Onboarding_4},
+            {name: '볼링', img: Onboarding_5},
+            {name: '테니스', img: Onboarding_6},
+            {name: '클라이밍', img: Onboarding_7},
+            {name: '자전거', img: Onboarding_8},
+            {name: '보드', img: Onboarding_9},
+            {name: '배드민턴', img: Onboarding_10},
+            {name: '야구', img: Onboarding_11},
             {name: '기타', img: ''},
           ]}
           numColumns={3}
           style={{marginTop: 20}}
           renderItem={(items: {item: sportsList; index: any}) => {
             return (
-              <CommonTouchableOpacity
+              <TouchableOpacity
                 onPress={() => {
-                  const selectedItem = selectItems?.indexOf(items.index);
-                  if (selectedItem && selectedItem >= 0) {
-                    setSelectItems((prev: any) => {
-                      prev.splice(selectedItem, 1);
-                      return [...prev];
-                    });
-                  } else {
-                    setSelectItems((prev: any) => {
-                      return [...prev, items.index];
-                    });
-                  }
+                  setSelectItems(items?.index);
                 }}
                 style={[
                   {
+                    backgroundColor: '#212121',
                     borderRadius: 10,
                     marginBottom: 10,
                     marginRight: 10,
                     alignItems: 'center',
-                    justifyContent: 'flex-end',
-                    borderWidth: 3,
-                    borderColor:
-                      selectItems && selectItems?.indexOf(items.index) >= 0
-                        ? Colors.blue400
-                        : '#fff',
+                    justifyContent: 'center',
                   },
-                ]}
-                bgColor={'#000'}
-                width={boxWidth}
-                height={boxWidth}>
+                ]}>
+                <CommonImage
+                  source={items?.item.img}
+                  resizeMode="contain"
+                  style={{
+                    width: boxWidth,
+                    height: boxWidth,
+                    borderRadius: 10,
+                    borderWidth:
+                      selectItems && selectItems === items.index ? 3 : 0,
+                    borderColor:
+                      selectItems === items?.index ? Colors.blue400 : '#fff',
+                    opacity:
+                      selectItems === items.index || !selectItems ? 1 : 0.2,
+                  }}
+                />
                 <CommonText
                   fontSize={12}
                   color={'#fff'}
-                  style={{marginBottom: 5}}>
+                  style={{position: 'absolute', bottom: 5}}>
                   {items.item?.name}
                 </CommonText>
-              </CommonTouchableOpacity>
+              </TouchableOpacity>
             );
           }}
         />
 
         <AccountButton
-          onPress={() => navigation.navigate('CertificationSchool')}
+          onPress={() => {
+            if (selectItems) addOnboard(sportslist[selectItems]);
+            navigation.navigate('CertificationSchool');
+          }}
           style={{bottom: 20, position: 'absolute', alignSelf: 'center'}}
-          bgColor={selectItems && selectItems.length > 0 ? '#000' : '#D7DCE5'}
+          bgColor={selectItems && selectItems >= 0 ? '#000' : '#D7DCE5'}
           marginT={20}>
           <CommonText color={'#fff'}>선택완료</CommonText>
         </AccountButton>
@@ -113,5 +129,20 @@ const OnboardingScreen = () => {
     </BaseSafeView>
   );
 };
+
+const sportslist = [
+  'RUNNING',
+  'SOCCER',
+  'BASKETBALL',
+  'BASEBALL',
+  'TENNIS',
+  'BOWLING',
+  'SQUASH',
+  'CLIMBING',
+  'CYCLING',
+  'BADMINTON',
+  'SKATEBOARDING',
+  'OTHER',
+];
 
 export default OnboardingScreen;

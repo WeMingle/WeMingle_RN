@@ -1,6 +1,12 @@
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {TouchableOpacity, TouchableWithoutFeedback, View} from 'react-native';
-import {NaverMapView} from '@mj-studio/react-native-naver-map';
+import NaverMapView, {
+  Circle,
+  Marker,
+  Path,
+  Polyline,
+  Polygon,
+} from 'react-native-nmap';
 
 import {
   BaseSafeView,
@@ -9,6 +15,7 @@ import {
   MatchingItem,
   RowBox,
   ScreenHeight,
+  ScreenWidth,
 } from '../CommonStyled.style';
 import {
   FilterBox,
@@ -25,6 +32,8 @@ import Arrow_down from '../../assets/arrow_down.png';
 import FilterModal from '../../component/modal/FilterModal';
 import Alert_Icon from '../../assets/alert.png';
 import Chat_Icon from '../../assets/chat.png';
+import Add_Box from '../../assets/add_box.png';
+
 import {Colors} from '../../assets/color/Colors';
 import {
   NavigationProp,
@@ -42,12 +51,18 @@ import BottomSheet, {
   BottomSheetFlatList,
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
+import {SearchButton} from '../myGroup/style/MyGroupStyle.style';
+import {getMapBounds} from '../../component/Common';
+
+interface MatchingList {
+  [prop: string]: any;
+}
 
 const MatchingScreen = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
   const dispatch = useAppDispatch();
 
-  const matchingList = useSelector(
+  const matchingList: MatchingList = useSelector(
     (state: RootState) => state.matching,
   ).matchingList;
   const matchingCount = useSelector(
@@ -63,6 +78,8 @@ const MatchingScreen = () => {
   const [selectedDate, setSelectedDate] = useState<string>(
     moment().format('YYYY-MM-DD'),
   );
+
+  const [bounds, setBounds] = useState('');
 
   const [filterValues, setFilterValues] = useState({
     ability: null, // 운동 실력
@@ -94,7 +111,7 @@ const MatchingScreen = () => {
 
   const [isSticky, setIsSticky] = useState(false);
 
-  const handleSheetChange = useCallback(index => {
+  const handleSheetChange = useCallback((index: any) => {
     // console.log(index);
     if (index === 1) {
       setIsSticky(false);
@@ -124,7 +141,12 @@ const MatchingScreen = () => {
               매칭
             </CommonText>
             <RowBox>
-              <CommonImage source={Alert_Icon} width={24} height={24} />
+              <SearchButton
+                width={24}
+                height={24}
+                nextPage={'MatchingSearch'}
+              />
+
               <CommonImage
                 source={Chat_Icon}
                 width={24}
@@ -199,17 +221,32 @@ const MatchingScreen = () => {
               }}
             />
           </BottomSheet>
-
         </>
       ) : (
         <>
           <NaverMapView
+            center={{
+              latitude: 37.50497126,
+              longitude: 127.04905021,
+            }}
+            onCameraChange={e => {
+              const result = getMapBounds(
+                {latitude: e.latitude, longitude: e.longitude},
+                e.zoom,
+                ScreenWidth,
+                ScreenHeight - 65 - 40 - 65 - 40 - 60 - 55,
+              );
+              const bounds = `topLat=${result[0].lat}&bottomLat=${result[1].lat}&rightLon=${result[0].lng}&leftLon=${result[1].lng}`;
+              setBounds(bounds);
+            }}
+            showsMyLocationButton={true}
             style={{
               width: '100%',
               height: ScreenHeight - 65 - 40 - 65 - 40 - 60 - 55,
               marginBottom: -10,
-            }}
-          />
+            }}>
+            {/* Not Working in iOS Old Architecture Yet */}
+          </NaverMapView>
           <TouchableWithoutFeedback
             style={{
               borderTopLeftRadius: 20,

@@ -47,6 +47,8 @@ import {
 } from 'react-native-permissions';
 import AlertModal from '../component/modal/AlertModal';
 import AllPostScreen from './myPage/AllPostScreen';
+import Component from 'react-native-paper/lib/typescript/components/List/ListItem';
+import MatchingSearchScreen from './matching/MatchingSearchScreen';
 
 let count = 0; //  종료카운트
 
@@ -69,17 +71,12 @@ const RootScreen = () => {
   useEffect(() => {
     if (Platform.OS === 'ios') {
       request(PERMISSIONS.IOS.LOCATION_ALWAYS).then(status => {
-        console.log(`Location request status: ${status}`);
         if (status === 'granted') {
           requestLocationAccuracy({
             purposeKey: 'common-purpose', // replace your purposeKey of Info.plist
           })
-            .then(accuracy => {
-              console.log(`Location accuracy is: ${accuracy}`);
-            })
-            .catch(e => {
-              console.error(`Location accuracy request has been failed: ${e}`);
-            });
+            .then(accuracy => {})
+            .catch(e => {});
         }
       });
     }
@@ -88,18 +85,16 @@ const RootScreen = () => {
         PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
         PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION,
       ])
-        .then(status => {
-          console.log(`Location request status: ${status}`);
-        })
+        .then(status => {})
         .catch(e => {
-          console.error(`Location request has been failed: ${e}`);
+          // console.error(`Location request has been failed: ${e}`);
         });
     }
   }, []);
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={'Home'}>
+      <Stack.Navigator initialRouteName={'Matching'}>
         {RouterSetting.map((v, index) => {
           const ranNum = Math.random().toString(36).substr(2, 10);
           return (
@@ -143,7 +138,11 @@ const withScrollView = (WrappedComponent: React.FC, isTab = false) => {
       if (count < 1) {
         count++;
         //ToastAndroid.show('한번더 뒤로가기를 누르면 앱이 종료됩니다.', ToastAndroid.SHORT);
-        showToastMessage('뒤로가기를 한번 더 누르면 앱이 종료됩니다.', 1500);
+        showToastMessage(
+          '뒤로가기를 한번 더 누르면 앱이 종료됩니다.',
+          1500,
+          'bottom',
+        );
       } else {
         BackHandler.exitApp();
       }
@@ -278,6 +277,10 @@ const TabRouterSetting = [
   {
     name: 'AllPost',
     component: AllPostScreen,
+  },
+  {
+    name: 'MatchingSearch',
+    component: MatchingSearchScreen,
   },
 ];
 
