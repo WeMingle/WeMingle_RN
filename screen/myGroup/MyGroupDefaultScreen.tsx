@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {FlatList, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {FlatList, View, TouchableOpacity} from 'react-native';
 import {
   BaseSafeView,
   CommonImage,
@@ -17,9 +17,26 @@ import Search from '../../assets/search.png';
 import Add_Box from '../../assets/add_box.png';
 import Arrow_Right from '../../assets/arrow_right.png';
 import {SearchButton} from './style/MyGroupStyle.style';
+import {useSelector} from 'react-redux';
+import {
+  fetchWemingleRecTeams,
+  fetchUnivRecTeams,
+} from '../../redux/slice/MyGroup/RecGroupSlice';
+import {RootState} from '../../redux/Reducers';
+import {useAppDispatch} from '../../redux/Store';
 
 const MyGroupDefaultScreen = ({pageName}: any) => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
+
+  const dispatch = useAppDispatch();
+  const {teams, univTeams, loading, error} = useSelector(
+    (state: RootState) => state.recGroup,
+  );
+
+  useEffect(() => {
+    dispatch(fetchWemingleRecTeams());
+    dispatch(fetchUnivRecTeams());
+  }, [dispatch]);
 
   return (
     <BaseSafeView>
@@ -34,12 +51,17 @@ const MyGroupDefaultScreen = ({pageName}: any) => {
                   </CommonText>
                   <RowBox>
                     <SearchButton width={24} height={24} />
-                    <CommonImage
-                      source={Add_Box}
-                      width={24}
-                      height={24}
-                      style={{marginLeft: 12}}
-                    />
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.navigate('SelectSports');
+                      }}>
+                      <CommonImage
+                        source={Add_Box}
+                        width={24}
+                        height={24}
+                        style={{marginLeft: 12}}
+                      />
+                    </TouchableOpacity>
                   </RowBox>
                 </RowBox>
               </View>
@@ -59,16 +81,7 @@ const MyGroupDefaultScreen = ({pageName}: any) => {
                 </RowBox>
 
                 <FlatList
-                  data={[
-                    {image: 'none', name: '숭실대 축구 동아리'},
-                    {image: 'none', name: '숭실대 축구 동아리'},
-                    {image: 'none', name: '숭실대 축구 동아리'},
-                    {image: 'none', name: '숭실대 축구 동아리'},
-                    {image: 'none', name: '숭실대 축구 동아리'},
-                    {image: 'none', name: '숭실대 축구 동아리'},
-                    {image: 'none', name: '숭실대 축구 동아리'},
-                    {image: 'none', name: '숭실대 축구 동아리'},
-                  ]}
+                  data={Object.values(univTeams)}
                   horizontal
                   style={{marginVertical: 20, flexGrow: 0}}
                   renderItem={items => {
@@ -94,7 +107,7 @@ const MyGroupDefaultScreen = ({pageName}: any) => {
                           width={96}
                           height={96}
                           onPress={() => {
-                            navigation.navigate('GroupPage');
+                            navigation.navigate('GroupFeed');
                           }}></CommonTouchableOpacity>
                         <CommonText
                           textAlignC
@@ -103,7 +116,8 @@ const MyGroupDefaultScreen = ({pageName}: any) => {
                           ellipsizeMode="tail"
                           color={'#212121'}
                           style={{marginBottom: 5, width: 96}}>
-                          {items.item?.name}
+                          {/* {items.item?.name} */}
+                          {items.item?.teamName}
                         </CommonText>
                       </View>
                     );
@@ -119,29 +133,20 @@ const MyGroupDefaultScreen = ({pageName}: any) => {
             </Container>
           </View>
         }
-        data={[
-          {image: 'none', name: '숭실대 축구 동아리'},
-          {image: 'none', name: '숭실대 축구 동아리'},
-          {image: 'none', name: '숭실대 축구 동아리'},
-          {image: 'none', name: '숭실대 축구 동아리'},
-          {image: 'none', name: '숭실대 축구 동아리'},
-          {image: 'none', name: '숭실대 축구 동아리'},
-          {image: 'none', name: '숭실대 축구 동아리'},
-          {image: 'none', name: '숭실대 축구 동아리'},
-          {image: 'none', name: '숭실대 축구 동아리'},
-          {image: 'none', name: '숭실대 축구 동아리'},
-          {image: 'none', name: '숭실대 축구 동아리'},
-          {image: 'none', name: '숭실대 축구 동아리'},
-        ]}
+        data={Object.values(teams)}
         style={{
           flexGrow: 0,
           width: '100%',
           height: '100%',
         }}
         numColumns={2}
+        columnWrapperStyle={{justifyContent: 'space-around'}}
         renderItem={items => {
           return (
-            <View style={{flex: 1, alignItems: 'center'}}>
+            <View
+              style={{
+                width: '47%',
+              }}>
               <View
                 style={{
                   flexDirection: 'row',
@@ -168,7 +173,7 @@ const MyGroupDefaultScreen = ({pageName}: any) => {
                     width={152}
                     height={152}
                     onPress={() => {
-                      navigation.navigate('GroupPage');
+                      navigation.navigate('GroupFeed');
                     }}></CommonTouchableOpacity>
                   <CommonText
                     textAlignC
@@ -177,7 +182,7 @@ const MyGroupDefaultScreen = ({pageName}: any) => {
                     numberOfLines={1}
                     ellipsizeMode="tail"
                     style={{marginBottom: 5, textAlign: 'left', width: 152}}>
-                    {items.item?.name}
+                    {items.item?.teamName}
                   </CommonText>
                   <CommonText
                     textAlignC
@@ -186,7 +191,7 @@ const MyGroupDefaultScreen = ({pageName}: any) => {
                     numberOfLines={1}
                     ellipsizeMode="tail"
                     style={{marginBottom: 5, textAlign: 'left', width: 152}}>
-                    {items.item?.name}
+                    {items.item?.content}
                   </CommonText>
                 </View>
               </View>

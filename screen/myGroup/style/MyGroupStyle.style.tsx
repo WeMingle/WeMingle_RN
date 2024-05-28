@@ -105,10 +105,10 @@ export const ClickFavorite = ({
         setChagneFavNum(favorite_num);
       }
     } else {
-      if (isClicked) {
-        setChagneFavNum(favorite_num);
-      } else {
+      if (!isClicked) {
         setChagneFavNum(favorite_num + 1);
+      } else {
+        setChagneFavNum(favorite_num);
       }
     }
   }, [isClicked, changeFavNum, favorite_click, favorite_num]);

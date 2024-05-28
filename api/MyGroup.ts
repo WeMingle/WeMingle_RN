@@ -4,26 +4,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {setToken} from '../redux/slice/TokenSlice';
 
 // 속한 그룹과 대학교 인증 유무 확인
-export const checkUniversityAndGroup = async () => {
+export const checkUnivCertifyGroup = async () => {
   return await axiosPrivate
     .get('/team/home/condition')
     .then(response => {
       if (response?.status === 200) {
         return true;
-      }
-    })
-    .catch(error => {
-      return false;
-    });
-};
-
-//사용자가 속한 대학교 그룹 조회
-export const checkUniversityGroup = async () => {
-  return await axiosPrivate
-    .get('/team/univ')
-    .then(response => {
-      if (response?.status === 200) {
-        return true;
+        // return response.data?.responseData;
       }
     })
     .catch(error => {
@@ -32,7 +19,7 @@ export const checkUniversityGroup = async () => {
 };
 
 //위밍글이 추천하는 그룹 조회
-export const wemingleGroup = async () => {
+export const wemingleRecGroup = async () => {
   return await axiosPrivate
     .get('/team/recommendation')
     .then(response => {
@@ -45,10 +32,10 @@ export const wemingleGroup = async () => {
     });
 };
 
-// 검색
-export const Search = async (query: string) => {
+//사용자별 추천하는 그룹 조회
+export const userRecGroup = async () => {
   return await axiosPrivate
-    .get(`/team/result?query=${query}`)
+    .get('/team/recommendation/member')
     .then(response => {
       if (response?.status === 200) {
         return true;
@@ -57,4 +44,52 @@ export const Search = async (query: string) => {
     .catch(error => {
       return false;
     });
+};
+
+// 그룹 이름으로 그룹 검색
+export const teamSearch = async (query: string) => {
+  return await axiosPrivate
+    .get(`/team/result?query=${query}`)
+    .then(response => {
+      if (response?.status === 200) {
+        return response.data?.responseData;
+      }
+    })
+    .catch(error => {
+      return false;
+    });
+};
+
+//닉네임으로 사용자 검색
+export const nicknameSearch = async (query: string) => {
+  return await axiosPrivate
+    .get(`/member/result?query=${query}`)
+    .then(response => {
+      if (response?.status === 200) {
+        return response.data?.responseData;
+      }
+    })
+    .catch(error => {
+      return false;
+    });
+};
+
+//사용자가 속한 대학교 그룹 조회
+export const checkUnivGroup = async () => {
+  return await axiosPrivate.get('/team/univ').then(response => {
+    if (response?.status === 200) {
+      console.log('response : ', response);
+      return response.data?.responseData;
+    }
+  });
+};
+
+//내가 속한 팀 내의 글 조회
+export const readMyGroupPost = async () => {
+  return await axiosPrivate.get('/post/team').then(response => {
+    if (response?.status === 200) {
+      console.log('response : ', response);
+      return response.data?.responseData;
+    }
+  });
 };

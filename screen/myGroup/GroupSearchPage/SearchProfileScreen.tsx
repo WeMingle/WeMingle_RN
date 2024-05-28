@@ -19,10 +19,10 @@ import {
   BaseSafeView,
   Container,
   RowBox,
-} from '../CommonStyled.style';
-import {BackButton} from './style/MyGroupStyle.style';
-import Search from '../../assets/search.png';
-import Notification from '../../assets/notification_important.png';
+} from '../../CommonStyled.style';
+import {BackButton} from '../style/MyGroupStyle.style';
+import Search from '../../../assets/search.png';
+import Notification from '../../../assets/notification_important.png';
 
 const SearchProfileScreen = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();

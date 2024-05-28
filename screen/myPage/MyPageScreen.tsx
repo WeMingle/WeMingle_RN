@@ -182,7 +182,7 @@ const MyPageScreen = () => {
           }}>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('MyGroup2');
+              navigation.navigate('MyGroup');
             }}>
             <RowBox justify={'space-between'}>
               <CommonText fontSize={14}>내 그룹</CommonText>

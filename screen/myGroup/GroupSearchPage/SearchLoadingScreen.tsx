@@ -1,36 +1,16 @@
-import React, {useState, useEffect} from 'react';
-import {
-  View,
-  TouchableOpacity,
-  TextInput,
-  BackHandler,
-  StyleSheet,
-  Keyboard,
-} from 'react-native';
-import {
-  NavigationProp,
-  ParamListBase,
-  useNavigation,
-} from '@react-navigation/native';
+import React, {useState, useEffect, useCallback} from 'react';
+import {View, TextInput, ActivityIndicator, StyleSheet} from 'react-native';
 import {
   BaseSafeView,
   CommonImage,
+  CommonText,
   Container,
   RowBox,
-} from '../CommonStyled.style';
-import Search from '../../assets/search.png';
-import {SearchTabs} from './style/SearchTabs';
-import {BackButton} from './style/MyGroupStyle.style';
+} from '../../CommonStyled.style';
+import {BackButton} from '../style/MyGroupStyle.style';
+import Search from '../../../assets/search.png';
 
-const SearchResultScreen = ({navigation: {navigate}, route}: any) => {
-  const navigation: NavigationProp<ParamListBase> = useNavigation();
-  const [text, setText] = useState('');
-
-  const onPress = () => {
-    setText('');
-    Keyboard.dismiss();
-  };
-
+const SearchLoadingScreen = ({search}: any) => {
   return (
     <BaseSafeView>
       <Container bgColor={'#212121'} padding={0}>
@@ -42,31 +22,37 @@ const SearchResultScreen = ({navigation: {navigate}, route}: any) => {
                 placeholder="검색어를 입력하세요."
                 placeholderTextColor={'#9e9e9e'}
                 style={styles.input}
-                value={text}
-                onChangeText={setText}
-                onSubmitEditing={onPress}
               />
-              <TouchableOpacity onPress={onPress}>
-                <View style={styles.buttonStyle}>
-                  <CommonImage source={Search} width={24} height={24} />
-                </View>
-              </TouchableOpacity>
+              <View style={styles.buttonStyle}>
+                <CommonImage source={Search} width={24} height={24} />
+              </View>
             </View>
           </RowBox>
         </View>
-        <View
+        <Container
+          bgColor={'#fff'}
           style={{
             width: '100%',
             height: '100%',
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-            paddingTop: 10,
-            backgroundColor: '#ffffff',
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
           }}>
-          <SearchTabs />
-        </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              paddingVertical: 15,
+            }}>
+            <ActivityIndicator
+              size="small"
+              style={{marginRight: 10}}
+              color="#0E6FFF"
+            />
+            <CommonText fontSize={16} color={'#8491A7'}>
+              "{search}" 검색중
+            </CommonText>
+          </View>
+        </Container>
       </Container>
     </BaseSafeView>
   );
@@ -98,4 +84,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SearchResultScreen;
+export default SearchLoadingScreen;
