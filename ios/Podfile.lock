@@ -155,11 +155,7 @@ PODS:
   - KakaoSDKUser (2.11.1):
     - KakaoSDKAuth (= 2.11.1)
   - libevent (2.1.12)
-<<<<<<< HEAD
   - mj-studio-react-native-naver-map (1.5.8):
-=======
-  - mj-studio-react-native-naver-map (1.5.6):
->>>>>>> 29b3b25291dcaf265e055f7aec26589327de9f39
     - glog
     - NMapsMap (= 3.18.0)
     - RCT-Folly (= 2022.05.16.00)
@@ -1056,11 +1052,7 @@ PODS:
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
-<<<<<<< HEAD
   - react-native-safe-area-context (4.10.1):
-=======
-  - react-native-safe-area-context (4.9.0):
->>>>>>> 29b3b25291dcaf265e055f7aec26589327de9f39
     - React-Core
   - React-nativeconfig (0.73.6)
   - React-NativeModulesApple (0.73.6):
@@ -1233,13 +1225,8 @@ PODS:
     - React-Core
   - RNDateTimePicker (8.0.1):
     - React-Core
-<<<<<<< HEAD
   - RNFBApp (19.3.0):
     - Firebase/CoreOnly (= 10.24.0)
-=======
-  - RNFBApp (19.1.1):
-    - Firebase/CoreOnly (= 10.23.0)
->>>>>>> 29b3b25291dcaf265e055f7aec26589327de9f39
     - React-Core
   - RNGestureHandler (2.16.2):
     - glog
@@ -1422,7 +1409,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-seoul/kakao-login"
   mj-studio-react-native-naver-map:
     :path: "../node_modules/@mj-studio/react-native-naver-map"
-<<<<<<< HEAD
   Permission-LocationAccuracy:
     :path: "../node_modules/react-native-permissions/ios/LocationAccuracy"
   Permission-LocationAlways:
@@ -1433,8 +1419,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-permissions/ios/Notifications"
   Permission-PhotoLibrary:
     :path: "../node_modules/react-native-permissions/ios/PhotoLibrary"
-=======
->>>>>>> 29b3b25291dcaf265e055f7aec26589327de9f39
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
@@ -1577,11 +1561,7 @@ SPEC CHECKSUMS:
   KakaoSDKCommon: 555e1bb46595b842ded01cf7888cc17bbae4e113
   KakaoSDKUser: 08c0a4f40bebdebdf948a9e3d0e44ed5c2754f99
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-<<<<<<< HEAD
   mj-studio-react-native-naver-map: 30f90b45b8bdf37091ff8ae61a209c54d16c2488
-=======
-  mj-studio-react-native-naver-map: 8a9d1fd929e5ba528e54fbbbf2b411cfe26cfa5b
->>>>>>> 29b3b25291dcaf265e055f7aec26589327de9f39
   NMapsGeometry: 4e02554fa9880ef02ed96b075dc84355d6352479
   NMapsMap: 36dc18a1f5f315121b33fccd2398c7a702bf0fc8
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
@@ -1614,11 +1594,7 @@ SPEC CHECKSUMS:
   React-Mapbuffer: 84ea43c6c6232049135b1550b8c60b2faac19fab
   react-native-date-picker: 90687f1dbd374ff0265dca99d949998364c22fa9
   react-native-pager-view: f1e72cb827406f1b49f007ab07400197d421b6e7
-<<<<<<< HEAD
   react-native-safe-area-context: dcab599c527c2d7de2d76507a523d20a0b83823d
-=======
-  react-native-safe-area-context: b97eb6f9e3b7f437806c2ce5983f479f8eb5de4b
->>>>>>> 29b3b25291dcaf265e055f7aec26589327de9f39
   React-nativeconfig: b4d4e9901d4cabb57be63053fd2aa6086eb3c85f
   React-NativeModulesApple: cd26e56d56350e123da0c1e3e4c76cb58a05e1ee
   React-perflogger: 5f49905de275bac07ac7ea7f575a70611fa988f2
@@ -1640,7 +1616,6 @@ SPEC CHECKSUMS:
   React-utils: d16c1d2251c088ad817996621947d0ac8167b46c
   ReactCommon: 2aa35648354bd4c4665b9a5084a7d37097b89c10
   RNCAsyncStorage: 826b603ae9c0f88b5ac4e956801f755109fa4d5c
-<<<<<<< HEAD
   RNDateTimePicker: b6a9b35a785ecbe12b4e7d6de5439d0aa4614146
   RNFBApp: dd35ba8340b89c36e42c4c137915c01d3c792143
   RNGestureHandler: 96439cf6543defdde87459e48cd1a3f0e45a008e
@@ -1650,25 +1625,10 @@ SPEC CHECKSUMS:
   RNReanimated: 6cfa556540186ce7ae7a0b048f369236b1d86ebb
   RNScreens: 134a7511b12b8eb440b87aac21e36a71295d6024
   RNVectorIcons: 96e8c5c45609932bb2f8347e1c709bcca0e95654
-=======
-  RNDateTimePicker: cd42eda5f315fc320f0b359413bd598957f7e601
-  RNFBApp: 3fd1f8d5b50cfaf718255e1faef207827c561d47
-  RNGestureHandler: 96439cf6543defdde87459e48cd1a3f0e45a008e
-  RNGoogleSignin: 9d0ecc3bff939ccef83cb3a26b874130b06a6e81
-  RNImageCropPicker: e7ab6fb43d2fc3e84651e786ef4a080d63b0ed3d
-  RNPermissions: 294531ede5a64d1528463e88fffef05675842042
-  RNReanimated: 6cfa556540186ce7ae7a0b048f369236b1d86ebb
-  RNScreens: b6b64d956af3715adbfe84808694ae82d3fec74f
-  RNVectorIcons: 73ab573085f65a572d3b6233e68996d4707fd505
->>>>>>> 29b3b25291dcaf265e055f7aec26589327de9f39
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   TOCropViewController: 80b8985ad794298fb69d3341de183f33d1853654
   Yoga: 805bf71192903b20fc14babe48080582fee65a80
 
-<<<<<<< HEAD
 PODFILE CHECKSUM: 059a26ba09e1ad4c7380169042b0946dad8760e3
-=======
-PODFILE CHECKSUM: c35f7b98ab4872b13dbf46097222f76c5da950c2
->>>>>>> 29b3b25291dcaf265e055f7aec26589327de9f39
 
 COCOAPODS: 1.15.2

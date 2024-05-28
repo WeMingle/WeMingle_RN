@@ -91,11 +91,7 @@ const TabMenus = [
   {
     title: '내그룹',
     image: Group_Icon,
-<<<<<<< HEAD
     onImage: Group_Icon_On,
-=======
-    onImage: Group_Icon,
->>>>>>> 29b3b25291dcaf265e055f7aec26589327de9f39
     name: 'MyGroup',
     nextPage: 'MyGroup',
   },
