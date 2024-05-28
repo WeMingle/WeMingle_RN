@@ -49,6 +49,8 @@ import AlertModal from '../component/modal/AlertModal';
 import AllPostScreen from './myPage/AllPostScreen';
 import Component from 'react-native-paper/lib/typescript/components/List/ListItem';
 import MatchingSearchScreen from './matching/MatchingSearchScreen';
+import MatchingSelectPersonnelScreen from './matching/MatchingSelectPersonnelScreen';
+import MatchingGetVoteScreen from './matching/MatchingGetVoteScreen';
 
 let count = 0; //  종료카운트
 
@@ -281,6 +283,14 @@ const TabRouterSetting = [
   {
     name: 'MatchingSearch',
     component: MatchingSearchScreen,
+  },
+  {
+    name: 'MatchingGetVote',
+    component: MatchingGetVoteScreen,
+  },
+  {
+    name: 'MatchingSelectPersonnel',
+    component: MatchingSelectPersonnelScreen,
   },
 ];
 

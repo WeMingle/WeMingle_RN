@@ -1,23 +1,19 @@
-import React, {useEffect, useState} from 'react';
-import {View, Modal, Dimensions, TouchableOpacity} from 'react-native';
+import {useEffect, useState} from 'react';
+import {View, Modal, TouchableOpacity} from 'react-native';
 import {
   BorderBoxButton,
   CommonImage,
   CommonText,
-  CommonTouchableOpacity,
   ConfirmButton,
   Container,
   ModalContainer,
   RowBox,
-  StartButton,
 } from '../../screen/CommonStyled.style';
 import {Colors} from '../../assets/color/Colors';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
-import {Checkbox, RadioButton} from 'react-native-paper';
+import {Checkbox} from 'react-native-paper';
 
 import Renew_Button from '../../assets/renew_button.png';
 import Arrow_Down from '../../assets/arrow_down.png';
-import {BorderlessButton} from 'react-native-gesture-handler';
 
 interface FilterModalProps {
   modalVisible: boolean;

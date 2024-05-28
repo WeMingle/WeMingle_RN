@@ -144,7 +144,11 @@ const MatchingWriteScreen = () => {
           rightComponent={() => {
             return (
               <RowBox>
-                <BorderBoxButton marginR={10}>
+                <BorderBoxButton
+                  onPress={() => {
+                    navigation.navigate('MatchingGetVote');
+                  }}
+                  marginR={10}>
                   <RowBox alignC>
                     <CommonImage source={Arrow_Right} width={9} height={7} />
                     <CommonImage source={Intersect} width={14} height={12} />

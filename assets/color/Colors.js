@@ -1,6 +1,7 @@
 export const Colors = {
   blue500: '#0A53BE',
   blue400: '#0E6FFF',
+  blue300: '#6EA9FF',
   blue200: '#D4E5FF',
   informative: '#0E6FFF',
   borderColor: '#F1F1F1',

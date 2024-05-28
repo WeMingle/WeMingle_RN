@@ -1,11 +1,10 @@
-import React, {useState} from 'react';
-import {Dimensions, FlatList, Image, TextInput} from 'react-native';
+import {useState} from 'react';
+import {TextInput} from 'react-native';
 import {
   AccountButton,
   BaseSafeView,
   CommonInputView,
   CommonText,
-  CommonTouchableOpacity,
   Container,
 } from '../CommonStyled.style';
 import {Colors} from '../../assets/color/Colors';
@@ -15,11 +14,9 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 
-import Arrow_Right from '../../assets/arrow_right.png';
 import {CommonHeader} from '../../component/header/CommonHeader';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {certificationEmail, checkEmailNumber} from '../../api/Account';
-import {check} from 'react-native-permissions';
 
 const CertificationSchoolScreen = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
