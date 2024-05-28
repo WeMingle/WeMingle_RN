@@ -17,86 +17,31 @@ import {Colors} from '../../../assets/color/Colors';
 
 const Tab = createMaterialTopTabNavigator();
 
-export const SearchTabs = () => {
+export const SearchTabs = ({teamSearch, memberSearch}: any) => {
+  console.log('받아진 팀 데이터 : ', teamSearch);
+  console.log('받아진 멤버 데이터 : ', memberSearch);
   return (
     <Tab.Navigator tabBar={props => <SearchTabBar {...props} />}>
-      <Tab.Screen name="그룹" component={GroupScreen} />
-      <Tab.Screen name="프로필" component={ProfileScreen} />
+      <Tab.Screen
+        name="그룹"
+        component={GroupScreen}
+        initialParams={{data: teamSearch}}
+      />
+      <Tab.Screen
+        name="프로필"
+        component={ProfileScreen}
+        initialParams={{data: memberSearch}}
+      />
     </Tab.Navigator>
   );
 };
 
-const GroupScreen = () => {
+const GroupScreen = ({route}: any) => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
+  const {data} = route.params;
   return (
     <FlatList
-      data={[
-        {
-          image: 'none',
-          name: '숭실대 축구 동아리',
-          content: '숭실대 축구 동아리입니다.',
-        },
-        {
-          image: 'none',
-          name: '숭실대 축구 동아리',
-          content: '숭실대 축구 동아리입니다.',
-        },
-        {
-          image: 'none',
-          name: '숭실대 축구 동아리',
-          content: '숭실대 축구 동아리입니다.',
-        },
-        {
-          image: 'none',
-          name: '숭실대 축구 동아리',
-          content: '숭실대 축구 동아리입니다.',
-        },
-        {
-          image: 'none',
-          name: '숭실대 축구 동아리',
-          content: '숭실대 축구 동아리입니다.',
-        },
-        {
-          image: 'none',
-          name: '숭실대 축구 동아리',
-          content: '숭실대 축구 동아리입니다.',
-        },
-        {
-          image: 'none',
-          name: '숭실대 축구 동아리',
-          content: '숭실대 축구 동아리입니다.',
-        },
-        {
-          image: 'none',
-          name: '숭실대 축구 동아리',
-          content: '숭실대 축구 동아리입니다.',
-        },
-        {
-          image: 'none',
-          name: '숭실대 축구 동아리',
-          content: '숭실대 축구 동아리입니다.',
-        },
-        {
-          image: 'none',
-          name: '숭실대 축구 동아리',
-          content: '숭실대 축구 동아리입니다.',
-        },
-        {
-          image: 'none',
-          name: '숭실대 축구 동아리',
-          content: '숭실대 축구 동아리입니다.',
-        },
-        {
-          image: 'none',
-          name: '숭실대 축구 동아리',
-          content: '숭실대 축구 동아리입니다.',
-        },
-        {
-          image: 'none',
-          name: '숭실대 축구 동아리',
-          content: '숭실대 축구 동아리입니다.',
-        },
-      ]}
+      data={Object.values(data)}
       style={{
         flexGrow: 0,
         width: '100%',
@@ -138,7 +83,7 @@ const GroupScreen = () => {
                   width={152}
                   height={152}
                   onPress={() => {
-                    navigation.navigate('GroupPage');
+                    navigation.navigate('GroupFeed');
                   }}></CommonTouchableOpacity>
                 <CommonText
                   textAlignC
@@ -147,7 +92,7 @@ const GroupScreen = () => {
                   numberOfLines={1}
                   ellipsizeMode="tail"
                   style={{marginBottom: 5, textAlign: 'left', width: 152}}>
-                  {items.item?.name}
+                  {items.item?.teamName}
                 </CommonText>
                 <CommonText
                   textAlignC
@@ -167,52 +112,12 @@ const GroupScreen = () => {
   );
 };
 
-const ProfileScreen = () => {
+const ProfileScreen = ({route}: any) => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
+  const {data} = route.params;
   return (
     <FlatList
-      data={[
-        {
-          image: 'none',
-          nickname: '축구왕슛돌이',
-        },
-        {
-          image: 'none',
-          nickname: '축구왕슛돌이',
-        },
-        {
-          image: 'none',
-          nickname: '축구왕슛돌이',
-        },
-        {
-          image: 'none',
-          nickname: '축구왕슛돌이',
-        },
-        {
-          image: 'none',
-          nickname: '축구왕슛돌이',
-        },
-        {
-          image: 'none',
-          nickname: '축구왕슛돌이',
-        },
-        {
-          image: 'none',
-          nickname: '축구왕슛돌이',
-        },
-        {
-          image: 'none',
-          nickname: '축구왕슛돌이',
-        },
-        {
-          image: 'none',
-          nickname: '축구왕슛돌이',
-        },
-        {
-          image: 'none',
-          nickname: '축구왕슛돌이',
-        },
-      ]}
+      data={Object.values(data)}
       style={{
         flexGrow: 0,
         width: '100%',

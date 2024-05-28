@@ -199,7 +199,6 @@ const MatchingScreen = () => {
               }}
             />
           </BottomSheet>
-
         </>
       ) : (
         <>

@@ -32,12 +32,12 @@ import HomeScreen from './home/HomeScreen';
 //MyGroup - 전하윤
 import MyGroupDefaultScreen from './myGroup/MyGroupDefaultScreen';
 import MyGroupScreen from './myGroup/MyGroupScreen';
-import MyGroupSearchScreen from './myGroup/MyGroupSearchScreen';
-import SearchResultScreen from './myGroup/SearchResultScreen';
-import SearchProfileScreen from './myGroup/SearchProfileScreen';
-import GroupPageScreen from './myGroup/GroupPageScreen';
-import GroupChattingPageScreen from './myGroup/GroupChattingPageScreen';
-import GroupMemberPageScreen from './myGroup/GroupMemberPageScreen';
+import MyGroupSearchScreen from './myGroup/GroupSearchPage/MyGroupSearchScreen';
+import SearchProfileScreen from './myGroup/GroupSearchPage/SearchProfileScreen';
+import GroupFeedPageScreen from './myGroup/GroupDetailPage/FeedPageScreen';
+import GroupChattingPageScreen from './myGroup/GroupDetailPage/ChattingPageScreen';
+import GroupMemberPageScreen from './myGroup/GroupDetailPage/MemberPageScreen';
+import SelectSportsPage from './myGroup/CreateNewGroup/SelectSportsPage';
 
 import {
   PERMISSIONS,
@@ -46,6 +46,11 @@ import {
   requestMultiple,
 } from 'react-native-permissions';
 import AlertModal from '../component/modal/AlertModal';
+import SelectApprovalPage from './myGroup/CreateNewGroup/SelectApprovalPage';
+import SelectMemberTypePage from './myGroup/CreateNewGroup/SelectMemberTypePage';
+import SelectOptionPage from './myGroup/CreateNewGroup/SelectOptionPage';
+import SetGroupProfilePage from './myGroup/CreateNewGroup/SetGroupProfilePage';
+import {SearchLoadingScreen} from './myGroup/GroupSearchPage/SearchLoadingScreen';
 
 let count = 0; //  종료카운트
 
@@ -98,7 +103,6 @@ const RootScreen = () => {
 
   return (
     <NavigationContainer>
-
       <Stack.Navigator initialRouteName={'Home'}>
         {RouterSetting.map((v, index) => {
           const ranNum = Math.random().toString(36).substr(2, 10);
@@ -232,16 +236,16 @@ const TabRouterSetting = [
     component: MyGroupSearchScreen,
   },
   {
-    name: 'SearchResult',
-    component: SearchResultScreen,
-  },
-  {
     name: 'SearchProfile',
     component: SearchProfileScreen,
   },
   {
-    name: 'GroupPage',
-    component: GroupPageScreen,
+    name: 'SearchLoading',
+    component: SearchLoadingScreen,
+  },
+  {
+    name: 'GroupFeed',
+    component: GroupFeedPageScreen,
   },
   {
     name: 'GroupChatting',
@@ -250,6 +254,26 @@ const TabRouterSetting = [
   {
     name: 'GroupMember',
     component: GroupMemberPageScreen,
+  },
+  {
+    name: 'SelectSports',
+    component: SelectSportsPage,
+  },
+  {
+    name: 'SelectApproval',
+    component: SelectApprovalPage,
+  },
+  {
+    name: 'SelectMemberType',
+    component: SelectMemberTypePage,
+  },
+  {
+    name: 'SelectOption',
+    component: SelectOptionPage,
+  },
+  {
+    name: 'SetGroupProfile',
+    component: SetGroupProfilePage,
   },
   {
     name: 'MatchingList',

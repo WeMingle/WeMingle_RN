@@ -19,27 +19,27 @@ import {
   CommonText,
   Container,
   RowBox,
-} from '../CommonStyled.style';
-import {BackButton} from './style/MyGroupStyle.style';
-import {Colors} from '../../assets/color/Colors';
-import Flag from '../../assets/emoji_flags.png';
-import Person from '../../assets/person_01.png';
-import RectangleBlue from '../../assets/RectangleBlue.png';
-import RectangleWhite from '../../assets/RectangleWhite.png';
-import ExpandBlue from '../../assets/expand_more.png';
-import Settings from '../../assets/settings.png';
-import AnnounceFirst from '../../assets/announce01.png';
-import AnnounceSecond from '../../assets/announce02.png';
-import More_Vert from '../../assets/more_vert.png';
+} from '../../CommonStyled.style';
+import {BackButton} from '../style/MyGroupStyle.style';
+import {Colors} from '../../../assets/color/Colors';
+import Flag from '../../../assets/emoji_flags.png';
+import Person from '../../../assets/person_01.png';
+import RectangleBlue from '../../../assets/RectangleBlue.png';
+import RectangleWhite from '../../../assets/RectangleWhite.png';
+import ExpandBlue from '../../../assets/expand_more.png';
+import Settings from '../../../assets/settings.png';
+import AnnounceFirst from '../../../assets/announce01.png';
+import AnnounceSecond from '../../../assets/announce02.png';
+import More_Vert from '../../../assets/more_vert.png';
 import {FlatList} from 'react-native-gesture-handler';
 import {
   ClickBookmark,
   ClickFavorite,
   ChattingIcon,
   VoteComponent,
-} from './style/MyGroupStyle.style';
+} from '../style/MyGroupStyle.style';
 
-const GroupMemberPageScreen = () => {
+const MemberPageScreen = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
   return (
     <BaseSafeView>
@@ -207,7 +207,7 @@ const GroupMemberPageScreen = () => {
                     justifyContent: 'center',
                   }}
                   onPress={() => {
-                    navigation.navigate('GroupPage');
+                    navigation.navigate('GroupFeed');
                   }}>
                   <CommonText
                     fontSize={14}
@@ -380,4 +380,4 @@ const GroupMemberPageScreen = () => {
   );
 };
 
-export default GroupMemberPageScreen;
+export default MemberPageScreen;

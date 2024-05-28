@@ -1,7 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {FlatList, View, TouchableOpacity} from 'react-native';
-import {useSelector} from 'react-redux';
-import {RootState} from '../../redux/Reducers';
 import {
   NavigationProp,
   ParamListBase,
@@ -24,14 +22,28 @@ import {
   ClickFavorite,
   ChattingIcon,
 } from './style/MyGroupStyle.style';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../redux/Reducers';
+import {useAppDispatch} from '../../redux/Store';
+import {fetchUnivCertifyGroup} from '../../redux/slice/MyGroup/CheckUnivCertifyGroupSlice';
 import MyGroupDefaultScreen from './MyGroupDefaultScreen';
 
 const MyGroupScreen = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
-  const myGroup = useSelector((state: RootState) => state.mygroup.value);
+  const dispatch = useAppDispatch();
+  const {loading, error, responseData} = useSelector(
+    (state: RootState) => state.checkUnivCertifyGroup,
+  );
+
+  useEffect(() => {
+    dispatch(fetchUnivCertifyGroup());
+  }, [dispatch]);
+
+  console.log('내 그룹? : ', responseData);
+
   return (
     <>
-      {myGroup.responseMessage === 'EntityNotFoundException' ? (
+      {responseData?.existMyTeam === false ? (
         <MyGroupDefaultScreen pageName={'내그룹'} />
       ) : (
         <BaseSafeView>
@@ -48,7 +60,7 @@ const MyGroupScreen = () => {
                         <SearchButton width={24} height={24} />
                         <TouchableOpacity
                           onPress={() => {
-                            navigation.navigate('SearchResult');
+                            navigation.navigate('SelectSports');
                           }}>
                           <CommonImage
                             source={Add_Box}
@@ -91,7 +103,7 @@ const MyGroupScreen = () => {
                                 width={96}
                                 height={96}
                                 onPress={() =>
-                                  navigation.navigate('GroupPage')
+                                  navigation.navigate('GroupFeed')
                                 }></CommonTouchableOpacity>
                               <CommonText
                                 textAlignC

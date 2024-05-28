@@ -19,28 +19,30 @@ import {
   CommonText,
   Container,
   RowBox,
-} from '../CommonStyled.style';
-import {BackButton} from './style/MyGroupStyle.style';
-import {Colors} from '../../assets/color/Colors';
-import Flag from '../../assets/emoji_flags.png';
-import Person from '../../assets/person_01.png';
-import RectangleBlue from '../../assets/RectangleBlue.png';
-import RectangleWhite from '../../assets/RectangleWhite.png';
-import ExpandBlue from '../../assets/expand_more.png';
-import Settings from '../../assets/settings.png';
-import AnnounceFirst from '../../assets/announce01.png';
-import AnnounceSecond from '../../assets/announce02.png';
-import More_Vert from '../../assets/more_vert.png';
+} from '../../CommonStyled.style';
+import {BackButton} from '../style/MyGroupStyle.style';
+import {Colors} from '../../../assets/color/Colors';
+import Flag from '../../../assets/emoji_flags.png';
+import Person from '../../../assets/person_01.png';
+import RectangleBlue from '../../../assets/RectangleBlue.png';
+import RectangleWhite from '../../../assets/RectangleWhite.png';
+import ExpandBlue from '../../../assets/expand_more.png';
+import Settings from '../../../assets/settings.png';
+import AnnounceFirst from '../../../assets/announce01.png';
+import AnnounceSecond from '../../../assets/announce02.png';
+import More_Vert from '../../../assets/more_vert.png';
+import {RadioButton} from 'react-native-paper';
 import {FlatList} from 'react-native-gesture-handler';
 import {
   ClickBookmark,
   ClickFavorite,
   ChattingIcon,
   VoteComponent,
-} from './style/MyGroupStyle.style';
+} from '../style/MyGroupStyle.style';
 
-const GroupChattingPageScreen = () => {
+const FeedPageScreen = ({route}: any) => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
+
   return (
     <BaseSafeView>
       <FlatList
@@ -207,7 +209,7 @@ const GroupChattingPageScreen = () => {
                     justifyContent: 'center',
                   }}
                   onPress={() => {
-                    navigation.navigate('GroupPage');
+                    navigation.navigate('GroupFeed');
                   }}>
                   <CommonText
                     fontSize={14}
@@ -219,8 +221,8 @@ const GroupChattingPageScreen = () => {
                   <View
                     style={{
                       width: '100%',
-                      height: 1,
-                      backgroundColor: Colors.c_gray200,
+                      height: 2,
+                      backgroundColor: '#0E6FFF',
                     }}
                   />
                 </TouchableOpacity>
@@ -243,8 +245,8 @@ const GroupChattingPageScreen = () => {
                   <View
                     style={{
                       width: '100%',
-                      height: 2,
-                      backgroundColor: '#0E6FFF',
+                      height: 1,
+                      backgroundColor: Colors.c_gray200,
                     }}
                   />
                 </TouchableOpacity>
@@ -273,6 +275,53 @@ const GroupChattingPageScreen = () => {
                   />
                 </TouchableOpacity>
               </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginVertical: 10,
+                  marginHorizontal: 10,
+                }}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}>
+                  <RadioButton
+                    value=""
+                    color={Colors.blue400}
+                    status={'checked'}
+                  />
+                  <CommonText
+                    fontSize={14}
+                    color={'#96A0B5'}
+                    marginLeft={10}
+                    textAlignC
+                    alignC>
+                    공지 모아보기
+                  </CommonText>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}>
+                  <CommonImage
+                    source={AnnounceFirst}
+                    width={18}
+                    height={18}
+                    marginRight={10}
+                  />
+                  <CommonImage source={AnnounceSecond} width={18} height={18} />
+                </View>
+              </View>
+              <View
+                style={{
+                  width: '100%',
+                  height: 3,
+                  backgroundColor: Colors.c_gray200,
+                }}
+              />
             </View>
           </Container>
         }
@@ -365,13 +414,104 @@ const GroupChattingPageScreen = () => {
         renderItem={items => {
           return (
             <View style={{width: '100%'}}>
-              <CommonText
-                fontSize={14}
-                color={'#292E41'}
-                numberOfLines={1}
-                ellipsizeMode="tail">
-                채팅
-              </CommonText>
+              <View style={{padding: 20}}>
+                <RowBox alignC justify={'space-between'}>
+                  <CommonText fontSize={18}>
+                    {items.item?.group?.title}
+                  </CommonText>
+                  <CommonImage
+                    source={More_Vert}
+                    width={3}
+                    height={14.54}
+                    marginHorizontal={10}
+                  />
+                </RowBox>
+                <RowBox alignC justify={'space-start'} marginT={10}>
+                  <CommonTouchableOpacity
+                    style={[
+                      {
+                        borderRadius: 50,
+                        alignItems: 'center',
+                      },
+                    ]}
+                    bgColor={'#AFBAC8'}
+                    width={12}
+                    height={12}></CommonTouchableOpacity>
+                  <CommonText
+                    fontSize={10}
+                    color={'#AFBAC8'}
+                    paddingLeft={5}
+                    numberOfLines={1}
+                    ellipsizeMode="tail">
+                    {items.item?.group?.author}
+                  </CommonText>
+                  <CommonText fontSize={10} color={'#AFBAC8'} paddingLeft={25}>
+                    {items.item?.group?.time}
+                  </CommonText>
+                </RowBox>
+                <View>
+                  <View
+                    style={{
+                      width: '100%',
+                      height: 1,
+                      backgroundColor: '#F4F6FA',
+                      marginTop: 10,
+                    }}
+                  />
+                  <CommonText
+                    fontSize={14}
+                    color={'#292E41'}
+                    numberOfLines={2}
+                    ellipsizeMode="tail"
+                    paddingTop={10}>
+                    {items.item?.group?.content}
+                  </CommonText>
+                  <VoteComponent
+                    vote_title={items.item?.group?.vote_title}
+                    voting_member={items.item?.group?.voting_member}
+                    closing_date={items.item?.group?.closing_date}
+                    participate_title={items.item?.group?.participate_title}
+                    participate_member={items.item?.group?.participate_member}
+                    absence_title={items.item?.group?.absence_title}
+                    absence_member={items.item?.group?.absence_member}
+                  />
+                  <View style={{width: '100%', marginTop: 10}}>
+                    <RowBox justify={'space-start'}>
+                      <ClickFavorite
+                        favorite_click={items.item?.group?.favorite_click}
+                        favorite_num={items.item?.group?.favorite_count}
+                        width={19.5}
+                        height={16}
+                      />
+                      <ChattingIcon
+                        chatting_num={items.item?.group?.chatting_count}
+                        width={19.5}
+                        height={16}
+                      />
+                      <View
+                        style={{
+                          width: 26,
+                          height: 24,
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                        }}>
+                        <ClickBookmark
+                          bookmark={items.item?.group?.bookmark}
+                          width={19.5}
+                          height={16}
+                        />
+                      </View>
+                    </RowBox>
+                  </View>
+                </View>
+              </View>
+              <View
+                style={{
+                  width: '100%',
+                  height: 1,
+                  backgroundColor: '#D7DCE5',
+                }}
+              />
             </View>
           );
         }}
@@ -380,4 +520,6 @@ const GroupChattingPageScreen = () => {
   );
 };
 
-export default GroupChattingPageScreen;
+const styles = StyleSheet.create({});
+
+export default FeedPageScreen;

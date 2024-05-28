@@ -155,7 +155,7 @@ PODS:
   - KakaoSDKUser (2.22.0):
     - KakaoSDKAuth (= 2.22.0)
   - libevent (2.1.12)
-  - mj-studio-react-native-naver-map (1.5.0):
+  - mj-studio-react-native-naver-map (1.5.8):
     - glog
     - NMapsMap (= 3.18.0)
     - RCT-Folly (= 2022.05.16.00)
@@ -1223,12 +1223,12 @@ PODS:
     - React-perflogger (= 0.73.6)
   - RNCAsyncStorage (1.23.1):
     - React-Core
-  - RNDateTimePicker (8.0.0):
+  - RNDateTimePicker (8.0.1):
     - React-Core
-  - RNFBApp (19.2.2):
+  - RNFBApp (19.3.0):
     - Firebase/CoreOnly (= 10.24.0)
     - React-Core
-  - RNGestureHandler (2.16.1):
+  - RNGestureHandler (2.16.2):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1551,7 +1551,7 @@ SPEC CHECKSUMS:
   Flipper-PeerTalk: 116d8f857dc6ef55c7a5a75ea3ceaafe878aadc9
   FlipperKit: 37525a5d056ef9b93d1578e04bc3ea1de940094f
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
-  glog: 035f1e36e53b355cf70f6434d161b36e7d21fecd
+  glog: c5d68082e772fa1c511173d6b30a9de2c05a69a2
   GoogleSignIn: b232380cf495a429b8095d3178a8d5855b42e842
   GoogleUtilities: ea963c370a38a8069cc5f7ba4ca849a60b6d7d15
   GTMAppAuth: 99fb010047ba3973b7026e45393f51f27ab965ae
@@ -1562,7 +1562,7 @@ SPEC CHECKSUMS:
   KakaoSDKCommon: d57127c339fc79e73aa8b236a4c77211c29924f1
   KakaoSDKUser: 043bcd7e91454ebf3bf64f150c430e6f65f0a08d
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-  mj-studio-react-native-naver-map: f39cc558cccc2b5abc9b30c189d1af2d9f5158b2
+  mj-studio-react-native-naver-map: 30f90b45b8bdf37091ff8ae61a209c54d16c2488
   NMapsGeometry: 4e02554fa9880ef02ed96b075dc84355d6352479
   NMapsMap: 36dc18a1f5f315121b33fccd2398c7a702bf0fc8
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
@@ -1617,9 +1617,9 @@ SPEC CHECKSUMS:
   React-utils: d16c1d2251c088ad817996621947d0ac8167b46c
   ReactCommon: 2aa35648354bd4c4665b9a5084a7d37097b89c10
   RNCAsyncStorage: 826b603ae9c0f88b5ac4e956801f755109fa4d5c
-  RNDateTimePicker: cd42eda5f315fc320f0b359413bd598957f7e601
-  RNFBApp: 614f1621b49db54ebd258df8c45427370d8d84a2
-  RNGestureHandler: a8825f964c319a5ea23cc3fa28ae2add62863071
+  RNDateTimePicker: b6a9b35a785ecbe12b4e7d6de5439d0aa4614146
+  RNFBApp: dd35ba8340b89c36e42c4c137915c01d3c792143
+  RNGestureHandler: 96439cf6543defdde87459e48cd1a3f0e45a008e
   RNGoogleSignin: 9d0ecc3bff939ccef83cb3a26b874130b06a6e81
   RNImageCropPicker: e7ab6fb43d2fc3e84651e786ef4a080d63b0ed3d
   RNPermissions: 4e3714e18afe7141d000beae3755e5b5fb2f5e05
@@ -1628,7 +1628,7 @@ SPEC CHECKSUMS:
   RNVectorIcons: 96e8c5c45609932bb2f8347e1c709bcca0e95654
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   TOCropViewController: 80b8985ad794298fb69d3341de183f33d1853654
-  Yoga: d17d2cc8105eed528474683b42e2ea310e1daf61
+  Yoga: 805bf71192903b20fc14babe48080582fee65a80
 
 PODFILE CHECKSUM: 059a26ba09e1ad4c7380169042b0946dad8760e3
 
