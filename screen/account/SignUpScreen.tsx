@@ -205,25 +205,28 @@ const SignUpScreen = () => {
             }}></FlexAutoView>
         </RowBox>
 
-        <CenterBox>
-          <RowBox justify={'space-around'} alignC marginT={20} width={'75%'}>
-            <TouchableOpacity
-              onPress={() => {
-                handleSignUpWithSNS('KAKAO');
-              }}>
-              <Image source={Kakao_Icon} style={{width: 44, height: 44}} />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Image source={Naver_Icon} style={{width: 44, height: 44}} />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Image source={Google_Icon} style={{width: 44, height: 44}} />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Image source={Apple_Icon} style={{width: 44, height: 44}} />
-            </TouchableOpacity>
-          </RowBox>
-        </CenterBox>
+        <RowBox justify={'center'} alignC marginT={30}>
+          <TouchableOpacity
+            style={{marginRight: 20}}
+            onPress={() => {
+              handleSignUpWithSNS('KAKAO');
+            }}>
+            <Image source={Kakao_Icon} style={{width: 44, height: 44}} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{marginRight: 20}}
+            onPress={() => {
+              handleSignUpWithSNS('NAVER');
+            }}>
+            <Image source={Naver_Icon} style={{width: 44, height: 44}} />
+          </TouchableOpacity>
+          <TouchableOpacity style={{marginRight: 20}}>
+            <Image source={Google_Icon} style={{width: 44, height: 44}} />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Image source={Apple_Icon} style={{width: 44, height: 44}} />
+          </TouchableOpacity>
+        </RowBox>
 
         <CenterBox alignC marginT={28}>
           <CommonText fontSize={12} style={{paddingHorizontal: 20}}>

@@ -97,11 +97,18 @@ const OnboardingScreen = () => {
                     height: boxWidth,
                     borderRadius: 10,
                     borderWidth:
-                      selectItems && selectItems === items.index ? 3 : 0,
+                      selectItems &&
+                      selectItems >= 0 &&
+                      selectItems === items.index
+                        ? 3
+                        : 0,
                     borderColor:
                       selectItems === items?.index ? Colors.blue400 : '#fff',
                     opacity:
-                      selectItems === items.index || !selectItems ? 1 : 0.2,
+                      selectItems === items.index ||
+                      (!selectItems && selectItems !== 0)
+                        ? 1
+                        : 0.2,
                   }}
                 />
                 <CommonText

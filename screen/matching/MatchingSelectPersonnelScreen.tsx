@@ -22,7 +22,7 @@ import {CommonHeaderBlack} from '../../component/header/CommonHeader';
 import Arrow_Right from '../../assets/arrow_right.png';
 import {Colors} from '../../assets/color/Colors';
 import Arrow_Down from '../../assets/arrow_down.png';
-import Arrow_Left from '../assets/arrow_left.png';
+import Arrow_Left from '../../assets/arrow_left.png';
 import * as Progress from 'react-native-progress';
 
 const MatchingSelectPersonnelScreen = () => {

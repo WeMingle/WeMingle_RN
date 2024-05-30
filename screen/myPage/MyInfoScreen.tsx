@@ -3,6 +3,7 @@ import {Dimensions, FlatList, Image, View} from 'react-native';
 import {
   AccountButton,
   BaseSafeView,
+  BorderBoxButton,
   CenterBox,
   CommonImage,
   CommonText,
@@ -27,7 +28,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import AccountHeader from '../../component/header/AccountHeader';
 import {CommonHeader} from '../../component/header/CommonHeader';
 import {useAppDispatch} from '../../redux/Store';
-import {getMyInfo} from '../../api/MyPage';
+import {getMemberInfo, getMyInfo} from '../../api/MyPage';
 
 interface TextFieldProps {
   leftText: string;
@@ -49,21 +50,33 @@ interface MyInfoProps {
   birthYearPublic: boolean;
 }
 
+interface MemberInfoProps {
+  memberId: string;
+  univEmail: string;
+}
 const MyInfoScreen = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
   const dispatch = useAppDispatch();
 
   const [configVisible, setConfigVisible] = useState(false);
   const [myInfo, setMyInfo] = useState<MyInfoProps>();
-
-  const asyncFunction = async () => {
-    const result = await getMyInfo();
-    setMyInfo(result);
-  };
+  const [memberInfo, setMemberInfo] = useState<MemberInfoProps>();
 
   useEffect(() => {
-    const result = asyncFunction();
+    const asyncFunction = async () => {
+      const result = await getMyInfo();
+      setMyInfo(result);
+    };
+    asyncFunction();
   }, []);
+
+  useEffect(() => {
+    const asyncFunction = async () => {
+      const result = await getMemberInfo();
+      setMemberInfo(result);
+    };
+    asyncFunction();
+  });
 
   const TextField = ({
     leftText,
@@ -131,10 +144,29 @@ const MyInfoScreen = () => {
         <CommonText bold marginT={30}>
           회원 정보
         </CommonText>
-        <TextField leftText={'아이디'} centerText={'ex********'}></TextField>
         <TextField
-          leftText={'학교인증'}
-          centerText={'wemingle@google.com'}></TextField>
+          leftText={'아이디'}
+          centerText={
+            memberInfo?.memberId.slice(0, 2) + '********'
+          }></TextField>
+        <RowBox marginT={30} alignC>
+          <CommonText
+            style={{width: '20%'}}
+            fontSize={12}
+            color={Colors.c_gray400}>
+            학교 인증
+          </CommonText>
+          <BorderBoxButton
+            onPress={() => {}}
+            row
+            borderR={5}
+            style={{width: '80%', justifyContent: 'space-between'}}>
+            <CommonText color={Colors.informative}>
+              학교 인증이 필요한 계정입니다.
+            </CommonText>
+            <CommonImage source={Arrow_Right} width={24} height={24} />
+          </BorderBoxButton>
+        </RowBox>
 
         <View
           style={{

@@ -30,6 +30,7 @@
 				<string>kakao5cea5045a89596b8b0b8c01dc49a737e</string>
 			</array>
 		</dict>
+
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
@@ -40,6 +41,8 @@
    <string>kakaokompassauth</string>
    <string>storykompassauth</string>
    <string>kakaolink</string>
+	 <string>naversearchapp</string>
+   <string>naversearchthirdlogin</string>
  </array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>

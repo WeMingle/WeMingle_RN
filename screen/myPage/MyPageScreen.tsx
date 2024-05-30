@@ -23,7 +23,7 @@ import {MyButtonFrame} from './style/MyPageStyle.style';
 import Arrow_Right_White from '../../assets/arrow_right_white.png';
 import Arrow_Right from '../../assets/arrow_right.png';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {getMyGroupList} from '../../api/MyPage';
+import {getMyGroupList, getMyInfo} from '../../api/MyPage';
 
 const testData = [
   {image: 'none', name: '숭실대 축구 동아리'},
@@ -41,10 +41,25 @@ interface GroupList {
   teamImgUrl: string;
 }
 
+interface MyInfoProps {
+  nickname: string;
+  majorActivityArea: string;
+  numberOfMatches: number;
+  gender: string;
+  abilityList: string[];
+  oneLineIntroduction: string;
+  profilePicId: string;
+  birthYear: number;
+  abilityPublic: boolean;
+  majorActivityAreaPublic: boolean;
+  birthYearPublic: boolean;
+}
+
 const MyPageScreen = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
   const [selectItems, setSelectItems] = useState([]);
   const [groupList, setGroupList] = useState<GroupList[]>();
+  const [myInfo, setMyInfo] = useState<MyInfoProps>();
 
   useEffect(() => {
     const _getFunction = async () => {
@@ -52,6 +67,15 @@ const MyPageScreen = () => {
 
       if (result) setGroupList(Object.values(result));
     };
+    _getFunction();
+  }, []);
+
+  useEffect(() => {
+    const _getFunction = async () => {
+      const result = await getMyInfo();
+      setMyInfo(result);
+    };
+
     _getFunction();
   }, []);
 
@@ -75,13 +99,13 @@ const MyPageScreen = () => {
             />
             <View>
               <CommonText color={'#fff'} fontSize={14}>
-                김위밍{' '}
+                {myInfo?.nickname}
                 <CommonText fontSize={12} color={Colors.c_gray400}>
                   신고 내역 0건
                 </CommonText>
               </CommonText>
               <CommonText color={Colors.c_gray400} fontSize={14} marginT={7}>
-                한줄 소개글을 입력해주세요.
+                {myInfo?.oneLineIntroduction}
               </CommonText>
             </View>
           </RowBox>

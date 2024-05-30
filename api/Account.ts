@@ -35,8 +35,9 @@ export const uploadImageWithBLOB = (payload: any) => {
 export const AddProfile = async (payload: any) => {
   uploadImageWithBLOB(payload);
 
+  console.log(payload.nickName);
   const result = await axiosPrivate
-    .post('member/profile', payload.nickName)
+    .post('member/profile', {nickName: payload.nickName})
     .then(response => {
       if (response.status === 200) {
         return true;
@@ -44,7 +45,7 @@ export const AddProfile = async (payload: any) => {
     })
     .catch(error => {
       if (error.response.status !== 200) {
-        console.log(error);
+        console.log('error', error);
         return false;
       }
     });
@@ -97,12 +98,12 @@ export const certificationEmail = async (payload: string) => {
   return await axiosPrivate
     .post('/mail', {univEmail: payload})
     .then(response => {
+      console.log('response.data', response.data);
       if (response?.status === 200) {
-        console.log('asd');
-        return response.data.responseData;
+        return true;
       }
     })
-    .catch(e => console.log(e));
+    .catch(e => console.log('error', e));
 };
 
 export const checkEmailNumber = async (payload: any) => {

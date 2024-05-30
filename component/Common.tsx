@@ -5,6 +5,8 @@ import {
   getProfile as getKakaoProfile,
   login,
 } from '@react-native-seoul/kakao-login';
+import NaverLogin from '@react-native-seoul/naver-login';
+
 import {responsiveFontSize} from 'react-native-responsive-dimensions';
 
 export const getImageLibraryPermission = async () => {
@@ -98,7 +100,10 @@ export const handleSnsLogin = async (
         });
       })
       .catch(err => {});
-  } else if (signupPlatform == 'naver') {
+  } else if (signupPlatform == 'NAVER') {
+    const {failureResponse, successResponse} = await NaverLogin.login();
+    console.log(successResponse);
+    console.log(failureResponse);
   } else if (signupPlatform == 'google') {
   }
 };

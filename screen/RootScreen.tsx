@@ -96,7 +96,7 @@ const RootScreen = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={'Matching'}>
+      <Stack.Navigator initialRouteName={'Splash'}>
         {RouterSetting.map((v, index) => {
           const ranNum = Math.random().toString(36).substr(2, 10);
           return (

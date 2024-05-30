@@ -33,6 +33,20 @@ export const getMyInfo = async () => {
   return result;
 };
 
+export const getMemberInfo = async () => {
+  const result = await axiosPrivate
+    .get('member/authentication')
+    .then(response => {
+      if (response.status === 200) {
+        return response.data.responseData;
+      }
+    })
+    .catch(e => {
+      return false;
+    });
+  return result;
+};
+
 export const getScrap = async () => {
   const result = await axiosPrivate
     .get(`bookmark/my?excludeExpired=false`)

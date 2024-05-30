@@ -23,6 +23,7 @@ const CertificationSchoolScreen = () => {
 
   const [email, setEmail] = useState<string>('dlgusxo1000@gmail.com');
   const [checkNum, setCheckNum] = useState<number | null>(null);
+  const [isSendEmail, setIsSendEmail] = useState(false);
   return (
     <BaseSafeView>
       <Container>
@@ -54,10 +55,16 @@ const CertificationSchoolScreen = () => {
             onChangeText={v => setEmail(v)}
           />
           <TouchableOpacity
-            onPress={() => {
-              certificationEmail(email);
+            onPress={async () => {
+              if (isSendEmail) {
+                return;
+              }
+              const result = await certificationEmail(email);
+              setIsSendEmail(result === true && true);
             }}>
-            <CommonText color={Colors.blue400} fontSize={14}>
+            <CommonText
+              color={isSendEmail ? Colors.c_gray500 : Colors.blue400}
+              fontSize={14}>
               인증번호받기
             </CommonText>
           </TouchableOpacity>
@@ -77,6 +84,7 @@ const CertificationSchoolScreen = () => {
 
         <AccountButton
           onPress={() => {
+            navigation.navigate('Home');
             checkEmailNumber({email: email, checkNum: checkNum});
           }}
           style={{bottom: 20, position: 'absolute', alignSelf: 'center'}}

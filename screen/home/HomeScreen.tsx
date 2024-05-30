@@ -27,8 +27,12 @@ import person from '../../assets/person.png';
 
 import {FlatList, View} from 'react-native';
 import {Colors} from '../../assets/color/Colors';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../redux/Reducers';
 const HomeScreen = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
+  // const {accessToken} = useSelector((state: RootState) => state.token);
+  // console.log(accessToken);
 
   return (
     <BaseSafeView>
@@ -188,6 +192,7 @@ const HomeScreen = () => {
               data={[0, 0, 0, 0]}
               horizontal
               renderItem={({item}) => {
+                console.log(item);
                 return (
                   <>
                     <BorderBox
