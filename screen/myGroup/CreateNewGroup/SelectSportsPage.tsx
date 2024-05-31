@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Keyboard,
   Alert,
+  ListRenderItem,
 } from 'react-native';
 import {
   NavigationProp,
@@ -26,9 +27,58 @@ import {BackButton} from '../style/MyGroupStyle.style';
 import {Colors} from '../../../assets/color/Colors';
 import styled from 'styled-components/native';
 
+type Item = {
+  image: string;
+  name: string;
+};
+
+const data: Item[] = [
+  {image: 'none', name: '러닝'},
+  {image: 'none', name: '축구'},
+  {image: 'none', name: '농구'},
+  {image: 'none', name: '스쿼시'},
+  {image: 'none', name: '볼링'},
+  {image: 'none', name: '테니스'},
+  {image: 'none', name: '클라이밍'},
+  {image: 'none', name: '자전거'},
+  {image: 'none', name: '보드'},
+  {image: 'none', name: '배드민턴'},
+  {image: 'none', name: '야구'},
+  {image: 'none', name: '기타'},
+];
+
 const SelectSportsPage = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
   const barWidth = Math.ceil((1 / 5) * 100);
+  const [selectedName, setSelectedName] = useState<string | null>(null);
+
+  const onPress = (item: Item) => {
+    setSelectedName(item.name);
+  };
+
+  const renderItem: ListRenderItem<Item> = ({item}) => {
+    const isSelected = item.name === selectedName;
+    return (
+      <View
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          marginBottom: 8,
+        }}>
+        <TouchableOpacity
+          style={[
+            styles.button,
+            isSelected ? styles.selectedButton : styles.button,
+          ]}
+          onPress={() => onPress(item)}>
+          <CommonText fontSize={10} color={'#ffffff'} paddingBottom={5}>
+            {item?.name}
+          </CommonText>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
   return (
     <BaseSafeView>
       <Container bgColor={'#ffffff'} padding={0}>
@@ -62,56 +112,15 @@ const SelectSportsPage = () => {
           </CommonText>
           <View
             style={{
-              // backgroundColor: 'yellow',
               width: '100%',
               height: '75%',
             }}>
             <FlatList
-              data={[
-                {image: 'none', name: '러닝'},
-                {image: 'none', name: '축구'},
-                {image: 'none', name: '농구'},
-                {image: 'none', name: '스쿼시'},
-                {image: 'none', name: '볼링'},
-                {image: 'none', name: '테니스'},
-                {image: 'none', name: '클라이밍'},
-                {image: 'none', name: '자전거'},
-                {image: 'none', name: '보드'},
-                {image: 'none', name: '배드민턴'},
-                {image: 'none', name: '야구'},
-                {image: 'none', name: '기타'},
-              ]}
+              data={data}
               numColumns={3}
               scrollEnabled={false}
-              renderItem={items => {
-                return (
-                  <View
-                    style={{
-                      flex: 1,
-                      alignItems: 'center',
-                      marginBottom: 8,
-                    }}>
-                    <CommonTouchableOpacity
-                      style={[
-                        {
-                          borderRadius: 10,
-                          alignItems: 'center',
-                          justifyContent: 'flex-end',
-                        },
-                      ]}
-                      bgColor={'#000'}
-                      width={80}
-                      height={80}>
-                      <CommonText
-                        fontSize={10}
-                        color={'#ffffff'}
-                        paddingBottom={5}>
-                        {items.item?.name}
-                      </CommonText>
-                    </CommonTouchableOpacity>
-                  </View>
-                );
-              }}
+              renderItem={renderItem}
+              keyExtractor={item => item.name}
             />
           </View>
           <View
@@ -150,5 +159,29 @@ const ProgressBar = styled.View`
   height: 5px;
   background-color: #5c667b;
 `;
+
+const styles = StyleSheet.create({
+  button: {
+    width: 80,
+    height: 80,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    tintColor: 'gray',
+    opacity: 0.7,
+    backgroundColor: '#000000',
+  },
+  selectedButton: {
+    width: 80,
+    height: 80,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    opacity: 1,
+    backgroundColor: '#000000',
+    borderColor: '#0E6FFF',
+    borderWidth: 5,
+  },
+});
 
 export default SelectSportsPage;

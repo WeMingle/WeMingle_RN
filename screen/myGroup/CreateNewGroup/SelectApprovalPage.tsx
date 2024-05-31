@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Keyboard,
   Alert,
+  ListRenderItem,
 } from 'react-native';
 import {
   NavigationProp,
@@ -24,12 +25,74 @@ import {
 } from '../../CommonStyled.style';
 import {BackButton} from '../style/MyGroupStyle.style';
 import {Colors} from '../../../assets/color/Colors';
-import AddBox from '../../../assets/add_box.png';
+import Lock from '../../../assets/lock.png';
+import LockOpen from '../../../assets/lock_open.png';
 import styled from 'styled-components/native';
 
+interface Item {
+  image: string;
+  title: string;
+  content: string;
+  description: string;
+}
+
+const data: Item[] = [
+  {
+    image: Lock,
+    title: '직접 승인',
+    content: `그룹장이 되고 싶은 사용자의 신청을\n그룹장이 직접 판단하에 승인 할 수 있어요`,
+    description: '그룹에 최적화된 그룹원을 모을 수 있어요',
+  },
+  {
+    image: LockOpen,
+    title: '자동 승인',
+    content: `별도의 승인 과정없이 그룹에 가입 신청한\n모든 인원이 참여할 수 있어요`,
+    description: '빠른 시일내에 많은 인원을 모집할 수 있어요',
+  },
+];
+
 const SelectApprovalPage = () => {
+  const [selectedTitle, setSelectedTitle] = useState<string | null>(null);
   const navigation: NavigationProp<ParamListBase> = useNavigation();
   const barWidth = Math.ceil((2 / 5) * 100);
+  const onPress = (item: Item) => {
+    setSelectedTitle(item.title);
+  };
+
+  const RenderItem: ListRenderItem<Item> = ({item}) => {
+    const isSelected = item.title === selectedTitle;
+    return (
+      <TouchableOpacity
+        style={[
+          styles.button,
+          isSelected ? styles.selectedButton : styles.button,
+        ]}
+        onPress={() => onPress(item)}>
+        <View
+          style={{
+            padding: 20,
+          }}>
+          <CommonImage source={item.image} width={15} height={19.5} />
+        </View>
+        <View
+          style={{
+            paddingHorizontal: 20,
+            flexDirection: 'column',
+          }}>
+          <CommonText fontSize={16} color={'#1C1C1C'} marginBottom={10}>
+            {item.title}
+          </CommonText>
+          <CommonText fontSize={12} color={'#1C1C1C'} marginBottom={10}>
+            {item.content}
+          </CommonText>
+          <CommonText fontSize={10} color={'#cccccc'}>
+            {item.description}
+          </CommonText>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <BaseSafeView>
       <Container bgColor={'#ffffff'} padding={0}>
@@ -66,75 +129,26 @@ const SelectApprovalPage = () => {
               width: '100%',
               height: '75%',
             }}>
-            <TouchableOpacity
-              style={{
-                backgroundColor: '#ffffff',
-                borderRadius: 10,
-                borderWidth: 2,
-                borderColor: '#eeeeee',
-                padding: 20,
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginBottom: 10,
-                width: '100%',
-              }}>
-              <View
-                style={{
-                  padding: 20,
-                }}>
-                <CommonImage source={AddBox} width={24} height={24} />
-              </View>
-              <View
-                style={{
-                  paddingHorizontal: 20,
-                  flexDirection: 'column',
-                }}>
-                <CommonText fontSize={16} color={'#1C1C1C'} marginBottom={10}>
-                  직접 승인
-                </CommonText>
-                <CommonText fontSize={12} color={'#1C1C1C'} marginBottom={10}>
-                  그룹장이 되고 싶은 사용자의 신청을{'\n'}그룹장이 직접 판단하에
-                  승인 할 수 있어요
-                </CommonText>
-                <CommonText fontSize={10} color={'#cccccc'}>
-                  그룹에 최적화된 그룹원을 모을 수 있어요
-                </CommonText>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                backgroundColor: '#ffffff',
-                borderRadius: 10,
-                borderWidth: 2,
-                borderColor: '#eeeeee',
-                padding: 20,
-                flexDirection: 'row',
-                alignItems: 'center',
-                width: '100%',
-              }}>
-              <View
-                style={{
-                  padding: 20,
-                }}>
-                <CommonImage source={AddBox} width={24} height={24} />
-              </View>
-              <View
-                style={{
-                  paddingHorizontal: 20,
-                  flexDirection: 'column',
-                }}>
-                <CommonText fontSize={16} color={'#1C1C1C'} marginBottom={10}>
-                  자동 승인
-                </CommonText>
-                <CommonText fontSize={12} color={'#1C1C1C'} marginBottom={10}>
-                  별도의 승인 과정없이 그룹에 가입 신청한{'\n'}모든 인원이
-                  참여할 수 있어요
-                </CommonText>
-                <CommonText fontSize={10} color={'#cccccc'}>
-                  빠른 시일내에 많은 인원을 모집할 수 있어요
-                </CommonText>
-              </View>
-            </TouchableOpacity>
+            {data.map(item => (
+              <RenderItem
+                item={item}
+                index={0}
+                separators={{
+                  highlight: function (): void {
+                    throw new Error('Function not implemented.');
+                  },
+                  unhighlight: function (): void {
+                    throw new Error('Function not implemented.');
+                  },
+                  updateProps: function (
+                    select: 'leading' | 'trailing',
+                    newProps: any,
+                  ): void {
+                    throw new Error('Function not implemented.');
+                  },
+                }}
+              />
+            ))}
           </View>
           <View
             style={{
@@ -172,5 +186,30 @@ const ProgressBar = styled.View`
   height: 5px;
   background-color: #5c667b;
 `;
+
+const styles = StyleSheet.create({
+  button: {
+    backgroundColor: '#ffffff',
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#eeeeee',
+    padding: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+    width: '100%',
+  },
+  selectedButton: {
+    backgroundColor: '#ffffff',
+    borderRadius: 10,
+    padding: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+    width: '100%',
+    borderColor: '#0E6FFF',
+    borderWidth: 5,
+  },
+});
 
 export default SelectApprovalPage;

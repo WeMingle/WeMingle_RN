@@ -38,6 +38,9 @@ const MyGroupDefaultScreen = ({pageName}: any) => {
     dispatch(fetchUnivRecTeams());
   }, [dispatch]);
 
+  console.log('team추천: ', teams);
+  console.log('dispatch >> ', dispatch);
+
   return (
     <BaseSafeView>
       <FlatList

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {FlatList, View, TouchableOpacity} from 'react-native';
 import {
   NavigationProp,
@@ -20,6 +20,10 @@ const Tab = createMaterialTopTabNavigator();
 export const SearchTabs = ({teamSearch, memberSearch}: any) => {
   console.log('받아진 팀 데이터 : ', teamSearch);
   console.log('받아진 멤버 데이터 : ', memberSearch);
+  useEffect(() => {
+    teamSearch;
+    memberSearch;
+  }, [teamSearch, memberSearch]);
   return (
     <Tab.Navigator tabBar={props => <SearchTabBar {...props} />}>
       <Tab.Screen
