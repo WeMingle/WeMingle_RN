@@ -54,6 +54,7 @@ const recommendationSlice = createSlice({
       })
       .addCase(fetchWemingleRecTeams.fulfilled, (state, action) => {
         state.loading = false;
+        // console.log('위밍글이 추천하는 : ', action);
         state.teams = action.payload;
       })
       .addCase(fetchWemingleRecTeams.rejected, (state, action) => {

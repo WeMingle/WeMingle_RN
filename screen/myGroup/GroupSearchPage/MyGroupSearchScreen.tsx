@@ -56,7 +56,7 @@ const MyGroupSearchScreen = ({user}: any) => {
 
   useEffect(() => {
     dispatch(fetchMemberRecTeams());
-  }, [dispatch]);
+  }, [dispatch, teamSearch, memberSearch]);
 
   const onInsert = (txt: string) => {
     //새로 등록할 항목의 id를 구함.

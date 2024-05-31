@@ -39,8 +39,6 @@ const MyGroupScreen = () => {
     dispatch(fetchUnivCertifyGroup());
   }, [dispatch]);
 
-  console.log('내 그룹? : ', responseData);
-
   return (
     <>
       {responseData?.existMyTeam === false ? (

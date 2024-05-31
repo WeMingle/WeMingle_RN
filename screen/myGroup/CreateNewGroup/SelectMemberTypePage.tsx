@@ -30,16 +30,6 @@ import AddBox from '../../../assets/add_box.png';
 import styled from 'styled-components/native';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
-interface MinTxt {
-  id: number;
-  min: string;
-}
-
-interface MaxTxt {
-  id: number;
-  max: string;
-}
-
 const SelectMemberTypePage = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
 
@@ -48,20 +38,19 @@ const SelectMemberTypePage = () => {
   let now = new Date();
   let year = now.getFullYear();
 
-  const [multiSliderValue, setMultiSliderValue] = useState([0, 15]);
-
   let minBirthYear = year - 19;
-  let maxBirthYear = year - 34;
-
   let minYearAbbr = minBirthYear.toString().substring(2);
-  let maxYearAbbr = maxBirthYear.toString().substring(2);
+
+  let yearLength = minBirthYear - 1990;
+
+  const [multiSliderValue, setMultiSliderValue] = useState([0, yearLength]);
 
   const [minYear, setMinYear] = useState(minYearAbbr);
-  const [maxYear, setMaxYear] = useState(maxYearAbbr);
+  const [maxYear, setMaxYear] = useState('90');
 
   let yearList = [];
 
-  for (let i = 0; i < 15; i++) {
+  for (let i = 0; i < yearLength; i++) {
     yearList.push({id: i, year: minBirthYear - i});
   }
 
@@ -69,7 +58,7 @@ const SelectMemberTypePage = () => {
     (values: any) => {
       setMultiSliderValue(values);
       let minYearNum = (minBirthYear - values[0]).toString().substring(2);
-      let maxYearNum = (maxBirthYear + (15 - values[1]))
+      let maxYearNum = (1990 + (yearLength - values[1]))
         .toString()
         .substring(2);
       setMinYear(minYearNum);
@@ -272,7 +261,7 @@ const SelectMemberTypePage = () => {
                 }}>
                 <MultiSlider
                   min={0}
-                  max={15}
+                  max={yearLength}
                   markerStyle={{width: 30, height: 30, borderRadius: 50}}
                   pressedMarkerStyle={{width: 30, height: 30, borderRadius: 50}}
                   values={[multiSliderValue[0], multiSliderValue[1]]}
@@ -296,14 +285,14 @@ const SelectMemberTypePage = () => {
                   alignC
                   color={'#9e9e9e'}
                   paddingLeft={20}>
-                  {minYear}
+                  {minYearAbbr}
                 </CommonText>
                 <CommonText
                   fontSize={14}
                   alignC
                   color={'#9e9e9e'}
                   paddingRight={20}>
-                  {maxYear}
+                  90
                 </CommonText>
               </View>
             </View>
