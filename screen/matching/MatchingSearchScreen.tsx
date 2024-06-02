@@ -80,8 +80,6 @@ const MatchingSearchScreen = ({user}: any) => {
     {},
   );
 
-  console.log(popularMatchingList);
-
   useEffect(() => {
     const getAsyncFunc = async () => {
       const result = await getPopularMatchingList();

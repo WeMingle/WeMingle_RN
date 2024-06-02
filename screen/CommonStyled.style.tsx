@@ -273,7 +273,7 @@ export const BorderBox = styled.View`
   margin-right: ${(props: {marginR?: number}) => props.marginR || 0}px;
   margin-top: ${(props: {marginT?: number}) => props.marginT || 0}px;
   padding: ${(props: {padding?: number}) =>
-    props.padding ? props.padding : 5}px;
+    props.padding === 0 ? 0 : props.padding ? props.padding : 5}px;
   height: ${(props: {height?: number}) => props.height && props.height}px;
   width: ${(props: {width: number}) => props.width && props.width}px;
   border-radius: ${(props: {borderR: number}) =>

@@ -5,10 +5,13 @@ import {
   CommonText,
   Container,
   HorizontalBar,
+  MatchingItem,
   RowBox,
   ScreenWidth,
   ScrollContainer,
 } from '../CommonStyled.style';
+import Swiper from 'react-native-swiper';
+import Carousel from 'react-native-snap-carousel';
 
 import {
   NavigationProp,
@@ -24,15 +27,49 @@ import Gray_Person from '../../assets/gray_person.png';
 
 import calendar from '../../assets/calendar_month.png';
 import person from '../../assets/person.png';
+import Arrow_Right from '../../assets/arrow_right.png';
+import Arrow_Down from '../../assets/arrow_down.png';
 
-import {FlatList, View} from 'react-native';
+import {FlatList, TouchableOpacity, View} from 'react-native';
 import {Colors} from '../../assets/color/Colors';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../redux/Reducers';
+import {useEffect, useState} from 'react';
+import {
+  getPopularMatchingList,
+  getRecentMatchingList,
+} from '../../api/Matching';
+import {
+  BookmarkImage,
+  ClickBookmark,
+} from '../myGroup/style/MyGroupStyle.style';
+
+interface MatchingList {
+  [prop: string]: any;
+}
+
 const HomeScreen = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
   // const {accessToken} = useSelector((state: RootState) => state.token);
   // console.log(accessToken);
+
+  const [popularMatchingList, setPopularMatchingList] = useState<MatchingList>(
+    {},
+  );
+  const [recentMatchingList, setRecentMatchingList] = useState<MatchingList>(
+    {},
+  );
+
+  useEffect(() => {
+    const getAsyncFunc = async () => {
+      const result = await getPopularMatchingList();
+      const result2 = await getRecentMatchingList();
+
+      setPopularMatchingList(result);
+      setRecentMatchingList(result2);
+    };
+    getAsyncFunc();
+  }, []);
 
   return (
     <BaseSafeView>
@@ -65,11 +102,15 @@ const HomeScreen = () => {
               borderTopLeftRadius: 20,
               borderTopRightRadius: 20,
             }}>
-            <RowBox alignC padding={20}>
-              <CommonImage source={tmpImage} width={30} height={30} />
-              <CommonText marginL={10} bold>
-                축구
-              </CommonText>
+            <RowBox alignC padding={20} justify={'space-between'}>
+              <RowBox alignC>
+                <CommonImage source={tmpImage} width={30} height={30} />
+                <CommonText marginL={10} bold>
+                  축구
+                </CommonText>
+              </RowBox>
+
+              <CommonImage source={Arrow_Down} width={24} height={24} />
             </RowBox>
             <HorizontalBar marginT={1} />
             <CommonText marginL={20} fontSize={16}>
@@ -79,10 +120,95 @@ const HomeScreen = () => {
           </Container>
           <View
             style={{
-              height: 300,
+              height: 360,
               width: '100%',
               backgroundColor: Colors.c_gray50,
-            }}></View>
+            }}>
+            <Carousel
+              data={[0, 1, 2]}
+              renderItem={() => {
+                const tmp = Object.keys(recentMatchingList);
+                return (
+                  <BorderBox
+                    padding={0}
+                    bgColor={'#212121'}
+                    style={{
+                      width: 290,
+                      height: 320,
+                      alignSelf: 'center',
+                      marginTop: 20,
+                    }}>
+                    <BorderBox
+                      style={{
+                        width: 290,
+                        height: 100,
+                        bottom: 1,
+                        right: 1,
+                      }}
+                    />
+                    <BorderBox
+                      marginT={10}
+                      height={100}
+                      width={260}
+                      padding={10}
+                      style={{alignSelf: 'center'}}>
+                      <RowBox justify={'space-between'}>
+                        <RowBox>
+                          <BorderBox
+                            borderColor={Colors.informative}
+                            borderR={20}
+                            alignC
+                            row>
+                            <CommonImage
+                              source={calendar}
+                              width={11}
+                              height={11}
+                            />
+                            <CommonText
+                              color={Colors.informative}
+                              marginL={5}
+                              fontSize={11}>
+                              3월 24일
+                            </CommonText>
+                          </BorderBox>
+                          <BorderBox
+                            borderColor={'#fff'}
+                            marginL={5}
+                            borderR={20}
+                            alignC
+                            row
+                            bgColor={Colors.c_gray200}
+                            style={{
+                              paddingRight: 7,
+                            }}>
+                            <CommonImage
+                              source={person}
+                              width={11}
+                              height={11}
+                            />
+                            <CommonText
+                              color={Colors.informative}
+                              marginL={5}
+                              fontSize={11}>
+                              개인
+                            </CommonText>
+                          </BorderBox>
+                        </RowBox>
+                        <ClickBookmark
+                          bookmark={false}
+                          width={26}
+                          height={24}
+                        />
+                      </RowBox>
+                      <RowBox></RowBox>
+                    </BorderBox>
+                  </BorderBox>
+                );
+              }}
+              sliderWidth={ScreenWidth}
+              itemWidth={290}
+            />
+          </View>
           {/* 카드 들어가야함 */}
           <Container>
             <CommonText fontSize={16}># 실시간 매칭순위 ✅</CommonText>
@@ -185,12 +311,20 @@ const HomeScreen = () => {
               }}
               data={[0]}
             />
-            <CommonText marginT={30} fontSize={16}>
-              인기 매칭글
-            </CommonText>
+            <RowBox marginT={30} alignC justify={'space-between'}>
+              <CommonText fontSize={16}>인기 매칭글</CommonText>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('PopularMatchingList');
+                }}
+                hitSlop={{right: 10, left: 10, top: 10, bottom: 10}}>
+                <CommonImage source={Arrow_Right} width={24} height={24} />
+              </TouchableOpacity>
+            </RowBox>
             <FlatList
               data={[0, 0, 0, 0]}
               horizontal
+              showsHorizontalScrollIndicator={false}
               renderItem={({item}) => {
                 console.log(item);
                 return (
@@ -240,6 +374,27 @@ const HomeScreen = () => {
                       </RowBox>
                     </BorderBox>
                   </>
+                );
+              }}
+            />
+            <CommonText marginT={30} fontSize={16}>
+              최신 매칭글
+            </CommonText>
+            <FlatList
+              style={{flexGrow: 0}}
+              data={Object.keys(recentMatchingList)}
+              showsVerticalScrollIndicator={false}
+              renderItem={({item, index}) => {
+                return (
+                  <MatchingItem
+                    item={{
+                      writer: recentMatchingList[item].nickname,
+                      contents: recentMatchingList[item].content,
+                      areaList: recentMatchingList[item].areas,
+                      ...recentMatchingList[item],
+                    }}
+                    paddingN
+                  />
                 );
               }}
             />

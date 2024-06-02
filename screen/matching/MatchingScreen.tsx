@@ -10,6 +10,7 @@ import NaverMapView, {
 
 import {
   BaseSafeView,
+  BorderBox,
   CommonImage,
   CommonText,
   MatchingItem,
@@ -229,6 +230,7 @@ const MatchingScreen = () => {
               latitude: 37.50497126,
               longitude: 127.04905021,
             }}
+            zoomControl={false}
             onCameraChange={e => {
               const result = getMapBounds(
                 {latitude: e.latitude, longitude: e.longitude},
@@ -237,17 +239,23 @@ const MatchingScreen = () => {
                 ScreenHeight - 65 - 40 - 65 - 40 - 60 - 55,
               );
               const bounds = `topLat=${result[0].lat}&bottomLat=${result[1].lat}&rightLon=${result[0].lng}&leftLon=${result[1].lng}`;
+              console.log(bounds);
               setBounds(bounds);
             }}
-            showsMyLocationButton={true}
+            showsMyLocationButton={false}
             style={{
               width: '100%',
               height: ScreenHeight - 65 - 40 - 65 - 40 - 60 - 55,
               marginBottom: -10,
             }}>
             {/* Not Working in iOS Old Architecture Yet */}
+            {/* <Marker coordinate={{latitude: 37.564362, longitude: 126.977011}} onClick={() => console.warn('onClick! p0')}/> */}
           </NaverMapView>
-          <TouchableWithoutFeedback
+          <BorderBox
+            style={{position: 'absolute', alignSelf: 'center', bottom: 20}}>
+            <MatchingItem item={matchingList[8012]} />
+          </BorderBox>
+          {/* <TouchableWithoutFeedback
             style={{
               borderTopLeftRadius: 20,
               borderTopRightRadius: 20,
@@ -272,7 +280,7 @@ const MatchingScreen = () => {
             sortOption={sortOption}
             setModalVisible={() => setSortOptionOpen(true)}
             matchingCount={matchingCount}
-          />
+          /> */}
         </>
       )}
       <MatchingFloatingButton

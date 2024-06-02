@@ -81,7 +81,15 @@ const MatchingWriteScreen = () => {
           marginT={10}
           title={'지역'}
           rightComponent={() => {
-            return <CommonImage source={Arrow_down} width={24} height={24} />;
+            return (
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('MatchingGetLocation');
+                }}
+                hitSlop={{right: 50, top: 50, bottom: 50, left: 50}}>
+                <CommonImage source={Arrow_down} width={24} height={24} />
+              </TouchableOpacity>
+            );
           }}
         />
 

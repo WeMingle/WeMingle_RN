@@ -1,0 +1,17 @@
+diff --git a/node_modules/react-native-calendars/src/calendar/.DS_Store b/node_modules/react-native-calendars/src/calendar/.DS_Store
+new file mode 100644
+index 0000000..7c972d2
+Binary files /dev/null and b/node_modules/react-native-calendars/src/calendar/.DS_Store differ
+diff --git a/node_modules/react-native-calendars/src/calendar/header/index.js b/node_modules/react-native-calendars/src/calendar/header/index.js
+index bd75364..6c620df 100644
+--- a/node_modules/react-native-calendars/src/calendar/header/index.js
++++ b/node_modules/react-native-calendars/src/calendar/header/index.js
+@@ -125,7 +125,7 @@ const CalendarHeader = forwardRef((props, ref) => {
+     return (<View testID={testID} style={propsStyle} accessible accessibilityRole={'adjustable'} accessibilityActions={accessibilityActions} onAccessibilityAction={onAccessibilityAction} accessibilityElementsHidden={accessibilityElementsHidden} // iOS
+      importantForAccessibility={importantForAccessibility} // Android
+     >
+-      <View style={headerStyle}>
++      <View style={[headerStyle,{justifyContent:'center'}]}>
+         {_renderArrow('left')}
+         <View style={style.current.headerContainer}>
+           {_renderHeader()}

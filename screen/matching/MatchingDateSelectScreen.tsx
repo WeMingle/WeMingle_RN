@@ -49,10 +49,10 @@ const MatchingDateSelectScreen = () => {
   };
 
   const _onRendered = async () => {
-    // const result = await getMatchingWritableGroup();
+    const result = await getMatchingWritableGroup();
 
     // console.log('result', result);
-    // setWritableGroups(result);
+    setWritableGroups(result);
     setModalVisible(true);
   };
 

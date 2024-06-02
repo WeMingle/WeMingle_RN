@@ -53,8 +53,6 @@ const AllPostScreen = () => {
   const [selectedTab, setSelectedTab] = useState('matching');
   const [scrapList, setScrapList] = useState<any>();
 
-  console.log(scrapList);
-
   useEffect(() => {
     const asyncFunction = async () => {
       const result = await getScrap();
