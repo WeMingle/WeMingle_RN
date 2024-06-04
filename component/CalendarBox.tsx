@@ -15,7 +15,7 @@ import {Animated, View} from 'react-native';
 
 interface CalendarBoxProps {
   isSticky?: boolean;
-  selectedDate?: string | string[];
+  selectedDate?: string;
   setSelectedDate: (day: string) => void;
 }
 
@@ -32,28 +32,15 @@ const CalendarBox = memo(
     const [markedDates, setMarkedDates] = useState<markedDates>({});
     // console.log(isSticky);
     useEffect(() => {
-      if (!Array.isArray(selectedDate)) {
-        setMarkedDates(() => {
-          if (selectedDate)
-            return {
-              [selectedDate]: {
-                selected: true,
-                selectedColor: Colors.blue400,
-              },
-            };
+      if (selectedDate)
+        setMarkedDates({
+          [selectedDate]: {
+            selected: true,
+            selectedColor: Colors.blue400,
+          },
         });
-        return;
-      }
-
-      const dates: markedDates = {};
-      selectedDate.map((v: string, i) => {
-        dates[v] = {
-          selected: true,
-          selectedColor: Colors.blue400,
-        };
-      });
-      setMarkedDates(dates);
     }, [selectedDate]);
+    console.log(markedDates);
     return (
       <Animated.View style={[{backgroundColor: '#fff', paddingBottom: 100}]}>
         <Calendar

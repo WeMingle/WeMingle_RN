@@ -1,17 +1,13 @@
-import React, {useEffect, useState} from 'react';
-import {Dimensions, FlatList, Image, View} from 'react-native';
+import {useEffect, useState} from 'react';
+import {View} from 'react-native';
 import {
-  AccountButton,
   BaseSafeView,
   BorderBoxButton,
-  CenterBox,
   CommonImage,
   CommonText,
-  CommonTouchableOpacity,
   Container,
   ProfileBox,
   RowBox,
-  boxWidth,
 } from '../CommonStyled.style';
 import {Colors} from '../../assets/color/Colors';
 import {
@@ -19,13 +15,8 @@ import {
   ParamListBase,
   useNavigation,
 } from '@react-navigation/native';
-import Alert_Icon from '../../assets/alert.png';
-import Chat_Icon from '../../assets/chat.png';
-import {ConfigFrmae, MyButtonFrame} from './style/MyPageStyle.style';
-import Arrow_Right_White from '../../assets/arrow_right_white.png';
+import {ConfigFrmae} from './style/MyPageStyle.style';
 import Arrow_Right from '../../assets/arrow_right.png';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import AccountHeader from '../../component/header/AccountHeader';
 import {CommonHeader} from '../../component/header/CommonHeader';
 import {useAppDispatch} from '../../redux/Store';
 import {getMemberInfo, getMyInfo} from '../../api/MyPage';
@@ -107,7 +98,11 @@ const MyInfoScreen = () => {
           rightButtonPress={() => setConfigVisible(prev => !prev)}
         />
         {configVisible && (
-          <ConfigFrmae onPressFirst={() => navigation.navigate('MyProfile')} />
+          <ConfigFrmae
+            onPressFirst={() =>
+              navigation.navigate('MyProfile', {myInfo: myInfo})
+            }
+          />
         )}
         <RowBox marginT={20} alignC>
           <ProfileBox />

@@ -60,3 +60,19 @@ export const getScrap = async () => {
     });
   return result;
 };
+
+export const modifyMyProfile = async (props: any) => {
+  console.log(props);
+  const result = await axiosPrivate
+    .patch('member/info', props)
+    .then(response => {
+      if (response.status === 200) {
+        // console.log('scc');
+        return true;
+      }
+    })
+    .catch(e => {
+      return false;
+    });
+  return result;
+};

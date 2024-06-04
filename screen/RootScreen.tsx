@@ -52,6 +52,7 @@ import MatchingSelectPersonnelScreen from './matching/MatchingSelectPersonnelScr
 import MatchingGetVoteScreen from './matching/MatchingGetVoteScreen';
 import PopularMatchinListScreen from './home/PopularMatchinListScreen';
 import MatchingGetLocationScreen from './matching/MatchingGetLocationScreen';
+import MatchingDetailScreen from './matching/MatchingDetailScreen';
 
 let count = 0; //  종료카운트
 
@@ -300,6 +301,10 @@ const TabRouterSetting = [
   {
     name: 'MatchingGetLocation',
     component: MatchingGetLocationScreen,
+  },
+  {
+    name: 'MatchingDetail',
+    component: MatchingDetailScreen,
   },
 ];
 

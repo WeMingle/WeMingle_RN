@@ -23,7 +23,7 @@ const MatchingDateSelectScreen = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
 
   // useState
-  const [selectedDate, setSelectedDate] = useState<any[]>([]);
+  const [selectedDate, setSelectedDate] = useState<string>();
   const [writableGroups, setWritableGroups] = useState({});
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -34,18 +34,8 @@ const MatchingDateSelectScreen = () => {
   }, []);
 
   // Function
-  const _setSelectedDate = (day: number | string) => {
-    const index = selectedDate?.indexOf(day);
-    if (index < 0) {
-      setSelectedDate((prev: any) => {
-        return [...prev, day];
-      });
-    } else {
-      setSelectedDate(prev => {
-        prev.splice(index, 1);
-        return [...prev];
-      });
-    }
+  const _setSelectedDate = (day: string) => {
+    setSelectedDate(day);
   };
 
   const _onRendered = async () => {
@@ -85,11 +75,13 @@ const MatchingDateSelectScreen = () => {
         </RowBox>
         <CalendarBox
           selectedDate={selectedDate}
-          setSelectedDate={(day: number | string) => _setSelectedDate(day)}
+          setSelectedDate={(day: string) => _setSelectedDate(day)}
         />
         <ConfirmButton
           bottom={20}
-          onPress={() => navigation.navigate('MatchingWrite')}
+          onPress={() =>
+            navigation.navigate('MatchingWrite', {selectedDate: selectedDate})
+          }
           position={'absolute'}>
           <CommonText color={'#fff'} bold fontSize={16}>
             적용

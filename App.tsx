@@ -2,7 +2,7 @@ import {Provider} from 'react-redux';
 import RootScreen from './screen/RootScreen';
 import {Store} from './redux/Store';
 import {CommonText} from './screen/CommonStyled.style';
-import {View} from 'react-native';
+import {LogBox, View} from 'react-native';
 import Toast from 'react-native-toast-message';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import NaverLogin from '@react-native-seoul/naver-login';
@@ -13,7 +13,9 @@ export default function App() {
   const consumerSecret = 'gqZxVWRcQX';
   const appName = 'Wemingle';
   const serviceUrlSchemeIOS = 'navertest';
-
+  useEffect(() => {
+    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+  }, []);
   useEffect(() => {
     NaverLogin.initialize({
       appName,

@@ -23,18 +23,49 @@ import {
   NavigationProp,
   ParamListBase,
   useNavigation,
+  useRoute,
 } from '@react-navigation/native';
 import {CommonHeaderBlack} from '../../component/header/CommonHeader';
 import moment from 'moment';
 import {showToastMessage} from '../../component/Toast';
+import {postMatching} from '../../api/Matching';
 
 const MatchingWriteScreen = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
+  const route = useRoute();
+  const {selectedDate} = route.params;
 
-  const [selectedDate, setSelectedDate] = useState(
-    moment().format('YYYY-MM-DD'),
-  );
+  // const [selectedDate, setSelectedDate] = useState(
+  //   moment().format('YYYY-MM-DD'),
+  // );
   const [expiredDate, setExpiredDate] = useState(new Date());
+
+  const [matchingData, setMatchingData] = useState({
+    matchingDate: '',
+    latitude: 0,
+    longitude: 0,
+    locationName: '',
+    dou: '',
+    si: '',
+    gun: '',
+    gu: '',
+    dong: '',
+    eup: '',
+    myen: '',
+    ri: '',
+    areaNameList: [],
+    ability: '',
+    gender: '',
+    capacityLimit: 0,
+    teamPk: 0,
+    participantsId: [],
+    expiryDate: '',
+    recruiterType: '',
+    recruitmentType: '',
+    content: '',
+    locationSelectionType: '',
+    sportsType: '',
+  });
 
   useEffect(() => {
     showToastMessage(
@@ -57,6 +88,95 @@ const MatchingWriteScreen = () => {
     );
   };
 
+  const LevelBox = ({level = '', marginL = false}) => {
+    const isSelected = () => {
+      if (level === matchingData.ability) {
+        return true;
+      }
+    };
+
+    return (
+      <BorderBoxButton
+        onPress={() => {
+          setMatchingData(prev => {
+            return {...prev, ability: level};
+          });
+        }}
+        height={28}
+        marginL={marginL && 12}
+        borderColor={isSelected() ? Colors.informative : Colors.c_gray300}
+        alignC
+        justify={'center'}>
+        <CommonText
+          color={isSelected() ? Colors.informative : Colors.c_gray300}
+          bold
+          fontSize={12}>
+          {level === 'LOW'
+            ? 'Lv 1-3'
+            : level === 'MEDIUM'
+            ? 'Lv 4-6'
+            : 'Lv 7-9'}
+        </CommonText>
+      </BorderBoxButton>
+    );
+  };
+
+  const GenderBox = ({gender = '', marginL = false}) => {
+    const isSelected = () => {
+      if (gender === matchingData.gender) {
+        return true;
+      }
+    };
+    return (
+      <BorderBoxButton
+        onPress={() => {
+          setMatchingData(prev => {
+            return {...prev, gender: gender};
+          });
+        }}
+        marginL={marginL && 12}
+        height={28}
+        borderColor={isSelected() ? Colors.informative : Colors.c_gray300}
+        alignC
+        justify={'center'}>
+        <CommonText
+          color={isSelected() ? Colors.informative : Colors.c_gray300}
+          bold
+          fontSize={12}>
+          {gender === 'MALE' ? '남성' : '여성'}
+        </CommonText>
+      </BorderBoxButton>
+    );
+  };
+
+  const RecruiterTypeBox = ({recruiterType = '', marginL = false}) => {
+    const isSelected = () => {
+      if (recruiterType === matchingData.recruiterType) {
+        return true;
+      }
+    };
+
+    return (
+      <BorderBoxButton
+        onPress={() => {
+          setMatchingData(prev => {
+            return {...prev, recruiterType: recruiterType};
+          });
+        }}
+        marginL={marginL && 12}
+        height={28}
+        borderColor={isSelected() ? Colors.informative : Colors.c_gray300}
+        alignC
+        justify={'center'}>
+        <CommonText
+          color={isSelected() ? Colors.informative : Colors.c_gray300}
+          bold
+          fontSize={12}>
+          {recruiterType === 'INDIVIDUAL' ? '개인' : '그룹'}
+        </CommonText>
+      </BorderBoxButton>
+    );
+  };
   return (
     <BaseSafeView>
       <ScrollContainer padding={0} bgColor={Colors.c_gray50}>
@@ -70,7 +190,7 @@ const MatchingWriteScreen = () => {
               <RowBox alignC>
                 <CommonImage source={Calendar_Icon} width={18} height={18} />
                 <CommonText marginL={8} bold color={'#777777'} fontSize={12}>
-                  2024. 02. 19
+                  {selectedDate}
                 </CommonText>
               </RowBox>
             );
@@ -99,25 +219,9 @@ const MatchingWriteScreen = () => {
           rightComponent={() => {
             return (
               <RowBox>
-                <BorderBoxButton
-                  height={28}
-                  borderColor={Colors.informative}
-                  alignC
-                  justify={'center'}>
-                  <CommonText color={Colors.informative} bold fontSize={12}>
-                    Lv 1-3
-                  </CommonText>
-                </BorderBoxButton>
-                <BorderBoxButton alignC justify={'center'} marginL={10}>
-                  <CommonText bold color={Colors.c_gray300} fontSize={12}>
-                    Lv 4-6
-                  </CommonText>
-                </BorderBoxButton>
-                <BorderBoxButton alignC justify={'center'} marginL={10}>
-                  <CommonText bold color={Colors.c_gray300} fontSize={12}>
-                    Lv 6-10
-                  </CommonText>
-                </BorderBoxButton>
+                <LevelBox level={'LOW'} />
+                <LevelBox level={'MEDIUM'} marginL />
+                <LevelBox level={'HIGH'} marginL />
               </RowBox>
             );
           }}
@@ -128,20 +232,8 @@ const MatchingWriteScreen = () => {
           rightComponent={() => {
             return (
               <RowBox>
-                <BorderBoxButton
-                  height={28}
-                  borderColor={Colors.informative}
-                  alignC
-                  justify={'center'}>
-                  <CommonText color={Colors.informative} bold fontSize={12}>
-                    남성
-                  </CommonText>
-                </BorderBoxButton>
-                <BorderBoxButton alignC justify={'center'} marginL={10}>
-                  <CommonText bold color={Colors.c_gray300} fontSize={12}>
-                    여성
-                  </CommonText>
-                </BorderBoxButton>
+                <GenderBox gender={'MALE'} />
+                <GenderBox gender={'FEMALE'} marginL />
               </RowBox>
             );
           }}
@@ -224,20 +316,8 @@ const MatchingWriteScreen = () => {
           rightComponent={() => {
             return (
               <RowBox>
-                <BorderBoxButton
-                  height={28}
-                  borderColor={Colors.informative}
-                  alignC
-                  justify={'center'}>
-                  <CommonText color={Colors.informative} bold fontSize={12}>
-                    개인
-                  </CommonText>
-                </BorderBoxButton>
-                <BorderBoxButton alignC justify={'center'} marginL={10}>
-                  <CommonText bold color={Colors.c_gray300} fontSize={12}>
-                    그룹
-                  </CommonText>
-                </BorderBoxButton>
+                <RecruiterTypeBox recruiterType="INDIVIDUAL" />
+                <RecruiterTypeBox recruiterType="TEAM" marginL />
               </RowBox>
             );
           }}
@@ -261,32 +341,75 @@ const MatchingWriteScreen = () => {
             return (
               <RowBox>
                 <TouchableOpacity
+                  onPress={() => {
+                    setMatchingData(prev => {
+                      return {...prev, recruitmentType: 'APPROVAL_BASED'};
+                    });
+                  }}
                   style={{
                     borderTopLeftRadius: 5,
                     borderBottomLeftRadius: 5,
                     height: 35,
                     width: 85,
-                    backgroundColor: Colors.informative,
+                    backgroundColor:
+                      matchingData.recruitmentType === 'APPROVAL_BASED'
+                        ? Colors.informative
+                        : '#fff',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    borderColor:
+                      matchingData.recruitmentType !== 'APPROVAL_BASED'
+                        ? Colors.c_gray300
+                        : '#fff',
+                    borderWidth:
+                      matchingData.recruitmentType !== 'APPROVAL_BASED' ? 1 : 0,
+                    borderRightWidth: 0,
                   }}>
-                  <CommonText color={'#fff'} bold fontSize={12}>
+                  <CommonText
+                    color={
+                      matchingData.recruitmentType === 'APPROVAL_BASED'
+                        ? '#fff'
+                        : '#6B768B'
+                    }
+                    bold
+                    fontSize={12}>
                     승인제
                   </CommonText>
                 </TouchableOpacity>
                 <TouchableOpacity
+                  onPress={() => {
+                    setMatchingData(prev => {
+                      return {...prev, recruitmentType: 'FIRST_SERVED_BASED'};
+                    });
+                  }}
                   style={{
                     borderTopRightRadius: 5,
                     borderBottomRightRadius: 5,
                     height: 35,
                     width: 85,
-                    backgroundColor: '#fff',
+                    backgroundColor:
+                      matchingData.recruitmentType === 'FIRST_SERVED_BASED'
+                        ? Colors.informative
+                        : '#fff',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    borderWidth: 1,
-                    borderColor: Colors.c_gray300,
+                    borderColor:
+                      matchingData.recruitmentType !== 'FIRST_SERVED_BASED'
+                        ? Colors.c_gray300
+                        : '#fff',
+                    borderWidth:
+                      matchingData.recruitmentType !== 'FIRST_SERVED_BASED'
+                        ? 1
+                        : 0,
                   }}>
-                  <CommonText color={'#6B768B'} bold fontSize={12}>
+                  <CommonText
+                    color={
+                      matchingData.recruitmentType === 'FIRST_SERVED_BASED'
+                        ? '#fff'
+                        : '#6B768B'
+                    }
+                    bold
+                    fontSize={12}>
                     자동승인(선착)
                   </CommonText>
                 </TouchableOpacity>
@@ -296,12 +419,20 @@ const MatchingWriteScreen = () => {
         />
         <MatchingColumn title={'매칭 소개'} marginT={10} />
         <RowBox style={{paddingLeft: 20, paddingRight: 20}} bgColor={'#fff'}>
-          <CommonInputBox height={150} />
+          <CommonInputBox
+            value={matchingData.content}
+            onChangeText={(v: string) => {
+              setMatchingData(prev => {
+                return {...prev, content: v};
+              });
+            }}
+            height={150}
+          />
         </RowBox>
         <ConfirmButton
           marginT={20}
           marginB={20}
-          onPress={() => navigation.navigate('MatchingWrite')}>
+          onPress={() => postMatching(matchingData)}>
           <CommonText color={'#fff'} bold fontSize={16}>
             작성 완료하기
           </CommonText>

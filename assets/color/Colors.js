@@ -7,6 +7,7 @@ export const Colors = {
   borderColor: '#F1F1F1',
 
   c_gray50: '#F8FAFC',
+  c_gray100: '#F4F6FA',
   c_gray200: '#EAEDF4',
   c_gray300: '#D7DCE5',
   c_gray400: '#AFBAC8',

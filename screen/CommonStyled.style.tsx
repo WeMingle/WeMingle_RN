@@ -19,7 +19,12 @@ import moment from 'moment';
 import {ClickBookmark} from './myGroup/style/MyGroupStyle.style';
 
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
-import {useIsFocused} from '@react-navigation/native';
+import {
+  NavigationProp,
+  ParamListBase,
+  useIsFocused,
+  useNavigation,
+} from '@react-navigation/native';
 
 export const ScreenWidth = Dimensions.get('screen').width;
 export const ScreenHeight = Dimensions.get('window').height;
@@ -198,6 +203,8 @@ export const AccountButton = styled(CommonTouchableOpacity)`
 export const CommonImage = styled.Image`
   width: ${(props: {width: number}) => props.width || 0}px;
   height: ${(props: {height: number}) => props.height || 0}px;
+  margin-top: ${(props: {marginT: number}) => props.marginT || 0}px;
+  margin-bottom: ${(props: {marginB: number}) => props.marginB || 0}px;
 `;
 
 export const CommonText = styled.Text`
@@ -329,6 +336,7 @@ export const VerticalBar = styled.View`
   margin-bottom: ${(props: {marginB: number}) => props.marginB || 0}px;
 `;
 export const MatchingItem = ({item, index, paddingN}: any) => {
+  const navigation: NavigationProp<ParamListBase> = useNavigation();
   const isFocus = useIsFocused();
   return (
     <>
@@ -372,6 +380,9 @@ export const MatchingItem = ({item, index, paddingN}: any) => {
         style={{paddingBottom: 30, paddingTop: 20}}
         borderB>
         <CommonTouchableOpacity
+          onPress={() => {
+            navigation.navigate('MatchingDetail', {});
+          }}
           style={[
             {
               borderRadius: 10,
@@ -381,7 +392,8 @@ export const MatchingItem = ({item, index, paddingN}: any) => {
           ]}
           bgColor={'#000'}
           width={80}
-          height={80}></CommonTouchableOpacity>
+          height={80}
+        />
         <View
           style={{justifyContent: 'space-between', marginLeft: 15, height: 80}}>
           <CommonText>

@@ -54,3 +54,16 @@ export const getGroupVote = async () => {
     });
   return result;
 };
+
+export const postMatching = async (payload: any) => {
+  const result = await axiosPrivate
+    .post('./post/matching', payload)
+    .then(response => {
+      if (response.status === 200) {
+        return true;
+      }
+    })
+    .catch(e => console.log(e));
+
+  return result;
+};

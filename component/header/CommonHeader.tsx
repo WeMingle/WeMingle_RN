@@ -8,11 +8,13 @@ import {useNavigation} from '@react-navigation/native';
 interface CommonHeaderProps {
   headerTitle: string;
   rightButtonPress?: () => void;
+  rightButtonIcon?: any;
 }
 
 export const CommonHeader = ({
   headerTitle = '',
   rightButtonPress,
+  rightButtonIcon = Config_Icon,
 }: CommonHeaderProps) => {
   const navigation = useNavigation();
 
@@ -32,7 +34,7 @@ export const CommonHeader = ({
       {rightButtonPress && (
         <TouchableOpacity onPress={rightButtonPress}>
           <Image
-            source={Config_Icon}
+            source={rightButtonIcon}
             style={{width: 24, height: 24, marginRight: 5, right: 5}}
           />
         </TouchableOpacity>
