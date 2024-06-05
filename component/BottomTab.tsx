@@ -1,4 +1,9 @@
-import {Dimensions, TouchableWithoutFeedback, View} from 'react-native';
+import {
+  Dimensions,
+  Keyboard,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import {Colors} from '../assets/color/Colors';
 
 import Home_Icon from '../assets/home_icon.png';
@@ -18,6 +23,7 @@ import {
   ParamListBase,
   useNavigation,
 } from '@react-navigation/native';
+import {useEffect, useState} from 'react';
 
 export const BottomTabView = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
@@ -33,42 +39,68 @@ export const BottomTabView = () => {
   //   dispatch
   // }
 
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardVisible(true); // or some other action
+      },
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardVisible(false); // or some other action
+      },
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
+
   return (
-    <RowBox
-      bgColor={'#fff'}
-      style={{
-        borderTopWidth: 1,
-        borderTopColor: Colors.c_gray300,
-        bottom: 0,
-        width: '100%',
-        height: 65,
-        alignItems: 'center',
-      }}
-      justify={'space-around'}>
-      {TabMenus.map((v, i) => {
-        return (
-          <TouchableWithoutFeedback
-            key={i}
-            onPress={() => {
-              changeTab(v.name, v.nextPage);
-            }}>
-            <View style={{alignItems: 'center', flex: 1}}>
-              <CommonImage
-                source={currentTab === v.name ? v.onImage : v.image}
-                width={24}
-                height={24}
-              />
-              <CommonText
-                fontSize={10}
-                marginT={5}
-                color={currentTab !== v.name && Colors.c_gray500}>
-                {v.title}
-              </CommonText>
-            </View>
-          </TouchableWithoutFeedback>
-        );
-      })}
-    </RowBox>
+    <>
+      {!isKeyboardVisible && (
+        <RowBox
+          bgColor={'#fff'}
+          style={{
+            borderTopWidth: 1,
+            borderTopColor: Colors.c_gray300,
+            bottom: 0,
+            width: '100%',
+            height: 65,
+            alignItems: 'center',
+          }}
+          justify={'space-around'}>
+          {TabMenus.map((v, i) => {
+            return (
+              <TouchableWithoutFeedback
+                key={i}
+                onPress={() => {
+                  changeTab(v.name, v.nextPage);
+                }}>
+                <View style={{alignItems: 'center', flex: 1}}>
+                  <CommonImage
+                    source={currentTab === v.name ? v.onImage : v.image}
+                    width={24}
+                    height={24}
+                  />
+                  <CommonText
+                    fontSize={10}
+                    marginT={5}
+                    color={currentTab !== v.name && Colors.c_gray500}>
+                    {v.title}
+                  </CommonText>
+                </View>
+              </TouchableWithoutFeedback>
+            );
+          })}
+        </RowBox>
+      )}
+    </>
   );
 };
 
