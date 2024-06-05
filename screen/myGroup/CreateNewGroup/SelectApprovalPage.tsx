@@ -30,44 +30,53 @@ import LockOpen from '../../../assets/lock_open.png';
 import styled from 'styled-components/native';
 
 interface Item {
+  key: number;
   image: string;
   title: string;
   content: string;
   description: string;
+  type: string;
 }
 
 const data: Item[] = [
   {
+    key: 0,
     image: Lock,
     title: '직접 승인',
     content: `그룹장이 되고 싶은 사용자의 신청을\n그룹장이 직접 판단하에 승인 할 수 있어요`,
     description: '그룹에 최적화된 그룹원을 모을 수 있어요',
+    type: 'APPROVAL_BASED',
   },
   {
+    key: 1,
     image: LockOpen,
     title: '자동 승인',
     content: `별도의 승인 과정없이 그룹에 가입 신청한\n모든 인원이 참여할 수 있어요`,
     description: '빠른 시일내에 많은 인원을 모집할 수 있어요',
+    type: 'FIRST_SERVED_BASED',
   },
 ];
 
-const SelectApprovalPage = () => {
+const SelectApprovalPage = ({route}: any) => {
   const [selectedTitle, setSelectedTitle] = useState<string | null>(null);
   const navigation: NavigationProp<ParamListBase> = useNavigation();
   const barWidth = Math.ceil((2 / 5) * 100);
   const onPress = (item: Item) => {
-    setSelectedTitle(item.title);
+    setSelectedTitle(item.type);
   };
 
+  const item = route.params;
+
   const RenderItem: ListRenderItem<Item> = ({item}) => {
-    const isSelected = item.title === selectedTitle;
+    const isSelected = item.type === selectedTitle;
     return (
       <TouchableOpacity
         style={[
           styles.button,
           isSelected ? styles.selectedButton : styles.button,
         ]}
-        onPress={() => onPress(item)}>
+        onPress={() => onPress(item)}
+        key={item.key}>
         <View
           style={{
             padding: 20,
@@ -112,6 +121,7 @@ const SelectApprovalPage = () => {
             borderWidth: 1,
             borderColor: '#DCDCDC',
             marginBottom: 5,
+            backgroundColor: '#D4E5FF',
           }}>
           <ProgressBar width={barWidth} />
         </View>
@@ -129,9 +139,9 @@ const SelectApprovalPage = () => {
               width: '100%',
               height: '75%',
             }}>
-            {data.map(item => (
+            {data.map(items => (
               <RenderItem
-                item={item}
+                item={items}
                 index={0}
                 separators={{
                   highlight: function (): void {
@@ -156,7 +166,8 @@ const SelectApprovalPage = () => {
               height: '18%',
               flexDirection: 'row',
               justifyContent: 'center',
-              alignItems: 'center',
+              alignItems: 'flex-end',
+              paddingBottom: 10,
               paddingHorizontal: 20,
             }}>
             <TouchableOpacity
@@ -168,7 +179,12 @@ const SelectApprovalPage = () => {
                 justifyContent: 'center',
                 borderRadius: 10,
               }}
-              onPress={() => navigation.navigate('SelectMemberType')}>
+              onPress={() => {
+                navigation.navigate('SelectMemberType', {
+                  sportsType: item.sportsType,
+                  recruitmentType: selectedTitle,
+                });
+              }}>
               <CommonText fontSize={16} color={'#ffffff'}>
                 다음
               </CommonText>
@@ -184,7 +200,7 @@ const ProgressBar = styled.View`
   ${(props: {width: number}) =>
     props.width === 0 ? 'width: 0%' : props.width && `width: ${props.width}%`};
   height: 5px;
-  background-color: #5c667b;
+  background-color: #0e6fff;
 `;
 
 const styles = StyleSheet.create({

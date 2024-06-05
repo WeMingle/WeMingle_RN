@@ -94,7 +94,7 @@ const SearchProfileScreen = () => {
                 justifyContent: 'flex-end',
                 flex: 1,
               }}>
-              <CommonImage source={Notification} width={24} height={24} />
+              <CommonImage source={Notification} width={15} height={16} />
             </View>
             <View
               style={{
@@ -115,7 +115,7 @@ const SearchProfileScreen = () => {
               color={'#000000'}
               numberOfLines={1}
               ellipsizeMode="tail">
-              축구왕 슛돌이
+              축구왕슛돌이
             </CommonText>
             <View
               style={{

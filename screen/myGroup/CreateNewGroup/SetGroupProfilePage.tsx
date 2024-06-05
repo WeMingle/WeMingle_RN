@@ -15,25 +15,93 @@ import {
   ParamListBase,
   useNavigation,
 } from '@react-navigation/native';
-import {RadioButton} from 'react-native-paper';
 import {
   BaseSafeView,
-  CommonImage,
   CommonText,
   CommonTouchableOpacity,
   Container,
   RowBox,
 } from '../../CommonStyled.style';
 import {BackButton} from '../style/MyGroupStyle.style';
-import {Colors} from '../../../assets/color/Colors';
-import AddBox from '../../../assets/add_box.png';
 import styled from 'styled-components/native';
-import MultiSlider from '@ptomasroos/react-native-multi-slider';
+import ImagePicker from 'react-native-image-crop-picker';
+import {useAppDispatch} from '../../../redux/Store';
+import {
+  fetchCreateNewGroup,
+  clearState,
+  fetchUploadProfile,
+} from '../../../redux/slice/MyGroup/CreateNewGroupSlice';
+import {RootState} from '../../../redux/Reducers';
+import {useSelector} from 'react-redux';
+import {v4 as uuidv4} from 'uuid';
 
-const SetGroupProfilePage = () => {
+const SetGroupProfilePage = ({route}: any) => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
 
   const barWidth = Math.ceil((5 / 5) * 100);
+  const dispatch = useAppDispatch();
+  const {loading, error, successMessage} = useSelector(
+    (state: RootState) => state.newGroup,
+  );
+
+  const item = route.params;
+  console.log('넘겨진 데이터 : ', item);
+  console.log('로딩 : ', loading);
+  console.log('에러 : ', error);
+  console.log('성공 : ', successMessage);
+
+  const [imageUri, setImageUri] = useState<string | null | undefined>(null);
+  const [groupName, setGroupName] = useState('');
+  const [groupIntroduce, setGroupIntroduce] = useState('');
+
+  let formData = new FormData();
+
+  const selectImage = async () => {
+    try {
+      const result = await ImagePicker.openPicker({
+        width: 300,
+        height: 300,
+        cropping: true,
+      });
+
+      if (result && result.path) {
+        setImageUri(result.path);
+        formData.append('file', {
+          uri: imageUri,
+          name: 'photo.jpg',
+          type: 'image/jpeg',
+        });
+      }
+
+      console.log('어떻게 처리? : ', formData);
+    } catch (error) {
+      console.error('Image picker error:', error);
+      Alert.alert('Error', 'Failed to pick the image');
+      // formData = "test.png";
+    }
+  };
+
+  const createNewGroupPost = () => {
+    const createGroupList = {
+      sportsType: item.sportsType,
+      recruitmentType: item.recruitmentType,
+      onlySameUniv: item.onlySameUniv,
+      ageIsIrrelevant: item.ageIsIrrelevant,
+      startAge: item.startAge,
+      endAge: item.endAge,
+      genderIsIrrelevant: item.genderIsIrrelevant,
+      gender: item.gender,
+      personnelLimitIrrelevant: item.personnelLimitIrrelevant,
+      personnelLimit: item.personnelLimit,
+      freeQuestionList: item.freeQuestionList,
+      teamName: groupName,
+      content: groupIntroduce,
+      teamImgId: 'dea14329-9eff-4e52-ad57-825285e97242',
+    };
+
+    dispatch(fetchCreateNewGroup(createGroupList));
+    // dispatch(fetchUploadProfile())
+  };
 
   return (
     <BaseSafeView>
@@ -56,6 +124,7 @@ const SetGroupProfilePage = () => {
             borderWidth: 1,
             borderColor: '#DCDCDC',
             marginBottom: 5,
+            backgroundColor: '#D4E5FF',
           }}>
           <ProgressBar width={barWidth} />
         </View>
@@ -90,7 +159,8 @@ const SetGroupProfilePage = () => {
                 ]}
                 bgColor={'#000'}
                 width={80}
-                height={80}></CommonTouchableOpacity>
+                height={80}
+                onPress={selectImage}></CommonTouchableOpacity>
             </View>
             <View
               style={{
@@ -115,6 +185,8 @@ const SetGroupProfilePage = () => {
                   placeholder="그룹명을 작성해주세요."
                   placeholderTextColor={'#9e9e9e'}
                   style={{padding: 10}}
+                  value={groupName}
+                  onChangeText={setGroupName}
                 />
               </View>
               <CommonText fontSize={15} color={'#1C1C1C'} paddingTop={20}>
@@ -138,6 +210,8 @@ const SetGroupProfilePage = () => {
                   style={{padding: 10, height: 100}}
                   multiline={true}
                   numberOfLines={5}
+                  value={groupIntroduce}
+                  onChangeText={setGroupIntroduce}
                 />
                 <View
                   style={{
@@ -162,7 +236,8 @@ const SetGroupProfilePage = () => {
               height: '18%',
               flexDirection: 'row',
               justifyContent: 'center',
-              alignItems: 'center',
+              alignItems: 'flex-end',
+              paddingBottom: 10,
               paddingHorizontal: 20,
             }}>
             <TouchableOpacity
@@ -173,7 +248,8 @@ const SetGroupProfilePage = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius: 10,
-              }}>
+              }}
+              onPress={createNewGroupPost}>
               <CommonText fontSize={16} color={'#ffffff'}>
                 다음
               </CommonText>
@@ -189,7 +265,7 @@ const ProgressBar = styled.View`
   ${(props: {width: number}) =>
     props.width === 0 ? 'width: 0%' : props.width && `width: ${props.width}%`};
   height: 5px;
-  background-color: #5c667b;
+  background-color: #0e6fff;
 `;
 
 export default SetGroupProfilePage;

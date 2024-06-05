@@ -26,18 +26,27 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../redux/Reducers';
 import {useAppDispatch} from '../../redux/Store';
 import {fetchUnivCertifyGroup} from '../../redux/slice/MyGroup/CheckUnivCertifyGroupSlice';
+import {
+  fetchWemingleRecTeams,
+  fetchUnivRecTeams,
+} from '../../redux/slice/MyGroup/RecGroupSlice';
 import MyGroupDefaultScreen from './MyGroupDefaultScreen';
 
 const MyGroupScreen = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
   const dispatch = useAppDispatch();
-  const {loading, error, responseData} = useSelector(
+  const {responseData, loading, error} = useSelector(
     (state: RootState) => state.checkUnivCertifyGroup,
+  );
+  const {teams, univTeams, recLoading, recError} = useSelector(
+    (state: RootState) => state.recGroup,
   );
 
   useEffect(() => {
     dispatch(fetchUnivCertifyGroup());
-  }, [dispatch]);
+    dispatch(fetchWemingleRecTeams());
+    dispatch(fetchUnivRecTeams());
+  }, [dispatch, fetchWemingleRecTeams, fetchUnivRecTeams]);
 
   return (
     <>
@@ -135,6 +144,8 @@ const MyGroupScreen = () => {
                               onPress={() => {
                                 navigation.navigate('MyGroupDefault', {
                                   pageName: '그룹 둘러보기',
+                                  teams: teams,
+                                  univTeams: univTeams,
                                 });
                               }}></CommonTouchableOpacity>
                           </View>

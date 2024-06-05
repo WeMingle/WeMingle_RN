@@ -5,6 +5,7 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+import 'react-native-get-random-values';
 
 // Account - 이현태
 import SplashScreen from './SplashScreen';
