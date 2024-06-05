@@ -1,14 +1,11 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {
-  FlatList,
   View,
   TouchableOpacity,
   TextInput,
-  ActivityIndicator,
   StyleSheet,
-  Keyboard,
-  Alert,
   Platform,
+  ListRenderItem,
 } from 'react-native';
 import {
   NavigationProp,
@@ -18,20 +15,109 @@ import {
 import {RadioButton} from 'react-native-paper';
 import {
   BaseSafeView,
-  CommonImage,
   CommonText,
-  CommonTouchableOpacity,
   Container,
   RowBox,
 } from '../../CommonStyled.style';
 import {BackButton} from '../style/MyGroupStyle.style';
 import {Colors} from '../../../assets/color/Colors';
-import AddBox from '../../../assets/add_box.png';
 import styled from 'styled-components/native';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
-const SelectMemberTypePage = () => {
+interface UnivItem {
+  id: number;
+  title: string;
+  bool: boolean;
+}
+
+const univData: UnivItem[] = [
+  {
+    id: 0,
+    title: '같은 학교만',
+    bool: true,
+  },
+  {
+    id: 1,
+    title: '상관없음',
+    bool: false,
+  },
+];
+
+interface GenderItem {
+  id: number;
+  title: string;
+  gen: string;
+}
+
+const genderData: GenderItem[] = [
+  {
+    id: 0,
+    title: '남성',
+    gen: 'MALE',
+  },
+  {
+    id: 1,
+    title: '여성',
+    gen: 'FEMALE',
+  },
+];
+
+const SelectMemberTypePage = ({route}: any) => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
+  const item = route.params;
+
+  const [selectedUnivType, setSelectedUnivType] = useState<boolean | null>(
+    null,
+  );
+  const [selectedGender, setSelectedGender] = useState<string | null>(null);
+
+  const univOnPress = (item: UnivItem) => {
+    setSelectedUnivType(item.bool);
+  };
+
+  const genderOnPress = (item: GenderItem) => {
+    setSelectedGender(item.gen);
+  };
+
+  const UnivRenderItem: ListRenderItem<UnivItem> = ({item}) => {
+    const isSelected = item.bool === selectedUnivType;
+    return (
+      <TouchableOpacity
+        style={[
+          styles.button,
+          isSelected ? styles.selectedButton : styles.button,
+          {marginLeft: item.id > 0 ? 10 : 0},
+        ]}
+        onPress={() => univOnPress(item)}>
+        <CommonText
+          alignC
+          fontSize={14}
+          color={[isSelected ? '#0E6FFF' : '#CCCCCC']}>
+          {item.title}
+        </CommonText>
+      </TouchableOpacity>
+    );
+  };
+
+  const GenderRenderItem: ListRenderItem<GenderItem> = ({item}) => {
+    const isSelected = item.gen === selectedGender;
+    return (
+      <TouchableOpacity
+        style={[
+          styles.genButton,
+          isSelected ? styles.selectedGenButton : styles.genButton,
+          {marginLeft: item.id > 0 ? 10 : 0},
+        ]}
+        onPress={() => genderOnPress(item)}>
+        <CommonText
+          alignC
+          fontSize={14}
+          color={[isSelected ? '#0E6FFF' : '#cccccc']}>
+          {item.title}
+        </CommonText>
+      </TouchableOpacity>
+    );
+  };
 
   const barWidth = Math.ceil((3 / 5) * 100);
 
@@ -81,7 +167,18 @@ const SelectMemberTypePage = () => {
             </View>
             <TouchableOpacity
               style={{marginRight: 20}}
-              onPress={() => navigation.navigate('SelectOption')}>
+              onPress={() => {
+                navigation.navigate('SelectOption', {
+                  sportsType: item.sportsType,
+                  recruitmentType: item.recruitmentType,
+                  onlySameUniv: null,
+                  ageIsIrrelevant: null,
+                  startAge: null,
+                  endAge: null,
+                  genderIsIrrelevant: null,
+                  gender: null,
+                });
+              }}>
               <CommonText fontSize={16} color={'#cccccc'}>
                 건너뛰기
               </CommonText>
@@ -95,6 +192,7 @@ const SelectMemberTypePage = () => {
             borderWidth: 1,
             borderColor: '#DCDCDC',
             marginBottom: 5,
+            backgroundColor: '#D4E5FF',
           }}>
           <ProgressBar width={barWidth} />
         </View>
@@ -115,38 +213,31 @@ const SelectMemberTypePage = () => {
             <CommonText fontSize={16} color={'#1C1C1C'} marginBottom={10}>
               학교
             </CommonText>
-            <View style={{flexDirection: 'row', marginBottom: 20}}>
-              <TouchableOpacity
-                style={{
-                  width: 130,
-                  paddingVertical: 10,
-                  paddingHorizontal: 20,
-                  borderWidth: 1,
-                  borderColor: '#cccccc',
-                  borderRadius: 50,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <CommonText alignC fontSize={14} color={'#cccccc'}>
-                  같은 학교만
-                </CommonText>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  width: 130,
-                  paddingVertical: 10,
-                  paddingHorizontal: 20,
-                  borderWidth: 1,
-                  borderColor: '#cccccc',
-                  borderRadius: 50,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginLeft: 10,
-                }}>
-                <CommonText alignC fontSize={14} color={'#cccccc'}>
-                  상관없음
-                </CommonText>
-              </TouchableOpacity>
+            <View
+              style={{
+                flexDirection: 'row',
+                marginBottom: 20,
+              }}>
+              {univData.map(items => (
+                <UnivRenderItem
+                  item={items}
+                  index={0}
+                  separators={{
+                    highlight: function (): void {
+                      throw new Error('Function not implemented.');
+                    },
+                    unhighlight: function (): void {
+                      throw new Error('Function not implemented.');
+                    },
+                    updateProps: function (
+                      select: 'leading' | 'trailing',
+                      newProps: any,
+                    ): void {
+                      throw new Error('Function not implemented.');
+                    },
+                  }}
+                />
+              ))}
             </View>
             <View style={{width: '100%', marginBottom: 10}}>
               <View
@@ -188,7 +279,7 @@ const SelectMemberTypePage = () => {
                 <RadioButton
                   value=""
                   color={Colors.blue400}
-                  status={'checked'}
+                  status={'unchecked'}
                 />
                 <CommonText fontSize={14} alignC color={'#1C1C1C'}>
                   상관없음
@@ -267,6 +358,8 @@ const SelectMemberTypePage = () => {
                   values={[multiSliderValue[0], multiSliderValue[1]]}
                   onValuesChange={multiSliderValuesChange}
                   step={1}
+                  // isMarkersSeparated={true}
+                  // customMarker={(e) =>}
                 />
               </View>
               <View
@@ -329,7 +422,7 @@ const SelectMemberTypePage = () => {
                 <RadioButton
                   value=""
                   color={Colors.blue400}
-                  status={'checked'}
+                  status={'unchecked'}
                 />
                 <CommonText fontSize={14} alignC color={'#1C1C1C'}>
                   상관없음
@@ -337,35 +430,26 @@ const SelectMemberTypePage = () => {
               </View>
             </View>
             <View style={{flexDirection: 'row', marginBottom: 20}}>
-              <TouchableOpacity
-                style={{
-                  paddingVertical: 10,
-                  paddingHorizontal: 40,
-                  borderWidth: 1,
-                  borderColor: '#cccccc',
-                  borderRadius: 50,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <CommonText alignC fontSize={14} color={'#cccccc'}>
-                  남성
-                </CommonText>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  paddingVertical: 10,
-                  paddingHorizontal: 40,
-                  borderWidth: 1,
-                  borderColor: '#cccccc',
-                  borderRadius: 50,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginLeft: 10,
-                }}>
-                <CommonText alignC fontSize={14} color={'#cccccc'}>
-                  여성
-                </CommonText>
-              </TouchableOpacity>
+              {genderData.map(items => (
+                <GenderRenderItem
+                  item={items}
+                  index={0}
+                  separators={{
+                    highlight: function (): void {
+                      throw new Error('Function not implemented.');
+                    },
+                    unhighlight: function (): void {
+                      throw new Error('Function not implemented.');
+                    },
+                    updateProps: function (
+                      select: 'leading' | 'trailing',
+                      newProps: any,
+                    ): void {
+                      throw new Error('Function not implemented.');
+                    },
+                  }}
+                />
+              ))}
             </View>
           </View>
           <View
@@ -374,7 +458,8 @@ const SelectMemberTypePage = () => {
               height: '18%',
               flexDirection: 'row',
               justifyContent: 'center',
-              alignItems: 'center',
+              alignItems: 'flex-end',
+              paddingBottom: 10,
               paddingHorizontal: 20,
             }}>
             <TouchableOpacity
@@ -386,7 +471,18 @@ const SelectMemberTypePage = () => {
                 justifyContent: 'center',
                 borderRadius: 10,
               }}
-              onPress={() => navigation.navigate('SelectOption')}>
+              onPress={() => {
+                navigation.navigate('SelectOption', {
+                  sportsType: item.sportsType,
+                  recruitmentType: item.recruitmentType,
+                  onlySameUniv: selectedUnivType,
+                  ageIsIrrelevant: true,
+                  startAge: Number(minYear),
+                  endAge: Number(maxYear),
+                  genderIsIrrelevant: true,
+                  gender: selectedGender,
+                });
+              }}>
               <CommonText fontSize={16} color={'#ffffff'}>
                 다음
               </CommonText>
@@ -402,7 +498,48 @@ const ProgressBar = styled.View`
   ${(props: {width: number}) =>
     props.width === 0 ? 'width: 0%' : props.width && `width: ${props.width}%`};
   height: 5px;
-  background-color: #5c667b;
+  background-color: #0e6fff;
 `;
+
+const styles = StyleSheet.create({
+  button: {
+    width: 130,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderWidth: 1,
+    borderColor: '#cccccc',
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  selectedButton: {
+    width: 130,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderColor: '#0E6FFF',
+    borderWidth: 3,
+  },
+  genButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 40,
+    borderWidth: 1,
+    borderColor: '#cccccc',
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  selectedGenButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 40,
+    borderWidth: 3,
+    borderColor: '#0E6FFF',
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
 
 export default SelectMemberTypePage;

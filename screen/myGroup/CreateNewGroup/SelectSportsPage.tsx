@@ -24,40 +24,40 @@ import {
   RowBox,
 } from '../../CommonStyled.style';
 import {BackButton} from '../style/MyGroupStyle.style';
-import {Colors} from '../../../assets/color/Colors';
 import styled from 'styled-components/native';
 
 type Item = {
   image: string;
   name: string;
+  type: string;
 };
 
 const data: Item[] = [
-  {image: 'none', name: '러닝'},
-  {image: 'none', name: '축구'},
-  {image: 'none', name: '농구'},
-  {image: 'none', name: '스쿼시'},
-  {image: 'none', name: '볼링'},
-  {image: 'none', name: '테니스'},
-  {image: 'none', name: '클라이밍'},
-  {image: 'none', name: '자전거'},
-  {image: 'none', name: '보드'},
-  {image: 'none', name: '배드민턴'},
-  {image: 'none', name: '야구'},
-  {image: 'none', name: '기타'},
+  {image: 'none', name: '러닝', type: 'RUNNING'},
+  {image: 'none', name: '축구', type: 'SOCCER'},
+  {image: 'none', name: '농구', type: 'BASKETBALL'},
+  {image: 'none', name: '스쿼시', type: 'SQUASH'},
+  {image: 'none', name: '볼링', type: 'BOWLING'},
+  {image: 'none', name: '테니스', type: 'TENNIS'},
+  {image: 'none', name: '클라이밍', type: 'CLIMBING'},
+  {image: 'none', name: '자전거', type: 'BICYCLE'},
+  {image: 'none', name: '보드', type: 'BOARD'},
+  {image: 'none', name: '배드민턴', type: 'BADMINTON'},
+  {image: 'none', name: '야구', type: 'BASEBALL'},
+  {image: 'none', name: '기타', type: 'ETC'},
 ];
 
 const SelectSportsPage = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
   const barWidth = Math.ceil((1 / 5) * 100);
-  const [selectedName, setSelectedName] = useState<string | null>(null);
+  const [selectedSport, setSelectedSport] = useState<string | null>(null);
 
   const onPress = (item: Item) => {
-    setSelectedName(item.name);
+    setSelectedSport(item.type);
   };
 
   const renderItem: ListRenderItem<Item> = ({item}) => {
-    const isSelected = item.name === selectedName;
+    const isSelected = item.type === selectedSport;
     return (
       <View
         style={{
@@ -98,6 +98,7 @@ const SelectSportsPage = () => {
             borderWidth: 1,
             borderColor: '#DCDCDC',
             marginBottom: 5,
+            backgroundColor: '#D4E5FF',
           }}>
           <ProgressBar width={barWidth} />
         </View>
@@ -129,7 +130,8 @@ const SelectSportsPage = () => {
               height: '18%',
               flexDirection: 'row',
               justifyContent: 'center',
-              alignItems: 'center',
+              alignItems: 'flex-end',
+              paddingBottom: 10,
               paddingHorizontal: 20,
             }}>
             <TouchableOpacity
@@ -141,7 +143,11 @@ const SelectSportsPage = () => {
                 justifyContent: 'center',
                 borderRadius: 10,
               }}
-              onPress={() => navigation.navigate('SelectApproval')}>
+              onPress={() => {
+                navigation.navigate('SelectApproval', {
+                  sportsType: selectedSport,
+                });
+              }}>
               <CommonText fontSize={16} color={'#ffffff'}>
                 다음
               </CommonText>
@@ -157,7 +163,7 @@ const ProgressBar = styled.View`
   ${(props: {width: number}) =>
     props.width === 0 ? 'width: 0%' : props.width && `width: ${props.width}%`};
   height: 5px;
-  background-color: #5c667b;
+  background-color: #0e6fff;
 `;
 
 const styles = StyleSheet.create({

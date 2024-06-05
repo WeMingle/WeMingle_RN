@@ -31,6 +31,7 @@ import Settings from '../../../assets/settings.png';
 import AnnounceFirst from '../../../assets/announce01.png';
 import AnnounceSecond from '../../../assets/announce02.png';
 import More_Vert from '../../../assets/more_vert.png';
+import RectagleBlue from '../../../assets/RectangleBlue.png';
 import {FlatList} from 'react-native-gesture-handler';
 import {
   ClickBookmark,
@@ -364,15 +365,74 @@ const MemberPageScreen = () => {
         ]}
         renderItem={items => {
           return (
-            <View style={{width: '100%'}}>
-              <CommonText
-                fontSize={14}
-                color={'#292E41'}
-                numberOfLines={1}
-                ellipsizeMode="tail">
-                그룹원
-              </CommonText>
-            </View>
+            <>
+              <View
+                style={{
+                  width: '100%',
+                  paddingVertical: 10,
+                  paddingHorizontal: 20,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                  }}>
+                  <CommonTouchableOpacity
+                    style={[
+                      {
+                        borderRadius: 10,
+                      },
+                    ]}
+                    bgColor={'#D7DCE5'}
+                    width={40}
+                    height={40}
+                  />
+                  <View
+                    style={{
+                      padding: 5,
+                      borderRadius: 10,
+                      backgroundColor: '#8491A7',
+                      marginLeft: 15,
+                    }}>
+                    <CommonText
+                      fontSize={9}
+                      color={'#ffffff'}
+                      numberOfLines={1}
+                      ellipsizeMode="tail">
+                      나
+                    </CommonText>
+                  </View>
+                  <CommonText
+                    fontSize={14}
+                    color={'#000000'}
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                    paddingLeft={10}>
+                    그룹원
+                  </CommonText>
+                  <CommonImage
+                    source={RectagleBlue}
+                    width={10}
+                    height={10}
+                    marginLeft={5}
+                  />
+                </View>
+                <TouchableOpacity>
+                  <CommonImage source={More_Vert} width={3} height={14.5} />
+                </TouchableOpacity>
+              </View>
+              <View
+                style={{
+                  width: '100%',
+                  height: 1,
+                  backgroundColor: Colors.c_gray200,
+                }}
+              />
+            </>
           );
         }}
       />

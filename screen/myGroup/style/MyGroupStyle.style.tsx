@@ -25,6 +25,7 @@ import Favorite_Active from '../../../assets/favorite_active.png';
 import Search from '../../../assets/search.png';
 import Back_White from '../../../assets/back_icon_white.png';
 import SMS from '../../../assets/sms.png';
+import Toast from 'react-native-toast-message';
 
 export const BookmarkImage = ({bookmark, width, height}: any) => {
   const [bookmarkSource, setBookmarkSource] = useState(Bookmark);
