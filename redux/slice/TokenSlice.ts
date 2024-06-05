@@ -47,6 +47,7 @@ export const signInEmail = createAsyncThunk(
   'token/signIn',
   async (object, thunkAPI) => {
     try {
+      console.log(object);
       return await axiosPrivate
         .post('/member/signin', object)
         .then(async response => {
@@ -62,6 +63,7 @@ export const signInEmail = createAsyncThunk(
           return token;
         });
     } catch (error) {
+      console.log(error, 'error');
       return thunkAPI.rejectWithValue(error);
     }
   },

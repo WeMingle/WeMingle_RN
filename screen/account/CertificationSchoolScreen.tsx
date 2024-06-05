@@ -17,6 +17,8 @@ import {
 import {CommonHeader} from '../../component/header/CommonHeader';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {certificationEmail, checkEmailNumber} from '../../api/Account';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../redux/Reducers';
 
 const CertificationSchoolScreen = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
@@ -24,6 +26,9 @@ const CertificationSchoolScreen = () => {
   const [email, setEmail] = useState<string>('dlgusxo1000@gmail.com');
   const [checkNum, setCheckNum] = useState<number | null>(null);
   const [isSendEmail, setIsSendEmail] = useState(false);
+
+  const token = useSelector((state: RootState) => state.token);
+  // console.log('token', token);
   return (
     <BaseSafeView>
       <Container>
@@ -83,14 +88,19 @@ const CertificationSchoolScreen = () => {
         </CommonInputView>
 
         <AccountButton
-          onPress={() => {
-            navigation.navigate('Home');
-            checkEmailNumber({email: email, checkNum: checkNum});
+          onPress={async () => {
+            const result = await checkEmailNumber({
+              email: email,
+              checkNum: checkNum,
+            });
+            if (result) {
+              navigation.navigate('Home');
+            }
           }}
           style={{bottom: 20, position: 'absolute', alignSelf: 'center'}}
           bgColor={checkNum ? '#000' : '#D7DCE5'}
           marginT={20}>
-          <CommonText color={'#fff'}>선택완료</CommonText>
+          <CommonText color={'#fff'}>학교 인증 완료</CommonText>
         </AccountButton>
       </Container>
     </BaseSafeView>

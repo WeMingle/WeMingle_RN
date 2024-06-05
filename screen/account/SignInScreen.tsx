@@ -29,21 +29,21 @@ const SignInScreen = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
   const dispatch = useDispatch();
   const [postData, setPostData] = useState({
-    memberId: 'wemingle@gmail.com',
-    password: 'password123!',
+    memberId: 'Wemingle@gmail.com',
+    password: 'test1234',
     signupPlatform: 'NONE',
   });
 
   const handleSignIn = async () => {
-    return navigation.navigate('Onboarding');
+    // return navigation.navigate('Onboarding');
 
-    // const result = await dispatch(signInEmail(postData));
-
-    // if (result?.meta?.requestStatus === 'fulfilled') {
-    //   navigation.navigate('Onboarding');
-    // } else {
-    //   return;
-    // }
+    const result = await dispatch(signInEmail(postData));
+    // console.log(result);
+    if (result?.meta?.requestStatus === 'fulfilled') {
+      navigation.navigate('Home');
+    } else {
+      return;
+    }
   };
 
   const handleSignUpWithSNS = async (signupPlatform: string) => {

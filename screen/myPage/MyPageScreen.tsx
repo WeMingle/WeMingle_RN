@@ -23,7 +23,12 @@ import {MyButtonFrame} from './style/MyPageStyle.style';
 import Arrow_Right_White from '../../assets/arrow_right_white.png';
 import Arrow_Right from '../../assets/arrow_right.png';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {getMyGroupList, getMyInfo} from '../../api/MyPage';
+import {
+  getMatchingSummary,
+  getMyGroupList,
+  getMyInfo,
+  getProfileImageLink,
+} from '../../api/MyPage';
 
 const testData = [
   {image: 'none', name: '숭실대 축구 동아리'},
@@ -60,7 +65,7 @@ const MyPageScreen = () => {
   const [selectItems, setSelectItems] = useState([]);
   const [groupList, setGroupList] = useState<GroupList[]>();
   const [myInfo, setMyInfo] = useState<MyInfoProps>();
-
+  const [summary, setSummary] = useState();
   useEffect(() => {
     const _getFunction = async () => {
       const result = await getMyGroupList();
@@ -79,6 +84,26 @@ const MyPageScreen = () => {
     _getFunction();
   }, []);
 
+  useEffect(() => {
+    const _getFunction = async () => {
+      const result = await getMatchingSummary();
+      setSummary(result);
+    };
+
+    _getFunction();
+  }, []);
+
+  const [profileImage, setProfileImage] = useState();
+
+  useEffect(() => {
+    const _getFunction = async () => {
+      const result = await getProfileImageLink(myInfo?.profilePicId);
+      setProfileImage(result);
+    };
+    _getFunction();
+  }, []);
+
+  // console.log('myInfo', myInfo);
   const MyInfoButton = () => {
     return (
       <TouchableOpacity
@@ -87,16 +112,27 @@ const MyPageScreen = () => {
         }}>
         <MyButtonFrame>
           <RowBox alignC>
-            <View
-              style={{
-                width: 60,
-                height: 60,
-                borderColor: '#fff',
-                borderWidth: 2,
-                borderRadius: 60,
-                marginRight: 15,
-              }}
-            />
+            {profileImage ? (
+              <CommonImage
+                source={{uri: profileImage}}
+                width={60}
+                height={60}
+                style={{
+                  borderRadius: 60,
+                  marginRight: 15,
+                }}
+              />
+            ) : (
+              <View
+                style={{
+                  width: 60,
+                  height: 60,
+                  borderColor: '#fff',
+                  borderWidth: 2,
+                  borderRadius: 60,
+                  marginRight: 15,
+                }}></View>
+            )}
             <View>
               <CommonText color={'#fff'} fontSize={14}>
                 {myInfo?.nickname}

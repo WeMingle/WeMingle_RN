@@ -28,6 +28,7 @@ export const getMyInfo = async () => {
       }
     })
     .catch(e => {
+      console.log('getMyInfo', e);
       return false;
     });
   return result;
@@ -62,7 +63,6 @@ export const getScrap = async () => {
 };
 
 export const modifyMyProfile = async (props: any) => {
-  console.log(props);
   const result = await axiosPrivate
     .patch('member/info', props)
     .then(response => {
@@ -74,5 +74,31 @@ export const modifyMyProfile = async (props: any) => {
     .catch(e => {
       return false;
     });
+  return result;
+};
+
+export const getMatchingSummary = async () => {
+  const result = await axiosPrivate.get('/match/summary').then(response => {
+    if (response.status === 200) {
+      return response.data.responseData;
+    }
+  });
+
+  return result;
+};
+
+export const getProfileImageLink = async (payload: any) => {
+  console.log(payload);
+  const result = await axiosPrivate
+    .get(`/img/member/profile/${payload}`)
+    .then(response => {
+      if (response.status === 200) {
+        return response.data.responseData;
+      }
+    })
+    .catch(e => {
+      console.log('getProfileImageLink', e);
+    });
+
   return result;
 };

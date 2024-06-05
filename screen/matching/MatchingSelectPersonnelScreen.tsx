@@ -1,9 +1,10 @@
-import {TouchableOpacity, View} from 'react-native';
+import {FlatList, TouchableOpacity, View} from 'react-native';
 
 import {
   BaseSafeView,
   BorderBox,
   BorderBoxButton,
+  CheckBox,
   CommonImage,
   CommonText,
   ConfirmButton,
@@ -23,6 +24,7 @@ import Arrow_Right from '../../assets/arrow_right.png';
 import {Colors} from '../../assets/color/Colors';
 import Arrow_Down from '../../assets/arrow_down.png';
 import Arrow_Left from '../../assets/arrow_left.png';
+import CheckBox_Off from '../../assets/checkbox_default.png';
 import * as Progress from 'react-native-progress';
 
 const MatchingSelectPersonnelScreen = () => {
@@ -90,25 +92,61 @@ const MatchingSelectPersonnelScreen = () => {
       <View style={{backgroundColor: '#212121'}}>
         <CommonHeaderBlack headerTitle={'인원 선택'} />
       </View>
-      <Container>
+      <View style={{padding: 20}}>
         <RowBox justify="space-between">
           <RowBox alignC>
-            <CommonImage source={Arrow_Left} width={24} height={24} />
-            <CommonText bold>경희대 축동 (32명)</CommonText>
+            <CommonImage source={Arrow_Left} width={7} height={14} />
+            <CommonText marginL={8} bold>
+              경희대 축동 (32명)
+            </CommonText>
           </RowBox>
           <RowBox alignC>
-            <CommonText fontSize={12}>전체선택</CommonText>
+            <CommonText marginR={7} fontSize={12}>
+              전체선택
+            </CommonText>
+            <CheckBox isChecked={false} />
           </RowBox>
         </RowBox>
-        <ConfirmButton
-          bottom={20}
-          onPress={() => navigation.navigate('MatchingWrite')}
-          position={'absolute'}>
-          <CommonText color={'#fff'} bold fontSize={16}>
-            적용
-          </CommonText>
-        </ConfirmButton>
-      </Container>
+      </View>
+
+      <FlatList
+        data={[{nickname: 'test', image: ''}]}
+        renderItem={({item}) => {
+          return (
+            <>
+              <TouchableOpacity onPress={() => {}}>
+                <RowBox alignC justifyC height={74} style={{paddingLeft: 20}}>
+                  <BorderBox width={38} height={38}></BorderBox>
+                  <CommonText marginL={20} fontSiz={16}>
+                    {item.nickname}
+                  </CommonText>
+                </RowBox>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => {}}>
+                <RowBox
+                  alignC
+                  justifyC
+                  height={74}
+                  style={{paddingLeft: 20}}
+                  bgColor={Colors.blue100}>
+                  <BorderBox width={38} height={38}></BorderBox>
+                  <CommonText marginL={20} fontSiz={16}>
+                    {item.nickname}
+                  </CommonText>
+                </RowBox>
+              </TouchableOpacity>
+            </>
+          );
+        }}
+      />
+      <ConfirmButton
+        bottom={20}
+        onPress={() => navigation.navigate('MatchingWrite')}
+        position={'absolute'}>
+        <CommonText color={'#fff'} bold fontSize={16}>
+          적용
+        </CommonText>
+      </ConfirmButton>
     </BaseSafeView>
   );
 };

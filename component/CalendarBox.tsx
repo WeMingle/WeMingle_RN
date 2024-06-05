@@ -30,7 +30,6 @@ interface markedDates {
 const CalendarBox = memo(
   ({selectedDate, setSelectedDate, isSticky}: CalendarBoxProps) => {
     const [markedDates, setMarkedDates] = useState<markedDates>({});
-    // console.log(isSticky);
     useEffect(() => {
       if (selectedDate)
         setMarkedDates({
@@ -40,7 +39,7 @@ const CalendarBox = memo(
           },
         });
     }, [selectedDate]);
-    console.log(markedDates);
+
     return (
       <Animated.View style={[{backgroundColor: '#fff', paddingBottom: 100}]}>
         <Calendar

@@ -328,7 +328,8 @@ export const ConfirmButton = styled(BorderBoxButton)`
 `;
 
 export const VerticalBar = styled.View`
-  width: ${ScreenWidth}px;
+  width: ${(props: {width: number}) =>
+    props.width ? props.width : ScreenWidth}px;
   height: 1px;
   left: -20px;
   background-color: ${Colors.c_gray200};
@@ -399,7 +400,6 @@ export const MatchingItem = ({item, index, paddingN}: any) => {
           <CommonText>
             {item.writer}
             <CommonText color={Colors.c_gray400} fontSize={12}>
-              {' '}
               매칭 경험 {item.matchingCnt}번
             </CommonText>
           </CommonText>

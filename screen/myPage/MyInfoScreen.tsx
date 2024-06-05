@@ -67,7 +67,7 @@ const MyInfoScreen = () => {
       setMemberInfo(result);
     };
     asyncFunction();
-  });
+  }, []);
 
   const TextField = ({
     leftText,

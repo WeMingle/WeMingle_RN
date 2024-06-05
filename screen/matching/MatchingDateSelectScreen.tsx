@@ -43,9 +43,11 @@ const MatchingDateSelectScreen = () => {
 
     // console.log('result', result);
     setWritableGroups(result);
+    console.log('result', result);
     setModalVisible(true);
   };
 
+  // console.log(writableGroups);
   const _setSelectedGroup = (value: string) => {
     setModalVisible(false);
     return;
@@ -57,6 +59,7 @@ const MatchingDateSelectScreen = () => {
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
         selectedGroup={_setSelectedGroup}
+        // writableGroups={writableGroups}
       />
       <Container padding={0}>
         <View style={{backgroundColor: '#212121'}}>

@@ -28,7 +28,6 @@ import {RootState} from '../../redux/Reducers';
 
 const SignUpCompleteScreen = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
-  const token = useSelector((state: RootState) => state.token);
   const dispatch = useDispatch();
 
   const [nickName, setNickName] = useState('');
@@ -42,9 +41,6 @@ const SignUpCompleteScreen = () => {
   };
 
   const getUploadLink = async () => {
-    const result = await getPresignedUrl();
-    if (result) setUploadLink(result);
-
     openImagePicker();
   };
 
@@ -55,7 +51,13 @@ const SignUpCompleteScreen = () => {
       height: 300,
       cropping: true,
       compressImageQuality: 0.8,
-    }).then((image: any) => {
+      forceJpg: true,
+    }).then(async (image: any) => {
+      const result = await getPresignedUrl();
+      if (result) setUploadLink(result);
+
+      // console.log(result);k
+      // 확장자 추가 240605 수
       setSelectImage(image);
     });
   };

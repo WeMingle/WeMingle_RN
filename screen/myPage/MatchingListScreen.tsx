@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   BaseSafeView,
   CommonText,
@@ -17,6 +17,7 @@ import {
   MatchingTab,
 } from './style/MyPageStyle.style';
 import {CommonHeaderBlack} from '../../component/header/CommonHeader';
+import {getMatchingHistory} from '../../api/Matching';
 
 const MatchingListScreen = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
@@ -27,6 +28,25 @@ const MatchingListScreen = () => {
     borderBottomColor: Colors.c_gray300,
   };
   const [selectedTab, setSelectedTab] = useState(1);
+
+  const [filterData, setFilterData] = useState({
+    nextIdx: 0,
+    recruiterType: '',
+    requestType: '',
+    excludeCompleteMatchesFilter: false,
+  });
+
+  const [matching, setMatching] = useState();
+  useEffect(() => {
+    const asyncFunction = async () => {
+      const result = await getMatchingHistory(filterData);
+
+      setMatching(result);
+      return result;
+    };
+
+    asyncFunction();
+  }, []);
 
   return (
     <BaseSafeView>

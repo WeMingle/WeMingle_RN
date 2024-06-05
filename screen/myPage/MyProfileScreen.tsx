@@ -34,6 +34,8 @@ import {RadioButton} from 'react-native-paper';
 import Arrow_Up from '../../assets/arrow_up.png';
 import Arrow_down from '../../assets/arrow_down.png';
 import {modifyMyProfile} from '../../api/MyPage';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../redux/Reducers';
 
 interface profileProps {
   nickname: string;
@@ -50,6 +52,10 @@ interface profileProps {
 const MyProfileScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
+  const locationArray = useSelector(
+    (state: RootState) => state.Common,
+  ).locationArray;
+
   const [configVisible, setConfigVisible] = useState(false);
 
   const [levelSwitch, setLevelSwitdh] = useState(false);
@@ -88,7 +94,7 @@ const MyProfileScreen = () => {
     const result = profile.abilityList.filter((v, i) => {
       return v.sportsType === abilityType.sportsType && v.ability === ability;
     });
-    console.log(result);
+    // console.log(result);
     if (isBgColor) {
       return result.length > 0 ? '#212121' : '#fff';
     } else {
@@ -153,6 +159,11 @@ const MyProfileScreen = () => {
           </CommonText>
           <CommonInputView marginT={14} height={68}>
             <CommontInput
+              onChangeText={(v: string) => [
+                setProfile(prev => {
+                  return {...prev, oneLineIntroduction: v};
+                }),
+              ]}
               value={profile?.oneLineIntroduction}
               style={{width: '100%', alignSelf: 'flex-start'}}
               multiline
@@ -317,25 +328,7 @@ const MyProfileScreen = () => {
 
           <FlatList
             numColumns={6}
-            data={[
-              '서울',
-              '경기',
-              '인천',
-              '부산',
-              '대전',
-              '대구',
-              '울산',
-              '세종',
-              '광주',
-              '강원',
-              '충북',
-              '충남',
-              '경북',
-              '경남',
-              '전북',
-              '전남',
-              '제주',
-            ]}
+            data={locationArray}
             renderItem={({item, index}) => {
               return (
                 <BorderBoxButton

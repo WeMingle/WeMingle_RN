@@ -29,6 +29,7 @@ import {CommonHeaderBlack} from '../../component/header/CommonHeader';
 import moment from 'moment';
 import {showToastMessage} from '../../component/Toast';
 import {postMatching} from '../../api/Matching';
+import {MatchingCounter} from './style/MatchingStyle';
 
 const MatchingWriteScreen = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
@@ -41,7 +42,7 @@ const MatchingWriteScreen = () => {
   const [expiredDate, setExpiredDate] = useState(new Date());
 
   const [matchingData, setMatchingData] = useState({
-    matchingDate: '',
+    matchingDate: selectedDate,
     latitude: 0,
     longitude: 0,
     locationName: '',
@@ -53,18 +54,18 @@ const MatchingWriteScreen = () => {
     eup: '',
     myen: '',
     ri: '',
-    areaNameList: [],
+    areaNameList: ['서울'],
     ability: '',
     gender: '',
-    capacityLimit: 0,
-    teamPk: 0,
+    capacityLimit: 10,
+    teamPk: 1,
     participantsId: [],
     expiryDate: '',
     recruiterType: '',
     recruitmentType: '',
     content: '',
     locationSelectionType: '',
-    sportsType: '',
+    sportsType: 'OTHER',
   });
 
   useEffect(() => {
@@ -72,6 +73,8 @@ const MatchingWriteScreen = () => {
       '매칭 조건은 업로드 후 수정이 불가하니 신중하게 작성해주세요!',
     );
   }, []);
+
+  console.log(matchingData);
 
   const MatchingColumn = ({title, rightComponent, marginT}: any) => {
     return (
@@ -254,57 +257,7 @@ const MatchingWriteScreen = () => {
                     <CommonImage source={Intersect} width={14} height={12} />
                   </RowBox>
                 </BorderBoxButton>
-                <TouchableOpacity
-                  style={{
-                    borderTopWidth: 1,
-                    borderLeftWidth: 1,
-                    borderBottomWidth: 1,
-                    borderColor: Colors.c_gray300,
-                    borderTopLeftRadius: 5,
-                    borderBottomLeftRadius: 5,
-                    height: 35,
-                    width: 35,
-                    backgroundColor: '#fff',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                  <CommonText color={'#212121'} bold fontSize={12}>
-                    -
-                  </CommonText>
-                </TouchableOpacity>
-                <View
-                  style={{
-                    height: 35,
-                    width: 35,
-                    backgroundColor: '#fff',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderTopWidth: 1,
-                    borderBottomWidth: 1,
-                    borderColor: Colors.c_gray300,
-                  }}>
-                  <CommonText color={'#212121'} bold fontSize={12}>
-                    1
-                  </CommonText>
-                </View>
-                <TouchableOpacity
-                  style={{
-                    borderTopRightRadius: 5,
-                    borderBottomRightRadius: 5,
-                    height: 35,
-                    width: 35,
-                    backgroundColor: '#fff',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderTopWidth: 1,
-                    borderRightWidth: 1,
-                    borderBottomWidth: 1,
-                    borderColor: Colors.c_gray300,
-                  }}>
-                  <CommonText color={'#212121'} bold fontSize={12}>
-                    +
-                  </CommonText>
-                </TouchableOpacity>
+                <MatchingCounter />
               </RowBox>
             );
           }}
@@ -327,7 +280,18 @@ const MatchingWriteScreen = () => {
         <DatePicker
           style={{alignSelf: 'center', justifyContent: 'space-between'}}
           date={expiredDate}
-          onDateChange={setExpiredDate}
+          onDateChange={v => {
+            const date = v;
+            // console.log(date);
+            setMatchingData(prev => {
+              return {
+                ...prev,
+                expiryDate: `${date.getFullYear()}-${
+                  date.getMonth() + 1
+                }-${date.getDate()}`,
+              };
+            });
+          }}
           mode="date"
           locale="ko-KR"
           theme="light"

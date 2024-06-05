@@ -239,7 +239,6 @@ const MatchingScreen = () => {
                 ScreenHeight - 65 - 40 - 65 - 40 - 60 - 55,
               );
               const bounds = `topLat=${result[0].lat}&bottomLat=${result[1].lat}&rightLon=${result[0].lng}&leftLon=${result[1].lng}`;
-              console.log(bounds);
               setBounds(bounds);
             }}
             showsMyLocationButton={false}
@@ -253,7 +252,7 @@ const MatchingScreen = () => {
           </NaverMapView>
           <BorderBox
             style={{position: 'absolute', alignSelf: 'center', bottom: 20}}>
-            <MatchingItem item={matchingList[8012]} />
+            {/* <MatchingItem item={matchingList[8012]} /> */}
           </BorderBox>
           {/* <TouchableWithoutFeedback
             style={{

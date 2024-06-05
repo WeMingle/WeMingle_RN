@@ -35,9 +35,8 @@ export const uploadImageWithBLOB = (payload: any) => {
 export const AddProfile = async (payload: any) => {
   uploadImageWithBLOB(payload);
 
-  console.log(payload.nickName);
   const result = await axiosPrivate
-    .post('member/profile', {nickName: payload.nickName})
+    .post('member/profile', {nickname: payload.nickName})
     .then(response => {
       if (response.status === 200) {
         return true;
@@ -70,13 +69,14 @@ export const checkNickName = async (payload: string) => {
 // 이미지 업로드 링크 발급
 export const getPresignedUrl = async () => {
   return await axiosPrivate
-    .get('/img/member/profile/upload')
+    .get('/img/member/profile/upload/jpg')
     .then(response => {
       if (response?.status === 200) {
         return response.data.responseData;
       }
     })
     .catch(error => {
+      console.log(error);
       return false;
     });
 };
@@ -87,7 +87,6 @@ export const addOnboard = async (payload: string) => {
     .post('/onboard', {selectedSport: payload})
     .then(response => {
       if (response?.status === 200) {
-        console.log('asd');
         return response.data.responseData;
       }
     })
@@ -98,7 +97,6 @@ export const certificationEmail = async (payload: string) => {
   return await axiosPrivate
     .post('/mail', {univEmail: payload})
     .then(response => {
-      console.log('response.data', response.data);
       if (response?.status === 200) {
         return true;
       }

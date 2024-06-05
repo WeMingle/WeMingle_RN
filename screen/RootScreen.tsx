@@ -5,6 +5,7 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Account - 이현태
 import SplashScreen from './SplashScreen';
@@ -15,7 +16,6 @@ import OnboardingScreen from './account/OnBoardingScreen';
 import CertificationSchoolScreen from './account/CertificationSchoolScreen';
 import {useDispatch} from 'react-redux';
 import {setToken} from '../redux/slice/TokenSlice';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import MyPageScreen from './myPage/MyPageScreen';
 import MyInfoScreen from './myPage/MyInfoScreen';
 import MyProfileScreen from './myPage/MyProfileScreen';
@@ -28,17 +28,6 @@ import MatchingDateSelectScreen from './matching/MatchingDateSelectScreen';
 import {showToastMessage} from '../component/Toast';
 import ScrapListScreen from './myPage/ScrapListScreen';
 import HomeScreen from './home/HomeScreen';
-
-//MyGroup - 전하윤
-import MyGroupDefaultScreen from './myGroup/MyGroupDefaultScreen';
-import MyGroupScreen from './myGroup/MyGroupScreen';
-import MyGroupSearchScreen from './myGroup/MyGroupSearchScreen';
-import SearchResultScreen from './myGroup/SearchResultScreen';
-import SearchProfileScreen from './myGroup/SearchProfileScreen';
-import GroupPageScreen from './myGroup/GroupPageScreen';
-import GroupChattingPageScreen from './myGroup/GroupChattingPageScreen';
-import GroupMemberPageScreen from './myGroup/GroupMemberPageScreen';
-
 import {
   PERMISSIONS,
   request,
@@ -53,6 +42,17 @@ import MatchingGetVoteScreen from './matching/MatchingGetVoteScreen';
 import PopularMatchinListScreen from './home/PopularMatchinListScreen';
 import MatchingGetLocationScreen from './matching/MatchingGetLocationScreen';
 import MatchingDetailScreen from './matching/MatchingDetailScreen';
+import MatchingRequestScreen from './matching/MatchingRequestScreen';
+
+//MyGroup - 전하윤
+import MyGroupDefaultScreen from './myGroup/MyGroupDefaultScreen';
+import MyGroupScreen from './myGroup/MyGroupScreen';
+import MyGroupSearchScreen from './myGroup/MyGroupSearchScreen';
+import SearchResultScreen from './myGroup/SearchResultScreen';
+import SearchProfileScreen from './myGroup/SearchProfileScreen';
+import GroupPageScreen from './myGroup/GroupPageScreen';
+import GroupChattingPageScreen from './myGroup/GroupChattingPageScreen';
+import GroupMemberPageScreen from './myGroup/GroupMemberPageScreen';
 
 let count = 0; //  종료카운트
 
@@ -207,6 +207,14 @@ const RouterSetting = [
     component: AlertModal,
     presentation: 'transparentModal',
   },
+  {
+    name: 'MatchingDetail',
+    component: MatchingDetailScreen,
+  },
+  {
+    name: 'MatchingRequest',
+    component: MatchingRequestScreen,
+  },
 ];
 
 const TabRouterSetting = [
@@ -301,10 +309,6 @@ const TabRouterSetting = [
   {
     name: 'MatchingGetLocation',
     component: MatchingGetLocationScreen,
-  },
-  {
-    name: 'MatchingDetail',
-    component: MatchingDetailScreen,
   },
 ];
 

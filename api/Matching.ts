@@ -9,6 +9,7 @@ export const getMatchingWritableGroup = async () => {
     .get('/team/profile/writable?sportsType=SOCCER')
     .then(response => {
       if (response.status === 200) {
+        // console.log('response.data?.responseData', response.data?.responseData);
         return response.data?.responseData;
       }
     });
@@ -23,6 +24,15 @@ export const getPopularMatchingList = async () => {
         return response.data?.responseData;
       }
     });
+  return result;
+};
+
+export const getRealTimePopularMatching = async () => {
+  const result = await axiosPrivate.get('/team/popular').then(response => {
+    if (response.status === 200) {
+      return response.data?.responseData;
+    }
+  });
   return result;
 };
 
@@ -64,6 +74,23 @@ export const postMatching = async (payload: any) => {
       }
     })
     .catch(e => console.log(e));
+
+  return result;
+};
+
+export const getMatchingHistory = async (payload: any) => {
+  const result = await axiosPrivate
+    .post(
+      `match/request/history?requestType=${payload.requestType}&recruiterType=${payload.recruiterType}&nextIdx=${payload.nextIdx}&excludeCompleteMatchesFilter=${payload.excludeCompleteMatchesFilter}`,
+    )
+    .then(response => {
+      if (response.status === 200) {
+        return response.data.responseData;
+      }
+    })
+    .catch(e => {
+      console.log(e);
+    });
 
   return result;
 };

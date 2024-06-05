@@ -341,3 +341,61 @@ export const PopularMatchingBox = (props: {item: PopularMatchingBoxProps}) => {
     </>
   );
 };
+
+export const MatchingCounter = () => {
+  return (
+    <>
+      <TouchableOpacity
+        style={{
+          borderTopWidth: 1,
+          borderLeftWidth: 1,
+          borderBottomWidth: 1,
+          borderColor: Colors.c_gray300,
+          borderTopLeftRadius: 5,
+          borderBottomLeftRadius: 5,
+          height: 35,
+          width: 35,
+          backgroundColor: '#fff',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <CommonText color={'#212121'} bold fontSize={12}>
+          -
+        </CommonText>
+      </TouchableOpacity>
+      <View
+        style={{
+          height: 35,
+          width: 35,
+          backgroundColor: '#fff',
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderTopWidth: 1,
+          borderBottomWidth: 1,
+          borderColor: Colors.c_gray300,
+        }}>
+        <CommonText color={'#212121'} bold fontSize={12}>
+          1
+        </CommonText>
+      </View>
+      <TouchableOpacity
+        style={{
+          borderTopRightRadius: 5,
+          borderBottomRightRadius: 5,
+          height: 35,
+          width: 35,
+          backgroundColor: '#fff',
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderTopWidth: 1,
+          borderRightWidth: 1,
+          borderBottomWidth: 1,
+          borderColor: Colors.c_gray300,
+        }}>
+        <CommonText color={'#212121'} bold fontSize={12}>
+          +
+        </CommonText>
+      </TouchableOpacity>
+    </>
+  );
+};

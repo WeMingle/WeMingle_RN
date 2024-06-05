@@ -1,9 +1,9 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 // 하단 탭 메뉴 상태
 // currentTab 상태값에 따라 하이라이팅 되는 메뉴가 바뀜
 const initialState = {
-  currentTab: 'Matching', // Home, Matching, MyGroupo, MyPage
+  currentTab: '', // Home, Matching, MyGroupo, MyPage
 };
 
 export const TabNavigatorSlice = createSlice({
@@ -17,6 +17,6 @@ export const TabNavigatorSlice = createSlice({
   },
 });
 
-export const { setCurrentTab } = TabNavigatorSlice.actions;
+export const {setCurrentTab} = TabNavigatorSlice.actions;
 
 export default TabNavigatorSlice.reducer;

@@ -37,6 +37,7 @@ import {RootState} from '../../redux/Reducers';
 import {useEffect, useState} from 'react';
 import {
   getPopularMatchingList,
+  getRealTimePopularMatching,
   getRecentMatchingList,
 } from '../../api/Matching';
 import {
@@ -59,14 +60,22 @@ const HomeScreen = () => {
   const [recentMatchingList, setRecentMatchingList] = useState<MatchingList>(
     {},
   );
+  const [realTimeMatchingList, setRealTimeMatchingList] =
+    useState<MatchingList>();
+
+  // console.log('popularMatchingList', popularMatchingList);
+  // console.log('recentMatchingList', recentMatchingList);
+  // console.log('realTimeMatchingList', realTimeMatchingList);
 
   useEffect(() => {
     const getAsyncFunc = async () => {
       const result = await getPopularMatchingList();
       const result2 = await getRecentMatchingList();
+      const result3 = await getRealTimePopularMatching();
 
       setPopularMatchingList(result);
       setRecentMatchingList(result2);
+      setRealTimeMatchingList(result3);
     };
     getAsyncFunc();
   }, []);
@@ -326,7 +335,6 @@ const HomeScreen = () => {
               horizontal
               showsHorizontalScrollIndicator={false}
               renderItem={({item}) => {
-                console.log(item);
                 return (
                   <>
                     <BorderBox

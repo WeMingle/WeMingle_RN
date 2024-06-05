@@ -38,6 +38,7 @@ import {useDispatch} from 'react-redux';
 import {SignUpEmail} from '../../redux/slice/TokenSlice';
 import {handleSnsLogin} from '../../component/Common';
 import {AppDispatch} from '../../redux/Store';
+import {axiosPrivate} from '../../api/Common';
 
 const SignUpScreen = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -53,6 +54,7 @@ const SignUpScreen = () => {
   });
   const [regCheck, setRegCheck] = useState(false);
   const [passwordCheck, setPasswordCheck] = useState(false);
+  const [isCheckedId, setIsCheckedId] = useState(false);
 
   const handleSignUp = async () => {
     dispatch(SignUpEmail(postData));
@@ -123,15 +125,32 @@ const SignUpScreen = () => {
               })
             }
           />
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              axiosPrivate
+                .post('/member/id/check', {memberId: postData.memberId})
+                .then(response => {
+                  if (response.status === 200) {
+                    setIsCheckedId(true);
+                  }
+                })
+                .catch(e => {
+                  console.log(e);
+                });
+            }}>
             <CommonText color={Colors.blue400} fontSize={14}>
               중복 확인
             </CommonText>
           </TouchableOpacity>
         </CommonInputView>
 
-        <CommonText marginT={4} fontSize={12} color={Colors.blue400}>
-          사용 가능한 아이디입니다.
+        <CommonText
+          marginT={4}
+          fontSize={12}
+          color={isCheckedId ? Colors.blue400 : Colors.danger}>
+          {isCheckedId
+            ? '사용 가능한 아이디입니다.'
+            : '아이디 중복체크를 해주세요.'}
         </CommonText>
 
         <CommonText marginT={28} fontSize={14}>
