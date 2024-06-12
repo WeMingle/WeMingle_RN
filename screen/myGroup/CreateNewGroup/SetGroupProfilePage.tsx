@@ -9,6 +9,7 @@ import {
   Keyboard,
   Alert,
   Platform,
+  Image,
 } from 'react-native';
 import {
   NavigationProp,
@@ -26,14 +27,14 @@ import {BackButton} from '../style/MyGroupStyle.style';
 import styled from 'styled-components/native';
 import ImagePicker from 'react-native-image-crop-picker';
 import {useAppDispatch} from '../../../redux/Store';
-import {
-  fetchCreateNewGroup,
-  clearState,
-  fetchUploadProfile,
-} from '../../../redux/slice/MyGroup/CreateNewGroupSlice';
+import {fetchCreateNewGroup} from '../../../redux/slice/MyGroup/CreateNewGroupSlice';
 import {RootState} from '../../../redux/Reducers';
 import {useSelector} from 'react-redux';
 import {v4 as uuidv4} from 'uuid';
+import {uploadProfileImage, uploadImageWithBLOB} from '../../../api/MyGroup';
+// import Profile_Icon from '../../assets/basic_profile.png';
+import Profile_Icon from '../../../assets/basic_profile.png';
+// import {}
 
 const SetGroupProfilePage = ({route}: any) => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
@@ -43,6 +44,7 @@ const SetGroupProfilePage = ({route}: any) => {
   const {loading, error, successMessage} = useSelector(
     (state: RootState) => state.newGroup,
   );
+  const [selectedImage, setSelectedImage] = useState<any>(null);
 
   const item = route.params;
   console.log('넘겨진 데이터 : ', item);
@@ -50,57 +52,47 @@ const SetGroupProfilePage = ({route}: any) => {
   console.log('에러 : ', error);
   console.log('성공 : ', successMessage);
 
-  const [imageUri, setImageUri] = useState<string | null | undefined>(null);
+  // const [imageUri, setImageUri] = useState<string | null | undefined>(null);
   const [groupName, setGroupName] = useState('');
   const [groupIntroduce, setGroupIntroduce] = useState('');
+  const [teamId, setTeamId] = useState('');
 
-  let formData = new FormData();
-
+  const teamImgUUID = uuidv4();
   const selectImage = async () => {
-    try {
-      const result = await ImagePicker.openPicker({
-        width: 300,
-        height: 300,
-        cropping: true,
-      });
+    // const teamImgUUID = uuidv4();
+    console.log('uuid :', teamImgUUID);
+    ImagePicker.openPicker({
+      width: 300,
+      height: 300,
+      cropping: true,
+      compressImageQuality: 0.8,
+    }).then(async (image: any) => {
+      setTeamId(teamImgUUID);
+      setSelectedImage(image);
+      await uploadProfileImage(teamImgUUID, image.path);
+    });
+  };
 
-      if (result && result.path) {
-        setImageUri(result.path);
-        formData.append('file', {
-          uri: imageUri,
-          name: 'photo.jpg',
-          type: 'image/jpeg',
-        });
-      }
-
-      console.log('어떻게 처리? : ', formData);
-    } catch (error) {
-      console.error('Image picker error:', error);
-      Alert.alert('Error', 'Failed to pick the image');
-      // formData = "test.png";
-    }
+  const createGroupList = {
+    sportsType: item.sportsType,
+    recruitmentType: item.recruitmentType,
+    onlySameUniv: item.onlySameUniv,
+    ageIsIrrelevant: item.ageIsIrrelevant,
+    startAge: item.startAge,
+    endAge: item.endAge,
+    genderIsIrrelevant: item.genderIsIrrelevant,
+    gender: item.gender,
+    personnelLimitIrrelevant: item.personnelLimitIrrelevant,
+    personnelLimit: item.personnelLimit,
+    freeQuestionList: item.freeQuestionList,
+    teamName: groupName,
+    content: groupIntroduce,
+    // teamImgId: teamId,
+    teamImgId: teamImgUUID,
   };
 
   const createNewGroupPost = () => {
-    const createGroupList = {
-      sportsType: item.sportsType,
-      recruitmentType: item.recruitmentType,
-      onlySameUniv: item.onlySameUniv,
-      ageIsIrrelevant: item.ageIsIrrelevant,
-      startAge: item.startAge,
-      endAge: item.endAge,
-      genderIsIrrelevant: item.genderIsIrrelevant,
-      gender: item.gender,
-      personnelLimitIrrelevant: item.personnelLimitIrrelevant,
-      personnelLimit: item.personnelLimit,
-      freeQuestionList: item.freeQuestionList,
-      teamName: groupName,
-      content: groupIntroduce,
-      teamImgId: 'dea14329-9eff-4e52-ad57-825285e97242',
-    };
-
     dispatch(fetchCreateNewGroup(createGroupList));
-    // dispatch(fetchUploadProfile())
   };
 
   return (
@@ -160,7 +152,14 @@ const SetGroupProfilePage = ({route}: any) => {
                 bgColor={'#000'}
                 width={80}
                 height={80}
-                onPress={selectImage}></CommonTouchableOpacity>
+                onPress={selectImage}>
+                <Image
+                  source={
+                    selectedImage ? {uri: selectedImage.path} : Profile_Icon
+                  }
+                  style={{width: '100%', height: '100%', borderRadius: 80}}
+                />
+              </CommonTouchableOpacity>
             </View>
             <View
               style={{

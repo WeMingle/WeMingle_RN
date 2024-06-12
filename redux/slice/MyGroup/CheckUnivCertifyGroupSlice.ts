@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {axiosPrivate} from '../../../api/Common';
 
-const API_URL = '/team/home/condition';
+const API_URL = '/teams/home/condition';
 
 export const fetchUnivCertifyGroup = createAsyncThunk(
   'checkUnivCertifyGroup/fetchUnivCertifyGroup',

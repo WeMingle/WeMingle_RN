@@ -36,48 +36,14 @@ const initialState: TeamState = {
   successMessage: null,
 };
 
-interface ImageData {
-  teamImgUUID: string;
-  extension: string;
-}
-
-interface ImageResponse {
-  responseMessage: string;
-  responseData: null;
-}
-
-interface ImageState {
-  loading: boolean;
-  error: string | null;
-  successMessage: string | null;
-}
-
 // 새 그룹 생성 API
 export const fetchCreateNewGroup = createAsyncThunk<TeamResponse, TeamData>(
   'createNewGroup/fetchCreateNewGroup',
   async (teamData, {rejectWithValue}) => {
     try {
-      const response = await axiosPrivate.post('/team/create', teamData);
+      const response = await axiosPrivate.post('/teams', teamData);
       if (response.status !== 200) {
         throw new Error('Failed to create team');
-      }
-      return response.data;
-    } catch (error: any) {
-      throw rejectWithValue(error.message);
-    }
-  },
-);
-
-//그룹 프로필 이미지 업로드 API
-export const fetchUploadProfile = createAsyncThunk<ImageResponse, ImageData>(
-  'createNewGroup/fetchUploadProfile',
-  async (imageData, {rejectWithValue}) => {
-    try {
-      const response = await axiosPrivate.get(
-        `/team/profile/upload/${imageData.teamImgUUID}/${imageData.extension}`,
-      );
-      if (response.status !== 200) {
-        throw new Error('Failed to upload profile image');
       }
       return response.data;
     } catch (error: any) {
@@ -113,25 +79,6 @@ const createNewGroupSlice = createSlice({
       )
       .addCase(
         fetchCreateNewGroup.rejected,
-        (state, action: PayloadAction<any>) => {
-          state.loading = false;
-          state.error = action.payload;
-        },
-      )
-      .addCase(fetchUploadProfile.pending, state => {
-        state.loading = true;
-        state.error = null;
-        state.successMessage = null;
-      })
-      .addCase(
-        fetchUploadProfile.fulfilled,
-        (state, action: PayloadAction<ImageResponse>) => {
-          state.loading = false;
-          state.successMessage = action.payload.responseMessage;
-        },
-      )
-      .addCase(
-        fetchUploadProfile.rejected,
         (state, action: PayloadAction<any>) => {
           state.loading = false;
           state.error = action.payload;

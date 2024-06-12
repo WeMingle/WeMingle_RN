@@ -167,24 +167,14 @@ export const VoteComponent = ({
   vote_title,
   voting_member,
   closing_date,
-  participate_title,
-  participate_member,
-  absence_title,
-  absence_member,
+  voteOptionInfos,
 }: any) => {
-  let participateVotePercent = 0;
-  let absenceVotePercent = 0;
+  console.log('투표 리스트들 : ', voteOptionInfos);
+  let voteCnt = 0;
 
-  if (participate_member > 0) {
-    participateVotePercent = Math.ceil(
-      (participate_member / voting_member) * 100,
-    );
+  for (let i = 0; i < voteOptionInfos.length; i++) {
+    voteCnt += voteOptionInfos[i].resultCnt;
   }
-
-  if (absence_member > 0) {
-    absenceVotePercent = Math.ceil((absence_member / voting_member) * 100);
-  }
-
   return (
     <>
       {vote_title === null ? (
@@ -249,49 +239,33 @@ export const VoteComponent = ({
               {closing_date}
             </CommonText>
           </View>
-          <View
-            style={{
-              width: '100%',
-              alignItems: 'flex-start',
-              marginTop: 10,
-            }}>
-            <CommonText
-              fontSize={10}
-              color={'#292E41'}
-              paddingBottom={5}
-              textAlignC>
-              {participate_title}
-            </CommonText>
+          {voteOptionInfos.map((item: {optionName: any; resultCnt: number}) => (
             <View
               style={{
                 width: '100%',
-                height: 5,
-                borderRadius: 10,
-                borderWidth: 1,
-                borderColor: '#DCDCDC',
-                marginBottom: 5,
+                alignItems: 'flex-start',
+                marginTop: 10,
               }}>
-              <VoteGraph width={participateVotePercent} />
+              <CommonText
+                fontSize={10}
+                color={'#292E41'}
+                paddingBottom={5}
+                textAlignC>
+                {item.optionName}
+              </CommonText>
+              <View
+                style={{
+                  width: '100%',
+                  height: 5,
+                  borderRadius: 10,
+                  borderWidth: 1,
+                  borderColor: '#DCDCDC',
+                  marginBottom: 5,
+                }}>
+                <VoteGraph resultCnt={item.resultCnt} voteCnt={voteCnt} />
+              </View>
             </View>
-            <CommonText
-              fontSize={10}
-              color={'#292E41'}
-              paddingBottom={5}
-              textAlignC>
-              {absence_title}
-            </CommonText>
-            <View
-              style={{
-                width: '100%',
-                height: 5,
-                borderRadius: 10,
-                borderWidth: 1,
-                borderColor: '#DCDCDC',
-                marginBottom: 5,
-              }}>
-              <VoteGraph width={absenceVotePercent} />
-            </View>
-          </View>
+          ))}
         </View>
       )}
     </>
@@ -299,8 +273,11 @@ export const VoteComponent = ({
 };
 
 const VoteGraph = styled.View`
-  ${(props: {width: number}) =>
-    props.width === 0 ? 'width: 0%' : props.width && `width: ${props.width}%`};
+  ${(props: {resultCnt: number; voteCnt: number}) =>
+    props.resultCnt === 0
+      ? 'width: 0%'
+      : Math.ceil((props.resultCnt / props.voteCnt) * 100) &&
+        `width: ${Math.ceil((props.resultCnt / props.voteCnt) * 100)}%`};
   height: 5px;
   border-radius: 10px;
   background-color: #5c667b;

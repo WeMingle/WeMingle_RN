@@ -2,13 +2,13 @@ import axios from 'axios';
 
 import {Store} from '../redux/Store';
 
-// export const BASE_URL = 'http://49.172.40.78:8080';
+export const BASE_URL = 'http://49.172.40.78:8080';
 
 //test
-export const BASE_URL = 'http://172.16.101.186:8080';
+// export const BASE_URL = 'http://172.16.101.186:8080';
 
 export const axiosPrivate = axios.create({
-  baseURL: 'http://172.16.101.186:8080',
+  baseURL: 'http://49.172.40.78:8080',
   headers: {
     accept: 'application/json',
   },

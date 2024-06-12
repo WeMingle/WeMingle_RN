@@ -7,6 +7,8 @@ import CheckUnivCertifyGroupSlice from './slice/MyGroup/CheckUnivCertifyGroupSli
 import RecGroupSlice from './slice/MyGroup/RecGroupSlice';
 import SearchSlice from './slice/MyGroup/SearchSlice';
 import CreateNewGroupSlice from './slice/MyGroup/CreateNewGroupSlice';
+import GroupDetailSlice from './slice/MyGroup/GroupDetailSlice';
+import GroupApplySlice from './slice/MyGroup/GroupApplySlice';
 
 // 애플리케이션에서 목적에 따라 리듀서를 분리하여 관리 합니다.
 
@@ -20,6 +22,8 @@ const RootReducer = combineReducers({
   recGroup: RecGroupSlice,
   search: SearchSlice,
   newGroup: CreateNewGroupSlice,
+  groupDetail: GroupDetailSlice,
+  groupApply: GroupApplySlice,
   // modal: ModalSlice,
 });
 export type RootState = ReturnType<typeof RootReducer>;
