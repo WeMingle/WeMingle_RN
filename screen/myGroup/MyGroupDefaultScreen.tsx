@@ -36,8 +36,37 @@ const MyGroupDefaultScreen = ({route}: any) => {
   console.log('파라미터: ', item.pageName);
   console.log('위밍글 추천 팀: ', item.teams);
   console.log('대학교 소속 팀: ', item.univTeams);
-  const teams = Object.values(item.teams);
-  const univTeams = Object.values(item.univTeams);
+
+  const teamsList: any[] = item.teams ? Object.values(item.teams) : [];
+  const teamsKeys: any[] = item.teams ? Object.keys(item.teams) : [];
+
+  let teams = [];
+  for (let i = 0; i < teamsList.length; i++) {
+    teams.push({
+      teamPk: teamsKeys[i],
+      teamName: teamsList[i].teamName,
+      content: teamsList[i].content,
+      recruitmentType: teamsList[i].recruitmentType,
+      teamImgUrl: teamsList[i].teamImgUrl,
+    });
+  }
+
+  const univTeamsList: any[] = item.univTeams
+    ? Object.values(item.univTeams)
+    : [];
+  const univTeamsKeys: any[] = item.univTeams
+    ? Object.keys(item.univTeams)
+    : [];
+
+  let univTeams: any[] = [];
+  for (let i = 0; i < univTeamsList.length; i++) {
+    univTeams.push({
+      teamPk: univTeamsKeys[i],
+      teamName: univTeamsList[i].teamName,
+      teamImgUrl: univTeamsList[i].teamImgUrl,
+    });
+  }
+
   useEffect(() => {
     Toast.show({
       type: 'customToast',
@@ -167,7 +196,9 @@ const MyGroupDefaultScreen = ({route}: any) => {
                                 width={96}
                                 height={96}
                                 onPress={() => {
-                                  navigation.navigate('GroupFeed');
+                                  navigation.navigate('GroupFeed', {
+                                    teamPk: items.item.teamPk,
+                                  });
                                 }}></CommonTouchableOpacity>
                               <CommonText
                                 textAlignC
@@ -234,7 +265,9 @@ const MyGroupDefaultScreen = ({route}: any) => {
                       width={152}
                       height={152}
                       onPress={() => {
-                        navigation.navigate('GroupFeed');
+                        navigation.navigate('GroupFeed', {
+                          teamPk: items.item.teamPk,
+                        });
                       }}></CommonTouchableOpacity>
                     <CommonText
                       textAlignC
@@ -259,6 +292,7 @@ const MyGroupDefaultScreen = ({route}: any) => {
               </View>
             );
           }}
+          keyExtractor={item => item.teamPk}
         />
       </BaseSafeView>
       {univTeams.length === 0 ? <Toast config={toastConfig} /> : <></>}

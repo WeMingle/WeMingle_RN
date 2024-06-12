@@ -34,7 +34,7 @@ const initialState: SearchState = {
 export const fetchTeamSearch = createAsyncThunk(
   'search/fetchTeamSearch',
   async (query: string) => {
-    const response = await axiosPrivate.get(`/team/result?query=${query}`);
+    const response = await axiosPrivate.get(`/teams/result?query=${query}`);
     return response.data.responseData;
   },
 );
@@ -43,7 +43,7 @@ export const fetchTeamSearch = createAsyncThunk(
 export const fetchMemberSearch = createAsyncThunk(
   'search/fetchMemberSearh',
   async (query: string) => {
-    const response = await axiosPrivate.get(`/member/result?query=${query}`);
+    const response = await axiosPrivate.get(`/members/result?query=${query}`);
     return response.data.responseData;
   },
 );
@@ -52,7 +52,7 @@ export const fetchMemberSearch = createAsyncThunk(
 export const fetchMemberRecTeams = createAsyncThunk(
   'search/fetchMemberRecTeams',
   async () => {
-    const response = await axiosPrivate.get('/team/recommendation/member');
+    const response = await axiosPrivate.get('/teams/recommendation/members');
     return response.data.responseData;
   },
 );

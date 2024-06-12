@@ -27,7 +27,7 @@ const initialState: RecommendationState = {
 export const fetchWemingleRecTeams = createAsyncThunk(
   'recommendation/fetchWemingleRecTeams',
   async () => {
-    const response = await axiosPrivate.get('/team/recommendation');
+    const response = await axiosPrivate.get('/teams/recommendation');
     return response.data.responseData;
   },
 );
@@ -36,7 +36,7 @@ export const fetchWemingleRecTeams = createAsyncThunk(
 export const fetchUnivRecTeams = createAsyncThunk(
   'recommendation/fetchUnivRecTeams',
   async () => {
-    const response = await axiosPrivate.get('/team/univ');
+    const response = await axiosPrivate.get('/teams/univ');
     return response.data.responseData;
   },
 );

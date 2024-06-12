@@ -141,6 +141,7 @@ const SelectApprovalPage = ({route}: any) => {
             }}>
             {data.map(items => (
               <RenderItem
+                key={items.key}
                 item={items}
                 index={0}
                 separators={{

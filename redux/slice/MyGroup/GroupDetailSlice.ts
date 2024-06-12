@@ -13,18 +13,31 @@ interface TeamInfo {
   isManager: boolean;
 }
 
+interface GenderCondResult {
+  gender: string;
+  satisfiedGenderCond: boolean;
+}
+
+interface BirthYearCondResult {
+  startAge: number;
+  endAge: number;
+  satisfiedBirthYearCond: boolean;
+}
+
 interface TeamCondition {
   beforeWriteInfo: boolean;
-  univCondResult: boolean;
-  genderCondResult: {
-    gender: string;
-    satisfiedGenderCond: boolean;
-  };
-  birthYearCondResult: {
-    startAge: number;
-    endAge: number;
-    satisfiedBirthYearCond: boolean;
-  };
+  univCondResult: boolean | null;
+  // genderCondResult: {
+  //   gender: string;
+  //   satisfiedGenderCond: boolean;
+  // };
+  genderCondResult: GenderCondResult | null;
+  // birthYearCondResult: {
+  //   startAge: number;
+  //   endAge: number;
+  //   satisfiedBirthYearCond: boolean;
+  // };
+  birthYearCondResult: BirthYearCondResult | null;
   isTeamMember: boolean;
   isTeamRequest: boolean;
   isExceedCapacity: boolean;
@@ -52,13 +65,15 @@ interface TeamPost {
 }
 
 interface TeamPosts {
-  [key: number]: TeamPost;
+  hasWritePermission: boolean;
+  teamName: string;
+  teamPostsInfo: TeamPost | {} | null;
 }
 
 interface TeamState {
   teamInfo: TeamInfo | null;
   teamCondition: TeamCondition | null;
-  teamPosts: TeamPosts | null;
+  teamPosts: TeamPosts | any | null;
   loading: boolean;
   error: string | null;
 }
@@ -71,12 +86,11 @@ const initialState: TeamState = {
   error: null,
 };
 
-// Async thunks for API calls
 export const fetchTeamInfo = createAsyncThunk<TeamInfo, number>(
   'team/fetchTeamInfo',
   async (teamId, {rejectWithValue}) => {
     try {
-      const response = await axiosPrivate.get(`/team/${teamId}`);
+      const response = await axiosPrivate.get(`/teams/${teamId}`);
       if (response.status !== 200) {
         throw new Error('Failed to fetch team info');
       }
@@ -91,13 +105,15 @@ export const fetchTeamCondition = createAsyncThunk<TeamCondition, number>(
   'team/fetchTeamCondition',
   async (teamId, {rejectWithValue}) => {
     try {
-      const response = await axiosPrivate.get(`/team/${teamId}/condition`);
+      const response = await axiosPrivate.get(`/teams/${teamId}/condition`);
       if (response.status !== 200) {
         throw new Error('Failed to fetch team condition');
       }
-      return response.data.responseData;
+      return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(
+        error.response ? error.response.data : error.message,
+      );
     }
   },
 );
@@ -109,13 +125,13 @@ export const fetchTeamPosts = createAsyncThunk<
   'team/fetchTeamPosts',
   async ({teamId, isNotice, nextIdx}, {rejectWithValue}) => {
     try {
-      const response = await axiosPrivate.get(`/post/team/${teamId}`, {
+      const response = await axiosPrivate.get(`/posts/teams/${teamId}`, {
         params: {isNotice, nextIdx},
       });
       if (response.status !== 200) {
         throw new Error('Failed to fetch team posts');
       }
-      return response.data.responseData.teamPostsInfo;
+      return response.data.responseData;
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
@@ -129,7 +145,7 @@ export const fetchTeamSearchPosts = createAsyncThunk<
   'team/fetchTeamSearchPosts',
   async ({nextIdx, query, teamPk}, {rejectWithValue}) => {
     try {
-      const response = await axiosPrivate.get(`/post/team/result`, {
+      const response = await axiosPrivate.get(`/posts/teams/result`, {
         params: {nextIdx, query, teamPk},
       });
       if (response.status !== 200) {
@@ -146,7 +162,12 @@ export const likeTeamPost = createAsyncThunk<void, {teamPostPk: number}>(
   'team/likeTeamPost',
   async ({teamPostPk}, {rejectWithValue}) => {
     try {
-      const response = await axiosPrivate.post(`/post/team/like`, {teamPostPk});
+      const response = await axiosPrivate.post(
+        `/posts/${teamPostPk}/teams/like`,
+        {
+          teamPostPk,
+        },
+      );
       if (response.status !== 200) {
         throw new Error('Failed to like team post');
       }

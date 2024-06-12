@@ -31,6 +31,7 @@ import {
   fetchUnivRecTeams,
 } from '../../redux/slice/MyGroup/RecGroupSlice';
 import MyGroupDefaultScreen from './MyGroupDefaultScreen';
+import {getMyGroupList} from '../../api/MyPage';
 
 const MyGroupScreen = () => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
@@ -42,11 +43,35 @@ const MyGroupScreen = () => {
     (state: RootState) => state.recGroup,
   );
 
+  interface GroupItem {
+    teamName: string;
+    teamImgUrl: string;
+  }
+
+  const [groupList, setGroupList] = useState<GroupItem[]>([]);
+  const [groupKeys, setGroupKeys] = useState<string[]>([]);
+
+  const onRendered = async () => {
+    const result = await getMyGroupList();
+    setGroupList(Object.values(result));
+    setGroupKeys(Object.keys(result));
+  };
+
   useEffect(() => {
     dispatch(fetchUnivCertifyGroup());
     dispatch(fetchWemingleRecTeams());
     dispatch(fetchUnivRecTeams());
+    onRendered();
   }, [dispatch, fetchWemingleRecTeams, fetchUnivRecTeams]);
+
+  let myGroupData: any[] = [];
+  for (let i = 0; i < groupList.length; i++) {
+    myGroupData.push({
+      myGroupPk: groupKeys[i],
+      teamName: groupList[i].teamName,
+      teamImgUrl: groupList[i].teamImgUrl,
+    });
+  }
 
   return (
     <>
@@ -80,11 +105,7 @@ const MyGroupScreen = () => {
                     </RowBox>
                     <RowBox>
                       <FlatList
-                        data={[
-                          {image: 'none', name: '숭실대 축구 동아리'},
-                          {image: 'none', name: '숭실대 축구 동아리'},
-                          {image: 'none', name: '숭실대 축구 동아리'},
-                        ]}
+                        data={myGroupData}
                         horizontal
                         style={{marginVertical: 20, flexGrow: 0}}
                         renderItem={items => {
@@ -110,7 +131,9 @@ const MyGroupScreen = () => {
                                 width={96}
                                 height={96}
                                 onPress={() =>
-                                  navigation.navigate('GroupFeed')
+                                  navigation.navigate('GroupFeed', {
+                                    teamPk: items.item?.myGroupPk,
+                                  })
                                 }></CommonTouchableOpacity>
                               <CommonText
                                 textAlignC
@@ -119,11 +142,12 @@ const MyGroupScreen = () => {
                                 numberOfLines={1}
                                 ellipsizeMode="tail"
                                 style={{marginBottom: 5, width: 96}}>
-                                {items.item?.name}
+                                {items.item?.teamName}
                               </CommonText>
                             </View>
                           );
                         }}
+                        keyExtractor={item => item?.myGroupPk}
                         ListFooterComponent={
                           <View
                             style={{

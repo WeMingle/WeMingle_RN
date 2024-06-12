@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Keyboard,
   Alert,
+  ListRenderItem,
 } from 'react-native';
 import {
   NavigationProp,
@@ -58,16 +59,24 @@ const MyGroupSearchScreen = ({user}: any) => {
     dispatch(fetchMemberRecTeams());
   }, [dispatch, teamSearch, memberSearch]);
 
-  const onInsert = (txt: string) => {
-    //새로 등록할 항목의 id를 구함.
-    //등록된 항목 중에서 가장 큰 id를 구하고, 그 값에 1을 더함.
-    //만약 리스트가 비었다면 1을 id로 사용.
+  const memberTeamsList = Object.values(memberTeams);
+  const memberTeamsKeys = Object.keys(memberTeams);
 
+  let memberTeamRecList = [];
+  for (let i = 0; i < memberTeamsList.length; i++) {
+    memberTeamRecList.push({
+      teamPk: memberTeamsKeys[i],
+      teamName: memberTeamsList[i].teamName,
+      content: memberTeamsList[i].content,
+      teamImgUrl: memberTeamsList[i].teamImgUrl,
+    });
+  }
+
+  const onInsert = (txt: string) => {
     const nextId =
       searchList.length > 0
         ? Math.max(...searchList.map(searchList => searchList.id)) + 1
         : 1;
-
     const search = {
       id: nextId,
       search: txt,
@@ -75,17 +84,22 @@ const MyGroupSearchScreen = ({user}: any) => {
     setSearchList(searchList.concat(search));
   };
 
-  const onRemove = (id: any) => {
-    const nextSearchs = searchList.filter(search => search.id !== id);
-    setSearchList(nextSearchs);
+  const onRendered = async (query: string) => {
+    dispatch(fetchMemberSearch(query));
+    dispatch(fetchTeamSearch(query));
   };
 
-  const onPress = () => {
+  const onPress = useCallback(() => {
     onInsert(text);
     onRendered(text);
     setText('');
     Keyboard.dismiss();
     setIsSearched(true);
+  }, [text, isSearched]);
+
+  const onRemove = (id: any) => {
+    const nextSearchs = searchList.filter(search => search.id !== id);
+    setSearchList(nextSearchs);
   };
 
   const onAllRemove = () => {
@@ -93,15 +107,11 @@ const MyGroupSearchScreen = ({user}: any) => {
     setSearchList([]);
   };
 
-  const onRendered = async (query: string) => {
-    dispatch(fetchMemberSearch(query));
-    dispatch(fetchTeamSearch(query));
+  const MoveToDetail = (item: string) => {
+    navigation.navigate('GroupFeed', {
+      teamPk: item,
+    });
   };
-
-  // console.log('팀 랜더링? : ', teamSearch);
-  // console.log('멤버 랜더링? : ', memberSearch);
-  console.log('로딩 여부? : ', loading);
-  console.log('error? : ', error);
 
   return (
     <>
@@ -179,7 +189,7 @@ const MyGroupSearchScreen = ({user}: any) => {
                       </View>
                     );
                   }}
-                  keyExtractor={items => items.id.toString()}
+                  keyExtractor={item => item?.id.toString()}
                 />
                 <View style={{width: '100%', paddingVertical: 20}}>
                   <View
@@ -209,7 +219,7 @@ const MyGroupSearchScreen = ({user}: any) => {
                     </TouchableOpacity>
                   </View>
                   <FlatList
-                    data={Object.values(memberTeams)}
+                    data={memberTeamRecList}
                     horizontal
                     style={{marginVertical: 20, flexGrow: 0}}
                     renderItem={items => {
@@ -234,9 +244,9 @@ const MyGroupSearchScreen = ({user}: any) => {
                             bgColor={'#000'}
                             width={132}
                             height={132}
-                            onPress={() => {
-                              navigation.navigate('GroupFeed');
-                            }}></CommonTouchableOpacity>
+                            onPress={() =>
+                              MoveToDetail(items.item?.teamPk)
+                            }></CommonTouchableOpacity>
                           <CommonText
                             fontSize={14}
                             color={'#1C1C1C'}
@@ -256,6 +266,7 @@ const MyGroupSearchScreen = ({user}: any) => {
                         </View>
                       );
                     }}
+                    keyExtractor={item => item?.teamPk}
                   />
                 </View>
               </Container>

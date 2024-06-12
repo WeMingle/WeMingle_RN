@@ -36,8 +36,6 @@ import MyGroupScreen from './myGroup/MyGroupScreen';
 import MyGroupSearchScreen from './myGroup/GroupSearchPage/MyGroupSearchScreen';
 import SearchProfileScreen from './myGroup/GroupSearchPage/SearchProfileScreen';
 import GroupFeedPageScreen from './myGroup/GroupDetailPage/FeedPageScreen';
-import GroupChattingPageScreen from './myGroup/GroupDetailPage/ChattingPageScreen';
-import GroupMemberPageScreen from './myGroup/GroupDetailPage/MemberPageScreen';
 import SelectSportsPage from './myGroup/CreateNewGroup/SelectSportsPage';
 
 import {
@@ -52,6 +50,8 @@ import SelectMemberTypePage from './myGroup/CreateNewGroup/SelectMemberTypePage'
 import SelectOptionPage from './myGroup/CreateNewGroup/SelectOptionPage';
 import SetGroupProfilePage from './myGroup/CreateNewGroup/SetGroupProfilePage';
 import {SearchLoadingScreen} from './myGroup/GroupSearchPage/SearchLoadingScreen';
+import JoinGroupScreen from './myGroup/GroupDetailPage/JoinGroupScreen';
+import FeedDetailPageScreen from './myGroup/GroupDetailPage/FeedDetailPageScreen';
 
 let count = 0; //  종료카운트
 
@@ -249,12 +249,12 @@ const TabRouterSetting = [
     component: GroupFeedPageScreen,
   },
   {
-    name: 'GroupChatting',
-    component: GroupChattingPageScreen,
+    name: 'FeedDetail',
+    component: FeedDetailPageScreen,
   },
   {
-    name: 'GroupMember',
-    component: GroupMemberPageScreen,
+    name: 'JoinGroup',
+    component: JoinGroupScreen,
   },
   {
     name: 'SelectSports',

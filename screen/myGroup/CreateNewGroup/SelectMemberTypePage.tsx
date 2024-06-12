@@ -220,6 +220,7 @@ const SelectMemberTypePage = ({route}: any) => {
               }}>
               {univData.map(items => (
                 <UnivRenderItem
+                  key={items.id}
                   item={items}
                   index={0}
                   separators={{
@@ -432,6 +433,7 @@ const SelectMemberTypePage = ({route}: any) => {
             <View style={{flexDirection: 'row', marginBottom: 20}}>
               {genderData.map(items => (
                 <GenderRenderItem
+                  key={items.id}
                   item={items}
                   index={0}
                   separators={{
