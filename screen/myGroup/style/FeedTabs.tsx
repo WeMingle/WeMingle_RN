@@ -1,12 +1,21 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   NavigationContainer,
   NavigationProp,
   ParamListBase,
   useNavigation,
+  useIsFocused,
 } from '@react-navigation/native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {Dimensions, Image, ListRenderItem, View} from 'react-native';
+import {
+  Dimensions,
+  FlatList,
+  Image,
+  ListRenderItem,
+  View,
+  Modal,
+  TouchableOpacity,
+} from 'react-native';
 import {RadioButton} from 'react-native-paper';
 import {
   CommonImage,
@@ -33,16 +42,14 @@ import {
   ClickFavorite,
   VoteComponent,
 } from './MyGroupStyle.style';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import RectangleBlue from '../../../assets/RectangleBlue.png';
 
 const Tab = createMaterialTopTabNavigator();
 
-const FeedScreen = ({route}: any) => {
+export const FeedScreen = ({teamPk}: any) => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
-  const item = route.params;
-
-  // console.log('그룹 피드로 넘겨지는 데이터? : ', item);
-
+  // const item = route.params;
+  // console.log('아이템? : ', item);
   const dispatch = useAppDispatch();
   const {teamPosts, loading, error} = useSelector(
     (state: RootState) => state.groupDetail,
@@ -78,7 +85,8 @@ const FeedScreen = ({route}: any) => {
   };
 
   const teamPostParams = {
-    teamId: item.teamPk,
+    // teamId: item.teamPk,
+    teamId: teamPk,
     isNotice: isNotice,
     nextIdx: 1,
   };
@@ -657,13 +665,13 @@ const FeedScreen = ({route}: any) => {
           <TouchableOpacity onPress={SelectFull}>
             <CommonImage
               source={fullStatus}
-              width={18}
-              height={18}
+              width={24}
+              height={24}
               marginRight={10}
             />
           </TouchableOpacity>
           <TouchableOpacity onPress={SelectTitle}>
-            <CommonImage source={titleStatus} width={18} height={18} />
+            <CommonImage source={titleStatus} width={24} height={24} />
           </TouchableOpacity>
         </View>
       </View>
@@ -683,51 +691,49 @@ const FeedScreen = ({route}: any) => {
               {mockDataAllList.map(item => (
                 <View style={{width: '100%'}} key={item.postPk}>
                   <View style={{padding: 20}}>
+                    <RowBox alignC justify={'space-between'}>
+                      <TouchableOpacity
+                        onPress={() => navigation.navigate('FeedDetail')}>
+                        <CommonText fontSize={18}>{item?.title}</CommonText>
+                      </TouchableOpacity>
+                      <CommonImage source={More_Vert} width={24} height={24} />
+                    </RowBox>
+                    <RowBox alignC justify={'space-start'} marginT={10}>
+                      <CommonTouchableOpacity
+                        style={[
+                          {
+                            borderRadius: 50,
+                            alignItems: 'center',
+                          },
+                        ]}
+                        bgColor={'#AFBAC8'}
+                        width={12}
+                        height={12}></CommonTouchableOpacity>
+                      <CommonText
+                        fontSize={10}
+                        color={'#AFBAC8'}
+                        paddingLeft={5}
+                        numberOfLines={1}
+                        ellipsizeMode="tail">
+                        {item?.nickname}
+                      </CommonText>
+                      <CommonText
+                        fontSize={10}
+                        color={'#AFBAC8'}
+                        paddingLeft={25}>
+                        {item?.createdTime}
+                      </CommonText>
+                    </RowBox>
+                    <View
+                      style={{
+                        width: '100%',
+                        height: 1,
+                        backgroundColor: '#F4F6FA',
+                        marginTop: 10,
+                      }}
+                    />
                     <TouchableOpacity
                       onPress={() => navigation.navigate('FeedDetail')}>
-                      <RowBox alignC justify={'space-between'}>
-                        <CommonText fontSize={18}>{item?.title}</CommonText>
-                        <CommonImage
-                          source={More_Vert}
-                          width={3}
-                          height={14.54}
-                          marginHorizontal={10}
-                        />
-                      </RowBox>
-                      <RowBox alignC justify={'space-start'} marginT={10}>
-                        <CommonTouchableOpacity
-                          style={[
-                            {
-                              borderRadius: 50,
-                              alignItems: 'center',
-                            },
-                          ]}
-                          bgColor={'#AFBAC8'}
-                          width={12}
-                          height={12}></CommonTouchableOpacity>
-                        <CommonText
-                          fontSize={10}
-                          color={'#AFBAC8'}
-                          paddingLeft={5}
-                          numberOfLines={1}
-                          ellipsizeMode="tail">
-                          {item?.nickname}
-                        </CommonText>
-                        <CommonText
-                          fontSize={10}
-                          color={'#AFBAC8'}
-                          paddingLeft={25}>
-                          {item?.createdTime}
-                        </CommonText>
-                      </RowBox>
-                      <View
-                        style={{
-                          width: '100%',
-                          height: 1,
-                          backgroundColor: '#F4F6FA',
-                          marginTop: 10,
-                        }}
-                      />
                       <CommonText
                         fontSize={14}
                         color={'#292E41'}
@@ -749,25 +755,23 @@ const FeedScreen = ({route}: any) => {
                           <ClickFavorite
                             favorite_click={item?.isLiked}
                             favorite_num={item?.likeCnt}
-                            width={19.5}
-                            height={16}
+                            width={24}
+                            height={24}
                           />
                           <ChattingIcon
                             chatting_num={item?.replyCnt}
-                            width={19.5}
-                            height={16}
+                            width={24}
+                            height={24}
                           />
                           <View
                             style={{
-                              width: 26,
-                              height: 24,
                               flexDirection: 'row',
                               alignItems: 'center',
                             }}>
                             <ClickBookmark
                               bookmark={item?.isBookmarked}
-                              width={19.5}
-                              height={16}
+                              width={24}
+                              height={24}
                             />
                           </View>
                         </RowBox>
@@ -831,15 +835,13 @@ const FeedScreen = ({route}: any) => {
                     <CommonText fontSize={18}>{item?.title}</CommonText>
                     <View
                       style={{
-                        width: 26,
-                        height: 24,
                         flexDirection: 'row',
                         alignItems: 'center',
                       }}>
                       <ClickBookmark
                         bookmark={item?.isBookmarked}
-                        width={19.5}
-                        height={16}
+                        width={24}
+                        height={24}
                       />
                     </View>
                   </RowBox>
@@ -847,13 +849,13 @@ const FeedScreen = ({route}: any) => {
                     <ClickFavorite
                       favorite_click={item?.isLiked}
                       favorite_num={item?.likeCnt}
-                      width={19.5}
-                      height={16}
+                      width={24}
+                      height={24}
                     />
                     <ChattingIcon
                       chatting_num={item?.replyCnt}
-                      width={19.5}
-                      height={16}
+                      width={24}
+                      height={24}
                     />
                   </RowBox>
                 </View>
@@ -866,7 +868,8 @@ const FeedScreen = ({route}: any) => {
   );
 };
 
-const ChattingScreen = ({route}: any) => {
+export const ChattingScreen = ({teamPk}: any) => {
+  const navigation: NavigationProp<ParamListBase> = useNavigation();
   return (
     <View
       style={{
@@ -881,43 +884,181 @@ const ChattingScreen = ({route}: any) => {
   );
 };
 
-const MemberScreen = ({route}: any) => {
-  return (
-    <View
-      style={{
-        backgroundColor: '#ffffff',
-        width: '100%',
-        height: '100%',
-      }}>
-      <CommonText fontSize={14} color={'#212121'}>
-        그룹원
-      </CommonText>
-    </View>
-  );
-};
+// export const MemberScreen = ({teamPk}: any) => {
+//   const memberData = {
+//     1: {
+//       imgUrl:
+//         'https://wemingle.s3.ap-northeast-2.amazonaws.com/profile/group/46faa1ec-1448-4625-ae67-15e9d98b8f40?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240614T170031Z&X-Amz-SignedHeaders=host&X-Amz-Expires=60&X-Amz-Credential=AKIAZ6CFTXRND5KOF3YT%2F20240614%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=4cf88aaa4fc2dbe918e1b9516960245efe83945033ae3e605f441dc760d6b6c8',
+//       nickname: 'nickname0',
+//       teamRole: 'PARTICIPANT',
+//       isMe: true,
+//     },
+//     2: {
+//       imgUrl:
+//         'https://wemingle.s3.ap-northeast-2.amazonaws.com/profile/group/46faa1ec-1448-4625-ae67-15e9d98b8f40?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240614T170031Z&X-Amz-SignedHeaders=host&X-Amz-Expires=60&X-Amz-Credential=AKIAZ6CFTXRND5KOF3YT%2F20240614%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=4cf88aaa4fc2dbe918e1b9516960245efe83945033ae3e605f441dc760d6b6c8',
+//       nickname: 'nickname0',
+//       teamRole: 'LEADER',
+//       isMe: false,
+//     },
+//     3: {
+//       imgUrl:
+//         'https://wemingle.s3.ap-northeast-2.amazonaws.com/profile/group/46faa1ec-1448-4625-ae67-15e9d98b8f40?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240614T170031Z&X-Amz-SignedHeaders=host&X-Amz-Expires=60&X-Amz-Credential=AKIAZ6CFTXRND5KOF3YT%2F20240614%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=4cf88aaa4fc2dbe918e1b9516960245efe83945033ae3e605f441dc760d6b6c8',
+//       nickname: 'nickname0',
+//       teamRole: 'PARTICIPANT',
+//       isMe: false,
+//     },
+//     4: {
+//       imgUrl:
+//         'https://wemingle.s3.ap-northeast-2.amazonaws.com/profile/group/46faa1ec-1448-4625-ae67-15e9d98b8f40?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240614T170031Z&X-Amz-SignedHeaders=host&X-Amz-Expires=60&X-Amz-Credential=AKIAZ6CFTXRND5KOF3YT%2F20240614%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=4cf88aaa4fc2dbe918e1b9516960245efe83945033ae3e605f441dc760d6b6c8',
+//       nickname: 'nickname0',
+//       teamRole: 'PARTICIPANT',
+//       isMe: false,
+//     },
+//   };
 
-export const FeedTabs = ({teamPk}: any) => {
-  useEffect(() => {
-    teamPk;
-  }, [teamPk]);
+//   const memberValues = Object.values(memberData);
+//   const memberKeys = Object.keys(memberData);
 
-  return (
-    <Tab.Navigator>
-      <Tab.Screen
-        name="그룹 피드"
-        component={FeedScreen}
-        initialParams={{teamPk: teamPk}}
-      />
-      <Tab.Screen
-        name="채팅"
-        component={ChattingScreen}
-        initialParams={{teamPk: teamPk}}
-      />
-      <Tab.Screen
-        name="그룹원"
-        component={MemberScreen}
-        initialParams={{teamPk: teamPk}}
-      />
-    </Tab.Navigator>
-  );
-};
+//   let memberList: any[] = [];
+
+//   for (let i = 0; i < memberValues.length; i++) {
+//     memberList.push({
+//       memberPk: memberKeys[i],
+//       imgUrl: memberValues[i].imgUrl,
+//       nickname: memberValues[i].nickname,
+//       teamRole: memberValues[i].teamRole,
+//       isMe: memberValues[i].isMe,
+//     });
+//   }
+
+//   const [selected, setSelected] = useState<number | null>(null);
+//   const [isVisible, setIsVisible] = useState(false);
+//   const [modalPosition, setModalPosition] = useState({x: 0, y: 0});
+
+//   const openModal = (x: number, y: number, item: any) => {
+//     setSelected(item.memberPk);
+//     setModalPosition({x, y});
+//     setIsVisible(true);
+//   };
+
+//   const closeModal = () => {
+//     setIsVisible(false);
+//     setSelected(null);
+//   };
+
+//   return (
+//     <View
+//       style={{
+//         backgroundColor: '#ffffff',
+//         width: '100%',
+//         height: '100%',
+//       }}>
+//       {memberList.map(item => (
+//         <View
+//           style={{
+//             width: '100%',
+//             borderBottomWidth: 1,
+//             borderBottomColor: '#EAEDF4',
+//             flexDirection: 'row',
+//             justifyContent: 'space-between',
+//             alignItems: 'center',
+//           }}
+//           key={item.memberPk}>
+//           <View
+//             style={{
+//               flexDirection: 'row',
+//               justifyContent: 'flex-start',
+//               alignItems: 'center',
+//               padding: 15,
+//             }}>
+//             <CommonTouchableOpacity
+//               style={[
+//                 {
+//                   borderRadius: 10,
+//                   alignItems: 'center',
+//                 },
+//               ]}
+//               bgColor={'#D7DCE5'}
+//               width={40}
+//               height={40}></CommonTouchableOpacity>
+//             {item.isMe && (
+//               <View
+//                 style={{
+//                   backgroundColor: '#8491A7',
+//                   paddingVertical: 4,
+//                   paddingHorizontal: 5,
+//                   borderRadius: 50,
+//                   marginLeft: 10,
+//                 }}>
+//                 <CommonText fontSize={9} color={'#ffffff'} textAlignC>
+//                   나
+//                 </CommonText>
+//               </View>
+//             )}
+//             <CommonText
+//               fontSize={14}
+//               color={'#000000'}
+//               textAlignC
+//               paddingLeft={10}
+//               paddingRight={5}>
+//               {item.nickname}
+//             </CommonText>
+//             {item.teamRole === 'LEADER' && (
+//               <CommonImage
+//                 source={RectangleBlue}
+//                 width={10}
+//                 height={10.5}
+//                 zIndex={0}
+//               />
+//             )}
+//           </View>
+//           <TouchableOpacity
+//             onPress={event => {
+//               const {pageX, pageY} = event.nativeEvent;
+//               openModal(pageX, pageY, item);
+//             }}
+//             style={{zIndex: 0}}>
+//             <CommonImage
+//               source={More_Vert}
+//               width={24}
+//               height={14}
+//               zIndex={0}
+//               marginRight={10}
+//             />
+//           </TouchableOpacity>
+//         </View>
+//       ))}
+//     </View>
+//   );
+// };
+
+// export const FeedTabs = ({teamPk}: any) => {
+//   // const navigation: NavigationProp<ParamListBase> = useNavigation();
+//   useEffect(() => {
+//     teamPk;
+//   }, [teamPk]);
+//   // navigation.
+
+//   return (
+//     <Tab.Navigator
+//       screenOptions={{
+//         lazy: true,
+//       }}>
+//       <Tab.Screen
+//         name="그룹 피드"
+//         component={FeedScreen}
+//         initialParams={{teamPk: teamPk}}
+//       />
+//       <Tab.Screen
+//         name="채팅"
+//         component={ChattingScreen}
+//         initialParams={{teamPk: teamPk}}
+//       />
+//       <Tab.Screen
+//         name="그룹원"
+//         component={MemberScreen}
+//         initialParams={{teamPk: teamPk}}
+//       />
+//     </Tab.Navigator>
+//   );
+// };

@@ -23,7 +23,7 @@ import {
   Container,
   RowBox,
 } from '../../CommonStyled.style';
-import {BackButton} from '../style/MyGroupStyle.style';
+import {BackBlackButton} from '../style/MyGroupStyle.style';
 import {Colors} from '../../../assets/color/Colors';
 import Lock from '../../../assets/lock.png';
 import LockOpen from '../../../assets/lock_open.png';
@@ -81,20 +81,20 @@ const SelectApprovalPage = ({route}: any) => {
           style={{
             padding: 20,
           }}>
-          <CommonImage source={item.image} width={15} height={19.5} />
+          <CommonImage source={item.image} width={24} height={24} />
         </View>
         <View
           style={{
             paddingHorizontal: 20,
             flexDirection: 'column',
           }}>
-          <CommonText fontSize={16} color={'#1C1C1C'} marginBottom={10}>
+          <CommonText fontSize={16} color={'#212121'} marginBottom={10}>
             {item.title}
           </CommonText>
-          <CommonText fontSize={12} color={'#1C1C1C'} marginBottom={10}>
+          <CommonText fontSize={12} color={'#212121'} marginBottom={10}>
             {item.content}
           </CommonText>
-          <CommonText fontSize={10} color={'#cccccc'}>
+          <CommonText fontSize={12} color={'#8491A7'}>
             {item.description}
           </CommonText>
         </View>
@@ -108,7 +108,7 @@ const SelectApprovalPage = ({route}: any) => {
         <View
           style={{paddingHorizontal: 10, paddingTop: 40, paddingBottom: 20}}>
           <RowBox alignC justify={'flex-start'}>
-            <BackButton />
+            <BackBlackButton />
             <CommonText fontSize={18} color={'#1C1C1C'}>
               새 그룹
             </CommonText>

@@ -49,9 +49,18 @@ import SelectApprovalPage from './myGroup/CreateNewGroup/SelectApprovalPage';
 import SelectMemberTypePage from './myGroup/CreateNewGroup/SelectMemberTypePage';
 import SelectOptionPage from './myGroup/CreateNewGroup/SelectOptionPage';
 import SetGroupProfilePage from './myGroup/CreateNewGroup/SetGroupProfilePage';
-import {SearchLoadingScreen} from './myGroup/GroupSearchPage/SearchLoadingScreen';
+// import {SearchLoadingScreen} from './myGroup/GroupSearchPage/SearchLoadingScreen';
 import JoinGroupScreen from './myGroup/GroupDetailPage/JoinGroupScreen';
 import FeedDetailPageScreen from './myGroup/GroupDetailPage/FeedDetailPageScreen';
+import {
+  ChattingScreen,
+  FeedScreen,
+  MemberScreen,
+} from './myGroup/style/FeedTabs';
+import GroupSettingScreen from './myGroup/GroupDetailPage/GroupSettingScreen';
+import GroupWirteScreen from './myGroup/GroupDetailPage/GroupWriteScreen';
+import ModifyProfileScreen from './myGroup/GroupDetailPage/ModifyProfileScreen';
+import VoteResultScreen from './myGroup/GroupDetailPage/VoteResultScreen';
 
 let count = 0; //  종료카운트
 
@@ -241,10 +250,6 @@ const TabRouterSetting = [
     component: SearchProfileScreen,
   },
   {
-    name: 'SearchLoading',
-    component: SearchLoadingScreen,
-  },
-  {
     name: 'GroupFeed',
     component: GroupFeedPageScreen,
   },
@@ -253,8 +258,24 @@ const TabRouterSetting = [
     component: FeedDetailPageScreen,
   },
   {
+    name: 'VoteResult',
+    component: VoteResultScreen,
+  },
+  {
+    name: 'GroupSetting',
+    component: GroupSettingScreen,
+  },
+  {
+    name: 'GroupWrite',
+    component: GroupWirteScreen,
+  },
+  {
     name: 'JoinGroup',
     component: JoinGroupScreen,
+  },
+  {
+    name: 'ModifyProfile',
+    component: ModifyProfileScreen,
   },
   {
     name: 'SelectSports',

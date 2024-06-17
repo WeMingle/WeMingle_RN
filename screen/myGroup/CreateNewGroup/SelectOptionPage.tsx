@@ -5,6 +5,7 @@ import {
   TextInput,
   Alert,
   ScrollView,
+  Keyboard,
 } from 'react-native';
 import {
   NavigationProp,
@@ -18,7 +19,7 @@ import {
   Container,
   RowBox,
 } from '../../CommonStyled.style';
-import {BackButton} from '../style/MyGroupStyle.style';
+import {BackBlackButton, BackButton} from '../style/MyGroupStyle.style';
 import {Colors} from '../../../assets/color/Colors';
 import styled from 'styled-components/native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -40,7 +41,6 @@ const InputComponent: React.FC<InputQuestionProps> = ({
   const handleChange = (value: string) => {
     onInputChange(id, value);
   };
-
   return (
     <View
       style={{
@@ -67,6 +67,7 @@ const InputComponent: React.FC<InputQuestionProps> = ({
           placeholderTextColor={'#9e9e9e'}
           value={value}
           onChangeText={handleChange}
+          onSubmitEditing={Keyboard.dismiss}
         />
       </View>
       <TouchableOpacity
@@ -95,6 +96,22 @@ const SelectOptionPage = ({route}: any) => {
   const [inputs, setInputs] = useState<{id: number; text: string}[]>([
     {id: 1, text: ''},
   ]);
+
+  const [keyboardStatus, setKeyboardStatus] = useState(false);
+
+  useEffect(() => {
+    const showKeyboard = Keyboard.addListener('keyboardDidShow', () => {
+      setKeyboardStatus(true);
+    });
+    const hideKeyboard = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardStatus(false);
+    });
+
+    return () => {
+      showKeyboard.remove();
+      hideKeyboard.remove();
+    };
+  }, []);
 
   const increaseCount = () => {
     let increCount = Number(count) + 1;
@@ -138,7 +155,7 @@ const SelectOptionPage = ({route}: any) => {
           style={{paddingHorizontal: 10, paddingTop: 40, paddingBottom: 20}}>
           <RowBox alignC justify={'space-between'}>
             <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
-              <BackButton />
+              <BackBlackButton />
               <CommonText fontSize={18} color={'#1C1C1C'}>
                 새 그룹
               </CommonText>
@@ -156,23 +173,23 @@ const SelectOptionPage = ({route}: any) => {
           }}>
           <ProgressBar width={barWidth} />
         </View>
-        <Container
-          bgColor={'#ffffff'}
+        <KeyboardAwareScrollView
           style={{
-            width: '100%',
             height: '100%',
           }}>
-          <CommonText fontSize={18} color={'#1C1C1C'} marginBottom={30}>
-            그룹 옵션을 선택해주세요
-          </CommonText>
-          <View
+          <Container
+            bgColor={'#ffffff'}
             style={{
               width: '100%',
-              height: '75%',
+              height: '100%',
             }}>
-            <KeyboardAwareScrollView
+            <CommonText fontSize={18} color={'#1C1C1C'} marginBottom={30}>
+              그룹 옵션을 선택해주세요
+            </CommonText>
+            <View
               style={{
-                height: '100%',
+                width: '100%',
+                height: '75%',
               }}>
               <View
                 style={{
@@ -307,48 +324,50 @@ const SelectOptionPage = ({route}: any) => {
                   />
                 ))}
               </View>
-            </KeyboardAwareScrollView>
-          </View>
-          <View
-            style={{
-              width: '100%',
-              height: '18%',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'flex-end',
-              paddingBottom: 10,
-              paddingHorizontal: 20,
-            }}>
-            <TouchableOpacity
+            </View>
+            <View
               style={{
-                backgroundColor: '#000000',
                 width: '100%',
-                height: 50,
-                alignItems: 'center',
+                height: '18%',
+                flexDirection: 'row',
                 justifyContent: 'center',
-                borderRadius: 10,
-              }}
-              onPress={() => {
-                navigation.navigate('SetGroupProfile', {
-                  sportsType: item.sportsType,
-                  recruitmentType: item.recruitmentType,
-                  onlySameUniv: item.onlySameUniv,
-                  ageIsIrrelevant: item.ageIsIrrelevant,
-                  startAge: item.startAge,
-                  endAge: item.endAge,
-                  genderIsIrrelevant: item.genderIsIrrelevant,
-                  gender: item.gender,
-                  personnelLimitIrrelevant: true,
-                  personnelLimit: members,
-                  freeQuestionList: freeQuestionList,
-                });
+                alignItems: 'flex-end',
+                paddingBottom: 10,
+                paddingHorizontal: 20,
               }}>
-              <CommonText fontSize={16} color={'#ffffff'}>
-                다음
-              </CommonText>
-            </TouchableOpacity>
-          </View>
-        </Container>
+              {!keyboardStatus && (
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: '#000000',
+                    width: '100%',
+                    height: 50,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: 10,
+                  }}
+                  onPress={() => {
+                    navigation.navigate('SetGroupProfile', {
+                      sportsType: item.sportsType,
+                      recruitmentType: item.recruitmentType,
+                      onlySameUniv: item.onlySameUniv,
+                      ageIsIrrelevant: item.ageIsIrrelevant,
+                      startAge: item.startAge,
+                      endAge: item.endAge,
+                      genderIsIrrelevant: item.genderIsIrrelevant,
+                      gender: item.gender,
+                      personnelLimitIrrelevant: true,
+                      personnelLimit: members,
+                      freeQuestionList: freeQuestionList,
+                    });
+                  }}>
+                  <CommonText fontSize={16} color={'#ffffff'}>
+                    다음
+                  </CommonText>
+                </TouchableOpacity>
+              )}
+            </View>
+          </Container>
+        </KeyboardAwareScrollView>
       </Container>
     </BaseSafeView>
   );
