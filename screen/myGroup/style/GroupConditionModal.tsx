@@ -320,3 +320,39 @@ export const NoPermissionModal = ({visible, teamPk}: any) => {
     </Modal>
   );
 };
+
+interface GroupMemberProps {
+  name: string;
+  statusMessage: string;
+  visible: boolean;
+}
+
+export const ProfileModal: React.FC<GroupMemberProps> = ({
+  name,
+  statusMessage,
+  visible,
+}) => {
+  const [modalVisible, setModalVisible] = useState(false);
+  return (
+    <Modal
+      animationType="slide"
+      transparent={true}
+      // visible={modalVisible}
+      visible={visible}
+      onRequestClose={() => {
+        setModalVisible(!modalVisible);
+      }}>
+      <View style={{marginTop: 50}}>
+        {/* 프로필 이미지는 여기에 들어갑니다 */}
+        <Text>이름: {name}</Text>
+        <Text>상태 메시지: {statusMessage}</Text>
+
+        {/* 추가 프로필 정보 및 액션 버튼은 여기에 추가하세요 */}
+
+        <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
+          <Text>모달 닫기</Text>
+        </TouchableOpacity>
+      </View>
+    </Modal>
+  );
+};

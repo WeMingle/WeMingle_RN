@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   FlatList,
   View,
@@ -6,6 +6,8 @@ import {
   Text,
   ListRenderItem,
   Modal,
+  StyleSheet,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import {
   NavigationProp,
@@ -21,6 +23,7 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import SearchTabBar from './SearchTabBar';
 import MoreVert from '../../../assets/more_vert.png';
 import {Colors} from '../../../assets/color/Colors';
+import {overlay} from 'react-native-paper';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -148,7 +151,9 @@ const ProfileScreen = ({route}: any) => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
   const {data} = route.params;
   const [selected, setSelected] = useState<string | null>(null);
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
+  const [modalPosition, setModalPosition] = useState({x: 0, y: 0});
+  const flatListRef = useRef<FlatList>(null);
 
   useEffect(() => {
     data;
@@ -175,16 +180,18 @@ const ProfileScreen = ({route}: any) => {
     profileImg: string;
   };
 
-  const onPress = (item: any) => {
-    if (selected === item.memberPk) {
-      setSelected(null);
-    } else {
-      setSelected(item.memberPk);
-    }
+  const openModal = (x: number, y: number, item: any) => {
+    setSelected(item.memberPk);
+    setModalPosition({x, y});
+    setIsVisible(true);
+  };
+
+  const closeModal = () => {
+    setIsVisible(false);
+    setSelected(null);
   };
 
   const renderItem: ListRenderItem<Item> = ({item}) => {
-    const isSelected = item.memberPk === selected;
     return (
       <View>
         <View
@@ -195,6 +202,9 @@ const ProfileScreen = ({route}: any) => {
             alignItems: 'center',
             marginHorizontal: 20,
             marginVertical: 10,
+            paddingBottom: 15,
+            borderBottomWidth: 1,
+            borderBottomColor: Colors.c_gray200,
           }}>
           <View
             style={{
@@ -239,26 +249,46 @@ const ProfileScreen = ({route}: any) => {
               justifyContent: 'flex-end',
               marginRight: 10,
             }}>
-            <TouchableOpacity onPress={() => onPress(item)} style={{zIndex: 0}}>
+            <TouchableOpacity
+              onPress={event => {
+                const {pageX, pageY} = event.nativeEvent;
+                openModal(pageX, pageY, item);
+              }}
+              style={{zIndex: 0}}>
               <CommonImage source={MoreVert} width={3} height={14} zIndex={0} />
             </TouchableOpacity>
           </View>
-          {isSelected ? (
+        </View>
+      </View>
+    );
+  };
+
+  return (
+    <View style={styles.container}>
+      <FlatList
+        ref={flatListRef}
+        data={memberSearchData}
+        style={{
+          flexGrow: 0,
+          width: '100%',
+          marginBottom: 110,
+          backgroundColor: '#ffffff',
+        }}
+        renderItem={renderItem}
+        keyExtractor={item => item.memberPk}
+      />
+      <Modal
+        transparent={true}
+        visible={isVisible}
+        onRequestClose={closeModal}
+        animationType="fade">
+        <TouchableWithoutFeedback onPress={closeModal}>
+          <View style={styles.overlay}>
             <View
-              style={{
-                backgroundColor: '#ffffff',
-                width: 120,
-                height: 80,
-                zIndex: 999,
-                position: 'absolute',
-                right: 13,
-                top: 32,
-                borderRadius: 10,
-                borderWidth: 1,
-                borderColor: '#cccccc',
-                justifyContent: 'space-between',
-                padding: 10,
-              }}>
+              style={[
+                styles.modal,
+                {top: modalPosition.y, left: modalPosition.x - 120},
+              ]}>
               <TouchableOpacity>
                 <CommonText fontSize={14} color={'#212121'} numberOfLines={1}>
                   채팅하기
@@ -270,34 +300,33 @@ const ProfileScreen = ({route}: any) => {
                 </CommonText>
               </TouchableOpacity>
             </View>
-          ) : (
-            <></>
-          )}
-        </View>
-        <View
-          style={{
-            width: '90%',
-            height: 1,
-            backgroundColor: Colors.c_gray200,
-            marginHorizontal: 20,
-          }}
-        />
-      </View>
-    );
-  };
-
-  return (
-    <FlatList
-      data={memberSearchData}
-      style={{
-        flexGrow: 0,
-        width: '100%',
-        marginBottom: 110,
-        backgroundColor: '#ffffff',
-        zIndex: 1,
-      }}
-      renderItem={renderItem}
-      keyExtractor={item => item.memberPk}
-    />
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+  },
+  overlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modal: {
+    position: 'absolute',
+    width: 120,
+    height: 80,
+    backgroundColor: '#ffffff',
+    padding: 10,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#cccccc',
+    justifyContent: 'space-between',
+    elevation: 5,
+  },
+});

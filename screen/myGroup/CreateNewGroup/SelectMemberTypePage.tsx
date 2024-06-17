@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Platform,
   ListRenderItem,
+  Keyboard,
 } from 'react-native';
 import {
   NavigationProp,
@@ -15,12 +16,14 @@ import {
 import {RadioButton} from 'react-native-paper';
 import {
   BaseSafeView,
+  CommonImage,
   CommonText,
   Container,
   RowBox,
 } from '../../CommonStyled.style';
-import {BackButton} from '../style/MyGroupStyle.style';
+import {BackBlackButton} from '../style/MyGroupStyle.style';
 import {Colors} from '../../../assets/color/Colors';
+import CustomMarker from '../../../assets/customMarker.png';
 import styled from 'styled-components/native';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
@@ -70,6 +73,22 @@ const SelectMemberTypePage = ({route}: any) => {
     null,
   );
   const [selectedGender, setSelectedGender] = useState<string | null>(null);
+
+  const [keyboardStatus, setKeyboardStatus] = useState(false);
+
+  useEffect(() => {
+    const showKeyboard = Keyboard.addListener('keyboardDidShow', () => {
+      setKeyboardStatus(true);
+    });
+    const hideKeyboard = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardStatus(false);
+    });
+
+    return () => {
+      showKeyboard.remove();
+      hideKeyboard.remove();
+    };
+  }, []);
 
   const univOnPress = (item: UnivItem) => {
     setSelectedUnivType(item.bool);
@@ -153,6 +172,10 @@ const SelectMemberTypePage = ({route}: any) => {
     [multiSliderValue, minYear, maxYear],
   );
 
+  const CustomMarkerComponent = () => {
+    return <CommonImage width={24} height={24} source={CustomMarker} />;
+  };
+
   return (
     <BaseSafeView>
       <Container bgColor={'#ffffff'} padding={0}>
@@ -160,7 +183,7 @@ const SelectMemberTypePage = ({route}: any) => {
           style={{paddingHorizontal: 10, paddingTop: 40, paddingBottom: 20}}>
           <RowBox alignC justify={'space-between'}>
             <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
-              <BackButton />
+              <BackBlackButton />
               <CommonText fontSize={18} color={'#1C1C1C'}>
                 새 그룹
               </CommonText>
@@ -266,7 +289,7 @@ const SelectMemberTypePage = ({route}: any) => {
                 <CommonText
                   fontSize={12}
                   alignC
-                  color={'skyblue'}
+                  color={'#0E6FFF'}
                   paddingLeft={15}>
                   올해 20살은 05년생이에요!
                 </CommonText>
@@ -354,13 +377,14 @@ const SelectMemberTypePage = ({route}: any) => {
                 <MultiSlider
                   min={0}
                   max={yearLength}
-                  markerStyle={{width: 30, height: 30, borderRadius: 50}}
-                  pressedMarkerStyle={{width: 30, height: 30, borderRadius: 50}}
                   values={[multiSliderValue[0], multiSliderValue[1]]}
                   onValuesChange={multiSliderValuesChange}
                   step={1}
-                  // isMarkersSeparated={true}
-                  // customMarker={(e) =>}
+                  customMarker={e => {
+                    return <CustomMarkerComponent />;
+                  }}
+                  selectedStyle={{height: 3, backgroundColor: '#6B768B'}}
+                  unselectedStyle={{height: 3, backgroundColor: '#D7DCE5'}}
                 />
               </View>
               <View
@@ -377,14 +401,14 @@ const SelectMemberTypePage = ({route}: any) => {
                 <CommonText
                   fontSize={14}
                   alignC
-                  color={'#9e9e9e'}
+                  color={'#6B768B'}
                   paddingLeft={20}>
                   {minYearAbbr}
                 </CommonText>
                 <CommonText
                   fontSize={14}
                   alignC
-                  color={'#9e9e9e'}
+                  color={'#6B768B'}
                   paddingRight={20}>
                   90
                 </CommonText>
@@ -464,31 +488,33 @@ const SelectMemberTypePage = ({route}: any) => {
               paddingBottom: 10,
               paddingHorizontal: 20,
             }}>
-            <TouchableOpacity
-              style={{
-                backgroundColor: '#000000',
-                width: '100%',
-                height: 50,
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: 10,
-              }}
-              onPress={() => {
-                navigation.navigate('SelectOption', {
-                  sportsType: item.sportsType,
-                  recruitmentType: item.recruitmentType,
-                  onlySameUniv: selectedUnivType,
-                  ageIsIrrelevant: true,
-                  startAge: Number(minYear),
-                  endAge: Number(maxYear),
-                  genderIsIrrelevant: true,
-                  gender: selectedGender,
-                });
-              }}>
-              <CommonText fontSize={16} color={'#ffffff'}>
-                다음
-              </CommonText>
-            </TouchableOpacity>
+            {!keyboardStatus && (
+              <TouchableOpacity
+                style={{
+                  backgroundColor: '#000000',
+                  width: '100%',
+                  height: 50,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 10,
+                }}
+                onPress={() => {
+                  navigation.navigate('SelectOption', {
+                    sportsType: item.sportsType,
+                    recruitmentType: item.recruitmentType,
+                    onlySameUniv: selectedUnivType,
+                    ageIsIrrelevant: true,
+                    startAge: Number(minYear),
+                    endAge: Number(maxYear),
+                    genderIsIrrelevant: true,
+                    gender: selectedGender,
+                  });
+                }}>
+                <CommonText fontSize={16} color={'#ffffff'}>
+                  다음
+                </CommonText>
+              </TouchableOpacity>
+            )}
           </View>
         </Container>
       </Container>

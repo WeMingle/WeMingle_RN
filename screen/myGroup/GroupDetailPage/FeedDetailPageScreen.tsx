@@ -21,11 +21,13 @@ import {
   RowBox,
 } from '../../CommonStyled.style';
 import {
-  BackButton,
+  BackBlackButton,
   ChattingIcon,
   ClickBookmark,
   ClickFavorite,
+  SearchBlackButton,
   VoteComponent,
+  VoteDetailComponent,
 } from '../style/MyGroupStyle.style';
 import {useSelector} from 'react-redux';
 import {
@@ -159,7 +161,7 @@ const FeedDetailPageScreen = () => {
                     alignItems: 'center',
                     justifyContent: 'flex-start',
                   }}>
-                  <BackButton />
+                  <BackBlackButton />
                   <CommonText fontSize={18} color={'#1C1C1C'}>
                     숭실대 축구동아리
                   </CommonText>
@@ -170,12 +172,12 @@ const FeedDetailPageScreen = () => {
                     alignItems: 'center',
                     justifyContent: 'flex-start',
                   }}>
-                  <SearchButton width={24} height={24} />
+                  <SearchBlackButton width={24} height={24} />
                   <CommonImage
                     source={MoreVertBlack}
                     width={3}
-                    height={14.5}
-                    marginLeft={20}
+                    height={24}
+                    marginLeft={24}
                   />
                 </View>
               </RowBox>
@@ -242,7 +244,7 @@ const FeedDetailPageScreen = () => {
                       {item?.createdTime}
                     </CommonText> */}
                   </RowBox>
-                  <ClickBookmark bookmark={false} width={13} height={18} />
+                  <ClickBookmark bookmark={false} width={24} height={24} />
                 </View>
                 <CommonText
                   fontSize={16}
@@ -261,11 +263,18 @@ const FeedDetailPageScreen = () => {
                     paddingTop={10}>
                     {item?.content}
                   </CommonText> */}
-                <VoteComponent
+                {/* <VoteComponent
                   vote_title={'투표 타이틀'}
                   voting_member={'0'}
                   closing_date={'2024-04-04'}
                   voteOptionInfos={sampleVoteData}
+                /> */}
+                <VoteDetailComponent
+                  vote_title={'투표 타이틀'}
+                  voting_member={'0'}
+                  closing_date={'2024-04-04'}
+                  voteOptionInfos={sampleVoteData}
+                  backgroundColor={'#0E6FFF'}
                 />
                 {/* <VoteComponent
                     vote_title={'투표 타이틀'}
@@ -280,10 +289,10 @@ const FeedDetailPageScreen = () => {
                       <ClickFavorite
                         favorite_click={true}
                         favorite_num={1}
-                        width={19.5}
-                        height={16}
+                        width={24}
+                        height={24}
                       />
-                      <ChattingIcon chatting_num={3} width={19.5} height={16} />
+                      <ChattingIcon chatting_num={3} width={24} height={24} />
                     </RowBox>
                   </View>
                 </View>
@@ -335,8 +344,8 @@ const FeedDetailPageScreen = () => {
                 </View>
                 <CommonImage
                   source={NotificationImportant}
-                  width={12.5}
-                  height={13.6}
+                  width={18.5}
+                  height={20}
                 />
               </View>
               <CommonText
@@ -485,7 +494,7 @@ const FeedDetailPageScreen = () => {
                     대댓글
                   </CommonText>
                 </View>
-                <CommonImage source={MoreVert} width={2.5} height={12.1} />
+                <CommonImage source={MoreVert} width={20} height={20} />
               </View>
               <CommonText
                 fontSize={14}

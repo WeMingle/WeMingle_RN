@@ -88,8 +88,8 @@ const MyGroupScreen = () => {
                       <CommonText fontSize={18} color={'#fff'}>
                         내그룹
                       </CommonText>
-                      <RowBox>
-                        <SearchButton width={24} height={24} />
+                      <RowBox alignC>
+                        <SearchButton width={20} height={20} />
                         <TouchableOpacity
                           onPress={() => {
                             navigation.navigate('SelectSports');
@@ -279,8 +279,8 @@ const MyGroupScreen = () => {
                       <CommonText fontSize={18}>{items.item?.title}</CommonText>
                       <CommonImage
                         source={More_Vert}
-                        width={3}
-                        height={14.54}
+                        width={24}
+                        height={24}
                         marginHorizontal={10}
                       />
                     </RowBox>
@@ -364,13 +364,13 @@ const MyGroupScreen = () => {
                         <ClickFavorite
                           favorite_click={items.item?.favorite_click}
                           favorite_num={items.item?.favorite}
-                          width={19.5}
-                          height={16}
+                          width={24}
+                          height={24}
                         />
                         <ChattingIcon
                           chatting_num={items.item?.chat}
-                          width={19.5}
-                          height={16}
+                          width={24}
+                          height={24}
                         />
                         <View
                           style={{
@@ -381,8 +381,8 @@ const MyGroupScreen = () => {
                           }}>
                           <ClickBookmark
                             bookmark={items.item.bookmark}
-                            width={19.5}
-                            height={16}
+                            width={24}
+                            height={24}
                           />
                         </View>
                       </RowBox>

@@ -124,8 +124,8 @@ const MyGroupDefaultScreen = ({route}: any) => {
                         ? item.pageName
                         : '그룹 둘러보기'}
                     </CommonText>
-                    <RowBox>
-                      <SearchButton width={24} height={24} />
+                    <RowBox alignC>
+                      <SearchButton width={20} height={20} />
                       <TouchableOpacity
                         onPress={() => {
                           navigation.navigate('SelectSports');

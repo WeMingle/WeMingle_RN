@@ -1,4 +1,9 @@
-import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSlice,
+  isRejectedWithValue,
+  PayloadAction,
+} from '@reduxjs/toolkit';
 import {axiosPrivate} from '../../../api/Common';
 
 interface TeamInfo {
@@ -70,10 +75,18 @@ interface TeamPosts {
   teamPostsInfo: TeamPost | {} | null;
 }
 
+interface TeamMembers {
+  imgUrl: string;
+  nickname: string;
+  teamRole: string;
+  isMe: boolean;
+}
+
 interface TeamState {
   teamInfo: TeamInfo | null;
   teamCondition: TeamCondition | null;
   teamPosts: TeamPosts | any | null;
+  teamMembers: TeamMembers | any | null;
   loading: boolean;
   error: string | null;
 }
@@ -82,6 +95,7 @@ const initialState: TeamState = {
   teamInfo: null,
   teamCondition: null,
   teamPosts: null,
+  teamMembers: null,
   loading: false,
   error: null,
 };
@@ -177,6 +191,21 @@ export const likeTeamPost = createAsyncThunk<void, {teamPostPk: number}>(
   },
 );
 
+export const fetchTeamMembers = createAsyncThunk<TeamMembers, number>(
+  'team/fetchTeamMembers',
+  async (teamId, {rejectWithValue}) => {
+    try {
+      const response = await axiosPrivate.get(`/members/teams/${teamId}/info`);
+      if (response.status !== 200) {
+        throw new Error('Failed to fetch team members');
+      }
+      return response.data.responseData;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  },
+);
+
 const teamSlice = createSlice({
   name: 'team',
   initialState,
@@ -264,7 +293,25 @@ const teamSlice = createSlice({
       .addCase(likeTeamPost.rejected, (state, action: PayloadAction<any>) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      })
+      .addCase(fetchTeamMembers.pending, state => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        fetchTeamMembers.fulfilled,
+        (state, action: PayloadAction<TeamMembers>) => {
+          state.loading = false;
+          state.teamMembers = action.payload;
+        },
+      )
+      .addCase(
+        fetchTeamMembers.rejected,
+        (state, action: PayloadAction<any>) => {
+          state.loading = false;
+          state.error = action.payload;
+        },
+      );
   },
 });
 

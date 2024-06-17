@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
   Text,
+  Keyboard,
 } from 'react-native';
 import {
   NavigationProp,

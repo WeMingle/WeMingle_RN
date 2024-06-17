@@ -23,7 +23,7 @@ import {
   Container,
   RowBox,
 } from '../../CommonStyled.style';
-import {BackButton} from '../style/MyGroupStyle.style';
+import {BackBlackButton, BackButton} from '../style/MyGroupStyle.style';
 import styled from 'styled-components/native';
 import ImagePicker from 'react-native-image-crop-picker';
 import {useAppDispatch} from '../../../redux/Store';
@@ -34,6 +34,7 @@ import {v4 as uuidv4} from 'uuid';
 import {uploadProfileImage, uploadImageWithBLOB} from '../../../api/MyGroup';
 // import Profile_Icon from '../../assets/basic_profile.png';
 import Profile_Icon from '../../../assets/basic_profile.png';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 // import {}
 
 const SetGroupProfilePage = ({route}: any) => {
@@ -56,6 +57,21 @@ const SetGroupProfilePage = ({route}: any) => {
   const [groupName, setGroupName] = useState('');
   const [groupIntroduce, setGroupIntroduce] = useState('');
   const [teamId, setTeamId] = useState('');
+  const [keyboardStatus, setKeyboardStatus] = useState(false);
+
+  useEffect(() => {
+    const showKeyboard = Keyboard.addListener('keyboardDidShow', () => {
+      setKeyboardStatus(true);
+    });
+    const hideKeyboard = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardStatus(false);
+    });
+
+    return () => {
+      showKeyboard.remove();
+      hideKeyboard.remove();
+    };
+  }, []);
 
   const teamImgUUID = uuidv4();
   const selectImage = async () => {
@@ -102,7 +118,7 @@ const SetGroupProfilePage = ({route}: any) => {
           style={{paddingHorizontal: 10, paddingTop: 40, paddingBottom: 20}}>
           <RowBox alignC justify={'space-between'}>
             <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
-              <BackButton />
+              <BackBlackButton />
               <CommonText fontSize={18} color={'#1C1C1C'}>
                 새 그룹
               </CommonText>
@@ -120,141 +136,148 @@ const SetGroupProfilePage = ({route}: any) => {
           }}>
           <ProgressBar width={barWidth} />
         </View>
-        <Container
-          bgColor={'#ffffff'}
+        <KeyboardAwareScrollView
           style={{
-            width: '100%',
             height: '100%',
           }}>
-          <CommonText fontSize={18} color={'#1C1C1C'} marginBottom={30}>
-            그룹 프로필을 설정해주세요
-          </CommonText>
-          <View
+          <Container
+            bgColor={'#ffffff'}
             style={{
               width: '100%',
-              height: '75%',
-              //   backgroundColor: 'red',
+              height: '100%',
             }}>
+            <CommonText fontSize={18} color={'#1C1C1C'} marginBottom={30}>
+              그룹 프로필을 설정해주세요
+            </CommonText>
             <View
               style={{
                 width: '100%',
-                flexDirection: 'row',
-                justifyContent: 'center',
+                height: '75%',
+                //   backgroundColor: 'red',
               }}>
-              <CommonTouchableOpacity
-                style={[
-                  {
-                    borderRadius: 10,
-                    alignItems: 'center',
-                    justifyContent: 'flex-end',
-                  },
-                ]}
-                bgColor={'#000'}
-                width={80}
-                height={80}
-                onPress={selectImage}>
-                <Image
-                  source={
-                    selectedImage ? {uri: selectedImage.path} : Profile_Icon
-                  }
-                  style={{width: '100%', height: '100%', borderRadius: 80}}
-                />
-              </CommonTouchableOpacity>
-            </View>
-            <View
-              style={{
-                width: '100%',
-              }}>
-              <CommonText fontSize={15} color={'#1C1C1C'} paddingTop={20}>
-                그룹명
-              </CommonText>
               <View
                 style={{
                   width: '100%',
-                  height: 50,
                   flexDirection: 'row',
-                  marginVertical: 10,
-                  alignItems: 'center',
-                  borderWidth: 1,
-                  borderColor: '#cccccc',
-                  borderRadius: 5,
-                  paddingHorizontal: 5,
+                  justifyContent: 'center',
                 }}>
-                <TextInput
-                  placeholder="그룹명을 작성해주세요."
-                  placeholderTextColor={'#9e9e9e'}
-                  style={{padding: 10}}
-                  value={groupName}
-                  onChangeText={setGroupName}
-                />
+                <CommonTouchableOpacity
+                  style={[
+                    {
+                      borderRadius: 10,
+                      alignItems: 'center',
+                      justifyContent: 'flex-end',
+                    },
+                  ]}
+                  bgColor={'#000'}
+                  width={80}
+                  height={80}
+                  onPress={selectImage}>
+                  <Image
+                    source={
+                      selectedImage ? {uri: selectedImage.path} : Profile_Icon
+                    }
+                    style={{width: '100%', height: '100%', borderRadius: 80}}
+                  />
+                </CommonTouchableOpacity>
               </View>
-              <CommonText fontSize={15} color={'#1C1C1C'} paddingTop={20}>
-                그룹 소개글
-              </CommonText>
               <View
                 style={{
                   width: '100%',
-                  height: 120,
-                  marginVertical: 10,
-                  justifyContent: 'space-between',
-                  borderWidth: 1,
-                  borderColor: '#cccccc',
-                  borderRadius: 5,
-                  paddingHorizontal: 5,
                 }}>
-                <TextInput
-                  placeholder="그룹 소개글을 작성해주세요."
-                  textAlignVertical="top"
-                  placeholderTextColor={'#9e9e9e'}
-                  style={{padding: 10, height: 100}}
-                  multiline={true}
-                  numberOfLines={5}
-                  value={groupIntroduce}
-                  onChangeText={setGroupIntroduce}
-                />
+                <CommonText fontSize={15} color={'#1C1C1C'} paddingTop={20}>
+                  그룹명
+                </CommonText>
                 <View
                   style={{
                     width: '100%',
+                    height: 50,
                     flexDirection: 'row',
-                    justifyContent: 'flex-end',
+                    marginVertical: 10,
+                    alignItems: 'center',
+                    borderWidth: 1,
+                    borderColor: '#cccccc',
+                    borderRadius: 5,
+                    paddingHorizontal: 5,
                   }}>
-                  <CommonText
-                    fontSize={10}
-                    color={'#cccccc'}
-                    paddingBottom={5}
-                    paddingRight={10}>
-                    1/100
-                  </CommonText>
+                  <TextInput
+                    placeholder="그룹명을 작성해주세요."
+                    placeholderTextColor={'#9e9e9e'}
+                    style={{padding: 10}}
+                    value={groupName}
+                    onChangeText={setGroupName}
+                  />
+                </View>
+                <CommonText fontSize={15} color={'#1C1C1C'} paddingTop={20}>
+                  그룹 소개글
+                </CommonText>
+                <View
+                  style={{
+                    width: '100%',
+                    height: 120,
+                    marginVertical: 10,
+                    justifyContent: 'space-between',
+                    borderWidth: 1,
+                    borderColor: '#cccccc',
+                    borderRadius: 5,
+                    paddingHorizontal: 5,
+                  }}>
+                  <TextInput
+                    placeholder="그룹 소개글을 작성해주세요."
+                    textAlignVertical="top"
+                    placeholderTextColor={'#9e9e9e'}
+                    style={{padding: 10, height: 100}}
+                    multiline={true}
+                    numberOfLines={5}
+                    value={groupIntroduce}
+                    onChangeText={setGroupIntroduce}
+                  />
+                  <View
+                    style={{
+                      width: '100%',
+                      flexDirection: 'row',
+                      justifyContent: 'flex-end',
+                    }}>
+                    <CommonText
+                      fontSize={10}
+                      color={'#cccccc'}
+                      paddingBottom={5}
+                      paddingRight={10}>
+                      1/100
+                    </CommonText>
+                  </View>
                 </View>
               </View>
             </View>
-          </View>
-          <View
-            style={{
-              width: '100%',
-              height: '18%',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'flex-end',
-              paddingBottom: 10,
-              paddingHorizontal: 20,
-            }}>
-            <TouchableOpacity
+            <View
               style={{
-                backgroundColor: '#000000',
                 width: '100%',
-                height: 50,
-                alignItems: 'center',
+                height: '18%',
+                flexDirection: 'row',
                 justifyContent: 'center',
-                borderRadius: 10,
-              }}
-              onPress={createNewGroupPost}>
-              <CommonText fontSize={16} color={'#ffffff'}>
-                다음
-              </CommonText>
-            </TouchableOpacity>
-          </View>
-        </Container>
+                alignItems: 'flex-end',
+                paddingBottom: 10,
+                paddingHorizontal: 20,
+              }}>
+              {!keyboardStatus && (
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: '#000000',
+                    width: '100%',
+                    height: 50,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: 10,
+                  }}
+                  onPress={createNewGroupPost}>
+                  <CommonText fontSize={16} color={'#ffffff'}>
+                    다음
+                  </CommonText>
+                </TouchableOpacity>
+              )}
+            </View>
+          </Container>
+        </KeyboardAwareScrollView>
       </Container>
     </BaseSafeView>
   );

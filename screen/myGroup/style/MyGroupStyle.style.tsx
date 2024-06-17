@@ -23,9 +23,13 @@ import Bookmark_Active from '../../../assets/bookmark_active.png';
 import Favorite from '../../../assets/favorite.png';
 import Favorite_Active from '../../../assets/favorite_active.png';
 import Search from '../../../assets/search.png';
+import Search_Black from '../../../assets/search_black.png';
 import Back_White from '../../../assets/back_icon_white.png';
+import Back_Black from '../../../assets/back_icon_black.png';
+import ArrowRight from '../../../assets/arrow_right.png';
 import SMS from '../../../assets/sms.png';
 import Toast from 'react-native-toast-message';
+import {RadioButton} from 'react-native-paper';
 
 export const BookmarkImage = ({bookmark, width, height}: any) => {
   const [bookmarkSource, setBookmarkSource] = useState(Bookmark);
@@ -283,6 +287,196 @@ const VoteGraph = styled.View`
   background-color: #5c667b;
 `;
 
+export const VoteDetailComponent = ({
+  vote_title,
+  voting_member,
+  closing_date,
+  voteOptionInfos,
+  backgroundColor,
+}: any) => {
+  console.log('투표 리스트들 : ', voteOptionInfos);
+  let voteCnt = 0;
+
+  for (let i = 0; i < voteOptionInfos.length; i++) {
+    voteCnt += voteOptionInfos[i].resultCnt;
+  }
+
+  const navigation: NavigationProp<ParamListBase> = useNavigation();
+  return (
+    <>
+      {vote_title === null ? (
+        <></>
+      ) : (
+        <View
+          style={{
+            width: '100%',
+            borderRadius: 10,
+            borderWidth: 1,
+            borderColor: '#DCDCDC',
+            paddingVertical: 20,
+            paddingHorizontal: 10,
+            marginTop: 10,
+          }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}>
+            <View style={{marginLeft: 10}}>
+              <View
+                style={{
+                  width: '100%',
+                  flexDirection: 'row',
+                  justifyContent: 'flex-start',
+                }}>
+                <CommonText
+                  fontSize={12}
+                  color={'#5C667B'}
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                  paddingRight={5}
+                  textAlignC>
+                  {vote_title}
+                </CommonText>
+                <View
+                  style={{
+                    width: 1,
+                    height: '100%',
+                    backgroundColor: '#DCDCDC',
+                    marginRight: 5,
+                  }}
+                />
+                <CommonText
+                  fontSize={10}
+                  color={'#CACACA'}
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                  textAlignC>
+                  {voting_member}명 참여 중
+                </CommonText>
+              </View>
+              <View
+                style={{
+                  width: '100%',
+                  flexDirection: 'row',
+                  justifyContent: 'flex-start',
+                  marginTop: 5,
+                }}>
+                <CommonText
+                  fontSize={10}
+                  color={'#FF5D5D'}
+                  paddingRight={5}
+                  textAlignC>
+                  마감일
+                </CommonText>
+                <CommonText fontSize={10} color={'#FF5D5D'} textAlignC>
+                  {closing_date} (24시간 남음)
+                </CommonText>
+              </View>
+            </View>
+            <TouchableOpacity onPress={() => navigation.navigate('VoteResult')}>
+              <CommonImage source={ArrowRight} width={23} height={23} />
+            </TouchableOpacity>
+          </View>
+          {voteOptionInfos.map((item: {optionName: any; resultCnt: number}) => (
+            <View
+              style={{
+                width: '100%',
+                alignItems: 'flex-start',
+                marginTop: 10,
+              }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginLeft: 3,
+                  // marginRight: 2,
+                  // backgroundColor: 'orange',
+                }}>
+                <RadioButton status="unchecked" value="" />
+                <View
+                  style={{
+                    alignItems: 'flex-start',
+                    width: '85%',
+                    // justifyContent: 'center',
+                    // backgroundColor: 'yellow',
+                    marginLeft: 5,
+                  }}>
+                  <View
+                    style={{
+                      width: '100%',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                    }}>
+                    <CommonText
+                      fontSize={10}
+                      color={'#292E41'}
+                      paddingBottom={5}
+                      textAlignC>
+                      {item.optionName}
+                    </CommonText>
+                    <CommonText
+                      fontSize={10}
+                      color={'#96A0B5'}
+                      paddingBottom={5}
+                      textAlignC>
+                      5명
+                    </CommonText>
+                  </View>
+                  <View
+                    style={{
+                      width: '100%',
+                      height: 5,
+                      borderRadius: 10,
+                      borderWidth: 1,
+                      borderColor: '#DCDCDC',
+                      marginBottom: 5,
+                    }}>
+                    <VoteDetailGraph
+                      // resultCnt={item.resultCnt}
+                      // voteCnt={voteCnt}
+                      resultCnt={5}
+                      voteCnt={20}
+                      backgroundColor={backgroundColor}
+                    />
+                  </View>
+                </View>
+              </View>
+            </View>
+          ))}
+          <TouchableOpacity
+            style={{
+              padding: 10,
+              borderColor: '#D4E5FF',
+              borderWidth: 1,
+              borderRadius: 15,
+              width: '100%',
+              marginTop: 20,
+              alignItems: 'center',
+            }}>
+            <CommonText fontSize={12} color={'#0E6FFF'}>
+              다시 투표하기
+            </CommonText>
+          </TouchableOpacity>
+        </View>
+      )}
+    </>
+  );
+};
+
+const VoteDetailGraph = styled.View`
+  ${(props: {resultCnt: number; voteCnt: number}) =>
+    props.resultCnt === 0
+      ? 'width: 0%'
+      : Math.ceil((props.resultCnt / props.voteCnt) * 100) &&
+        `width: ${Math.ceil((props.resultCnt / props.voteCnt) * 100)}%`};
+  height: 5px;
+  border-radius: 10px;
+  ${(props: {backgroundColor: string}) =>
+    `background-color: ${props.backgroundColor}`}
+`;
+
 export const SearchButton = ({width, height}: any) => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
   return (
@@ -291,6 +485,18 @@ export const SearchButton = ({width, height}: any) => {
         navigation.navigate('MyGroupSearch');
       }}>
       <CommonImage source={Search} width={width} height={height} />
+    </TouchableOpacity>
+  );
+};
+
+export const SearchBlackButton = ({width, height}: any) => {
+  const navigation: NavigationProp<ParamListBase> = useNavigation();
+  return (
+    <TouchableOpacity
+      onPress={() => {
+        navigation.navigate('MyGroupSearch');
+      }}>
+      <CommonImage source={Search_Black} width={width} height={height} />
     </TouchableOpacity>
   );
 };
@@ -337,7 +543,37 @@ export const BackButton = () => {
     <TouchableOpacity onPress={onBackPress}>
       <CommonImage
         source={Back_White}
-        width={48}
+        width={24}
+        height={24}
+        marginRight={20}
+      />
+    </TouchableOpacity>
+  );
+};
+
+export const BackBlackButton = () => {
+  const navigation: NavigationProp<ParamListBase> = useNavigation();
+
+  const onBackPress = () => {
+    if (navigation?.canGoBack()) {
+      navigation.goBack();
+      return true;
+    }
+    return false;
+  };
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', onBackPress);
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    };
+  }, [onBackPress]);
+
+  return (
+    <TouchableOpacity onPress={onBackPress}>
+      <CommonImage
+        source={Back_Black}
+        width={24}
         height={24}
         marginRight={20}
       />

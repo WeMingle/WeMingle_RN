@@ -23,7 +23,7 @@ import {
   Container,
   RowBox,
 } from '../../CommonStyled.style';
-import {BackButton} from '../style/MyGroupStyle.style';
+import {BackBlackButton} from '../style/MyGroupStyle.style';
 import styled from 'styled-components/native';
 
 type Item = {
@@ -85,7 +85,7 @@ const SelectSportsPage = () => {
         <View
           style={{paddingHorizontal: 10, paddingTop: 40, paddingBottom: 20}}>
           <RowBox alignC justify={'flex-start'}>
-            <BackButton />
+            <BackBlackButton />
             <CommonText fontSize={18} color={'#1C1C1C'}>
               새 그룹
             </CommonText>
